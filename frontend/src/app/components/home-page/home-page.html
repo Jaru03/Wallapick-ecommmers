@@ -1,0 +1,147 @@
+<section>
+  <div
+    class="max-w-7xl mx-auto p-6 flex flex-col justify-center items-center h-[70vh]"
+  >
+    <div class="relative w-full h-full">
+      <img
+        src="https://peruretail.sfo3.cdn.digitaloceanspaces.com/wp-content/uploads/Lumingo-min-2.png"
+        alt="Imagen"
+        class="w-full h-full object-cover"
+      />
+      <div
+        class="absolute inset-0"
+        style="
+          background: linear-gradient(to left, transparent 10%, #1e3a8a 100%);
+        "
+      ></div>
+
+      <!-- Texto sobre la imagen -->
+      <div
+        class="absolute inset-0 flex flex-col justify-center items-start pl-12 text-white text-left"
+      >
+        <h1 class="text-4xl font-bold mb-2">Bienvenido a Wallapick</h1>
+        <p class="text-lg max-w-md">
+          Descubre las mejores ofertas en tecnología, moda y hogar. Todo en un
+          solo lugar, fácil y rápido.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="max-w-7xl mx-auto">
+    <h2 class="col-span-full text-3xl font-bold px-4 text-center sm:text-left mb-4">Recomendados para Ti</h2>
+    <p-carousel
+      [value]="products"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-product pTemplate="item">
+        <app-producto-component [product]="product" />
+      </ng-template>
+    </p-carousel>
+  </div>
+</section>
+
+<section>
+  <div class="max-w-7xl mx-auto">
+    <h2 class="col-span-full text-3xl font-bold px-4 text-center sm:text-left mb-4">Productos Destacados</h2>
+    <p-carousel
+      [value]="products"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-product pTemplate="item">
+        <app-producto-component [product]="product" />
+      </ng-template>
+    </p-carousel>
+  </div>
+</section>
+
+<section>
+  <div class="max-w-7xl mx-auto">
+    <h2 class="col-span-full text-3xl font-bold px-4 text-center sm:text-left mb-4">
+      Lo Último para el Hogar
+    </h2>
+    <p-carousel
+      [value]="products"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-product pTemplate="item">
+        <app-producto-component [product]="product" />
+      </ng-template>
+    </p-carousel>
+  </div>
+</section>
+
+<section>
+  <div class="max-w-7xl mx-auto">
+    <h2 class="col-span-full text-3xl font-bold px-4 text-center sm:text-left mb-4">
+      Lo Mejor en Tecnología
+    </h2>
+    <p-carousel
+      [value]="products"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-product pTemplate="item">
+        <app-producto-component [product]="product" />
+      </ng-template>
+    </p-carousel>
+  </div>
+</section>
+
+<section class="mt-28 md:mt-0">
+  <div
+    class="max-w-7xl mx-auto flex flex-col justify-center items-center"
+  >
+    <h2 class="self-start text-3xl font-bold px-4 text-center sm:text-left mb-4">
+      Opiniones de nuestros usuarios
+    </h2>
+    <div class="container">
+      <div class="item">
+        <div class="quote">
+          <p>
+            Vendí mi primer mueble en menos de 24h gracias a Wallapick.<span
+              >Ana López</span
+            >
+          </p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="quote">
+          <p>
+            Encontré justo lo que buscaba y me llegó en dos días.
+            Increíble.<span>Carlos Méndez</span>
+          </p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="quote">
+          <p>
+            Uso Wallapick cada semana. Ya es parte de mi rutina.<span
+              >Lucía Fernández</span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section>
+  <div class="max-w-7xl mx-auto p-6 grid grid-cols-1 md:grid-cols-6 gap-6">
+    <h2 class="col-[1/-1] text-3xl font-bold mb-6">
+      Últimos Productos Agregados
+    </h2>
+
+    
+    <app-producto-component class="md:col-span-2 md:row-span-2 h-full" /> 
+
+    
+    <div class="grid grid-cols-1 gap-4 md:col-span-4">
+      @for (item of [1,2,3]; track $index) {
+        <app-producto-component [layout]="'list'" />
+      }
+    </div>
+  </div>
+</section>
+ -->

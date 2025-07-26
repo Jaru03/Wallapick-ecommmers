@@ -1,0 +1,53 @@
+<p-menubar [model]="itemsText">
+  <ng-template #start>
+    <img src="wallapick-fondo.jpeg" alt="Logo de Wallapick" width="70" height="70" class="rounded-full" />
+  </ng-template>
+
+  <ng-template #end>
+    <div class="flex gap-4">
+      @for (item of itemsIcons; track $index) {
+
+        @if ($index === 1) {
+          <a class="relative" routerLink="{{item.routerLink}}">
+            <i class="pi {{item.icon}}"></i>
+            <span class="absolute text-xs -top-2 -right-2 bg-red-600 text-white w-4 flex justify-center items-center rounded-full">0</span>
+          </a>
+        }@else {
+          <a routerLink="{{item.routerLink}}">
+            <i class="pi {{item.icon}}"></i>
+          </a>
+        }
+      }
+    </div>
+  </ng-template>
+</p-menubar>
+
+<!-- <header class="bg-[#ff6b1f]">
+  <div class="flex justify-between items-center max-w-7xl mx-auto ">
+    <img src="wallapick.png" alt="Logo de Wallapick" width="75" height="75" />
+
+    <nav>
+      <ul class="flex gap-8 justify-center items-center">
+        @for (item of itemsText; track $index) {
+        <li class="text-white">
+          <a routerLink="{{ item.path }}">{{ item.name }}</a>
+        </li>
+        }
+      </ul>
+    </nav>
+    <nav>
+      <ul class="flex gap-5 justify-center items-center">
+        <li class="text-white">
+          <ng-icon class="text-lg" name="lucideSearch" />
+        </li>
+        @for (item of itemsIcons; track $index) {
+        <li class="text-white">
+          <a routerLink="{{ item.path }}"
+            ><ng-icon class="text-lg" name="{{ item.name }}"
+          /></a>
+        </li>
+        }
+      </ul>
+    </nav>
+  </div>
+</header> -->

@@ -1,0 +1,95 @@
+<section>
+  <div class="mx-auto max-w-5xl grid md:grid-cols-[auto_auto] gap-x-8">
+    <p-breadcrumb [model]="items" class="col-span-full py-4" />
+
+    <img src="/wallapick.png" class="aspect-square p-4" alt="" />
+
+    <div class="hidden md:block">
+      <p-card class="p-4 pb-12 h-fit">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+          Título del Producto
+        </h2>
+        <h3 class="text-lg font-medium text-gray-600 mb-1">
+          Estado del producto
+        </h3>
+        <p class="text-xl font-semibold mb-4">300$</p>
+
+        <div class="flex gap-4">
+          <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" />
+          <p-button
+            icon="pi pi-shopping-bag"
+            label="Comprar"
+            severity="secondary"
+          />
+        </div>
+
+        <p-divider />
+        <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+        <p class="text-sm text-gray-700 my-2">
+          Vendido por: <span class="font-medium">Nombre del Vendedor</span>
+        </p>
+        <p-rating [(ngModel)]="rating" [readonly]="true" />
+        <p class="text-sm text-gray-700 mt-2">15 ventas</p>
+      </p-card>
+    </div>
+
+    <div class="block md:hidden p-4">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">Título del Producto</h2>
+      <h3 class="text-lg font-medium text-gray-600 mb-1">
+        Estado del producto
+      </h3>
+      <p class="text-xl font-semibold mb-4">300$</p>
+
+      <div class="flex gap-4">
+        <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" />
+        <p-button
+          icon="pi pi-shopping-bag"
+          label="Comprar"
+          severity="secondary"
+        />
+      </div>
+
+      <p-divider />
+      <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+      <p class="text-sm text-gray-700 my-2">
+        Vendido por: <span class="font-medium">Nombre del Vendedor</span>
+      </p>
+      <p-rating [(ngModel)]="rating" [readonly]="true" />
+      <p class="text-sm text-gray-700 mt-2">15 ventas</p>
+    </div>
+
+    <div class="p-4">
+      <p-divider />
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">
+        Detalles del producto
+      </h2>
+      <p class="text-sm text-gray-700 leading-relaxed mb-2">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum
+        laboriosam consequuntur velit ad cum dicta pariatur dolor, corporis
+        facilis quis delectus numquam distinctio temporibus consectetur culpa.
+        Laudantium ipsam aut at.
+      </p>
+      <p class="text-sm text-gray-600">
+        <span class="font-medium text-gray-800">Estado:</span> Como nuevo
+      </p>
+      <p-divider />
+    </div>
+
+    <div class=" col-span-full p-4">
+      <h2 class="col-span-full text-xl font-bold text-gray-800 mb-4">
+        Productos que te podrían interesar
+      </h2>
+      <p-carousel
+      [value]="products"
+      [numVisible]="3"
+      [numScroll]="1"
+      [circular]="false"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-product pTemplate="item">
+        <app-producto-component [product]="product" />
+      </ng-template>
+    </p-carousel>
+    </div>
+  </div>
+</section>

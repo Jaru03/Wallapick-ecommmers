@@ -1,0 +1,82 @@
+<div class="mx-auto max-w-7xl p-6 grid gap-4 {{isView? 'md:grid-cols-[auto_1fr]' : 'md:grid-cols-1 '}}  relative">
+  <div class="absolute top-6 right-8">
+    <i class="pi pi-filter" (click)="filterVisibility()" style="font-size: 1.5rem;"></i>
+  </div>
+  <p-card header="Filtros"class="p-4 text-gray-800 justify-start h-fit transition-all lg:block"
+  [ngClass]="isView ? 'block lg:block' : 'absolute lg:block -left-[1000px]'">
+    <!-- Categorías -->
+    <ul class="mb-6 space-y-1">
+      @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
+      <li class="text-sm font-medium">Categoría {{ item }}</li>
+      }
+    </ul>
+
+    <p-divider />
+
+    <!-- Precio -->
+    <h3 class="text-lg font-semibold mt-6 mb-2">Precio</h3>
+    <p-slider
+      [(ngModel)]="rangeValues"
+      max="2000"
+      [range]="true"
+      class="w-56 mt-4 mb-8"
+    />
+
+    <div class="flex gap-4 justify-center items-center">
+      <p-floatlabel>
+        <input
+          class="w-24 text-sm"
+          id="min"
+          pInputText
+          [(ngModel)]="rangeValues[0]"
+        />
+        <label for="min" class="text-sm font-medium">Min</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <input
+          class="w-24 text-sm"
+          id="max"
+          pInputText
+          [(ngModel)]="rangeValues[1]"
+        />
+        <label for="max" class="text-sm font-medium">Max</label>
+      </p-floatlabel>
+    </div>
+
+    <p-divider />
+
+    <!-- Estado -->
+    <h3 class="text-lg font-semibold mt-6 mb-2">Estado</h3>
+    @for (item of ["Nuevo", "Usado", "Como Nuevo"]; track $index) {
+    <div class="flex items-center mb-2">
+      <p-checkbox
+        inputId="estado_{{ $index }}"
+        name="estado"
+        [value]="item"
+        [(ngModel)]="estadoSeleccionado"
+      />
+      <label for="estado_{{ $index }}" class="ml-2 text-sm font-medium">
+        {{ item }}
+      </label>
+    </div>
+    }
+  </p-card>
+
+  <section class="grid grid-cols-1 transition-all ease-in {{ isView ? 'lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'}}  xl:grid-cols-3 gap-6">
+    <div class="col-span-full mb-6">
+      <h3 class="text-2xl font-bold text-gray-800 mb-1">
+        Encuentra lo que buscas
+      </h3>
+      <p class="text-sm text-gray-600">
+        Se han encontrado
+        {{ [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3].length }}
+
+        artículos para ti
+      </p>
+    </div>
+    @for (item of [1, 2, 3,4,5,6,7,8,9,1,2,3]; track $index) {
+    <app-producto-component />
+    }
+  </section>
+</div>
