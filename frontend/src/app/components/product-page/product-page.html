@@ -1,8 +1,16 @@
 <section>
-  <div class="mx-auto max-w-5xl grid md:grid-cols-[auto_auto] gap-x-8">
-    <p-breadcrumb [model]="items" class="col-span-full py-4" />
+  <div class="w-full mx-auto max-w-5xl grid md:grid-cols-[auto_auto] gap-x-8">
+    <!-- <p-breadcrumb [model]="items" class="md: py-4 w-full" /> -->
+    <p-breadcrumb
+      [model]="items"
+      class="text-sm w-full block col-span-full overflow-x-auto whitespace-nowrap py-4"
+    />
 
-    <img src="/wallapick.png" class="aspect-square p-4" alt="" />
+    <img
+      src="/wallapick.png"
+      class="aspect-square p-4 w-full max-w-full"
+      alt=""
+    />
 
     <div class="hidden md:block">
       <p-card class="p-4 pb-12 h-fit">
@@ -75,21 +83,20 @@
       <p-divider />
     </div>
 
-    <div class=" col-span-full p-4">
-      <h2 class="col-span-full text-xl font-bold text-gray-800 mb-4">
+    <div class="col-span-full w-full max-w-full overflow-hidden">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">
         Productos que te podrían interesar
       </h2>
       <p-carousel
-      [value]="products"
-      [numVisible]="3"
-      [numScroll]="1"
-      [circular]="false"
-      [responsiveOptions]="responsiveOptions"
-    >
-      <ng-template let-product pTemplate="item">
-        <app-producto-component [product]="product" />
-      </ng-template>
-    </p-carousel>
+        [value]="products"
+        [circular]="false"
+        [responsiveOptions]="responsiveOptions"
+        class="w-full"
+      >
+        <ng-template let-product pTemplate="item">
+          <app-producto-component [product]="product" />
+        </ng-template>
+      </p-carousel>
     </div>
   </div>
 </section>

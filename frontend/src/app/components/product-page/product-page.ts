@@ -27,27 +27,28 @@ export class ProductPage {
   rating = 5;
 
   responsiveOptions = [
-    {
-      breakpoint: '1400px',
-      numVisible: 3,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '1280px',
-      numVisible: 3,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '786px',
-      numVisible: 2,
-      numScroll: 1,
-    },
-    {
-      breakpoint: '575px',
-      numVisible: 1,
-      numScroll: 1,
-    },
-  ];
+  {
+    breakpoint: '1400px',
+    numVisible: 4,
+    numScroll: 1,
+  },
+  {
+    breakpoint: '1024px',
+    numVisible: 3,
+    numScroll: 1,
+  },
+  {
+    breakpoint: '768px',
+    numVisible: 2,
+    numScroll: 1,
+  },
+  {
+    breakpoint: '480px',
+    numVisible: 1,
+    numScroll: 1,
+  },
+];
+
 
    products = [
     [{
