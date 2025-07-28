@@ -3,7 +3,7 @@ import { Divider } from 'primeng/divider';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Card } from 'primeng/card';
 import { InputText } from 'primeng/inputtext';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import {
   AbstractControl,
@@ -25,6 +25,7 @@ import { Message } from "primeng/message";
 export class RegisterPage {
   form: FormGroup;
   formBuilder = inject(FormBuilder);
+  route = inject(Router)
 
   constructor() {
     this.form = this.formBuilder.group(
@@ -56,5 +57,7 @@ export class RegisterPage {
   onSubmit(){
     console.log(this.form.value)
     this.form.reset()
+    this.route.navigate(['/login'])
+
   }
 }

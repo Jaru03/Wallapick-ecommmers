@@ -5,6 +5,8 @@ import { ProductPage } from './pages/product-page/product-page';
 import { CartPage } from './pages/cart-page/cart-page';
 import { RegisterPage } from './pages/register-page/register-page';
 import { LoginPage } from './pages/login-page/login-page';
+import { AccountPage } from './pages/account-page/account-page';
+import { SellPage } from './pages/sell-page/sell-page';
 
 export const routes: Routes = [
     {path: "", component: HomePage},
@@ -13,5 +15,7 @@ export const routes: Routes = [
     {path: "cart", component: CartPage},
     {path: "register", component: RegisterPage},
     {path: "login", component: LoginPage},
+    {path: "account", component: AccountPage},
+    {path: "sell", component: SellPage},
     {path: "**", redirectTo: "/"},
 ];
