@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './components/home-page/home-page';
-import { ProductsPage } from './components/products-page/products-page';
-import { ProductPage } from './components/product-page/product-page';
-import { CartPage } from './components/cart-page/cart-page';
-import { RegisterPage } from './components/register-page/register-page';
-import { LoginPage } from './components/login-page/login-page';
+import { HomePage } from './pages/home-page/home-page';
+import { ProductsPage } from './pages/products-page/products-page';
+import { ProductPage } from './pages/product-page/product-page';
+import { CartPage } from './pages/cart-page/cart-page';
+import { RegisterPage } from './pages/register-page/register-page';
+import { LoginPage } from './pages/login-page/login-page';
 
 export const routes: Routes = [
     {path: "", component: HomePage},

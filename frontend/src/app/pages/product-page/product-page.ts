@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Divider } from 'primeng/divider';
-import { ProductoComponent } from '../producto-component/producto-component';
+import { ProductoComponent } from '../../components/producto-component/producto-component';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';

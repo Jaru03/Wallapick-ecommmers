@@ -1,22 +1,36 @@
 <p-menubar [model]="itemsText">
   <ng-template #start>
-    <img src="wallapick-fondo.jpeg" alt="Logo de Wallapick" width="70" height="70" class="rounded-full" />
+    <img
+      src="wallapick-fondo.jpeg"
+      alt="Logo de Wallapick"
+      width="70"
+      height="70"
+      class="rounded-full"
+    />
   </ng-template>
 
   <ng-template #end>
     <div class="flex gap-4">
-      @for (item of itemsIcons; track $index) {
+      @if (loginService.isLogged() ) { @for (item of itemsIcons; track $index) {
+      <a class="relative" routerLink="{{ item.routerLink }}">
+        <i class="pi {{ item.icon }}"></i>
 
         @if ($index === 1) {
-          <a class="relative" routerLink="{{item.routerLink}}">
-            <i class="pi {{item.icon}}"></i>
-            <span class="absolute text-xs -top-2 -right-2 bg-red-600 text-white w-4 flex justify-center items-center rounded-full">0</span>
-          </a>
-        }@else {
-          <a routerLink="{{item.routerLink}}">
-            <i class="pi {{item.icon}}"></i>
-          </a>
+        <span
+          class="absolute text-xs -top-2 -right-2 bg-red-600 text-white w-4 flex justify-center items-center rounded-full"
+        >
+          0
+        </span>
         }
+      </a>
+      } } @else {
+      <button
+        pButton
+        routerLink="/register"
+        label="Registrarse"
+        severity="secondary"
+      ></button>
+      <button pButton routerLink="/login" label="Iniciar Sesión"></button>
       }
     </div>
   </ng-template>

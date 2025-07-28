@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductoComponent } from '../producto-component/producto-component';
+import { ProductoComponent } from '../../components/producto-component/producto-component';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
 
