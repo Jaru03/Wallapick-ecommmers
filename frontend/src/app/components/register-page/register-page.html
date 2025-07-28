@@ -1,0 +1,83 @@
+<section class="flex justify-center items-center p-4 md:min-h-[calc(100vh_-_88px)]">
+  <div class="max-w-7xl">
+    <p-card header="Registro">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr]">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 grid-rows-[1fr_auto] pt-4">
+          <div class="grid grid-cols-2 gap-4 max-w-[368px]">
+            <p-floatlabel variant="on">
+              <input pInputText style="width: 100%" formControlName="firstName" />
+              <label for="on_label">Nombre</label>
+            </p-floatlabel>
+            @if (form.get("firstName")?.touched && form.get("firstName")?.invalid) {
+              <p-message class="col-[1/2]" severity="error" variant="simple" size="small">El nombre debe de tener minimo 3 letras</p-message>
+            }
+            <p-floatlabel class="col-[2/3] row-[1/2]" variant="on">
+              <input pInputText style="width: 100%" formControlName="lastName"/>
+              <label for="on_label">Apellido</label>
+            </p-floatlabel>
+            @if (form.get("lastName")?.touched && form.get("lastName")?.invalid) {
+              <p-message class="col-[2/3]" severity="error" variant="simple" size="small">El apellido debe de tener minimo 3 letras</p-message>
+            }
+            <p-floatlabel variant="on" class="col-span-full">
+              <input pInputText email style="width: 100%" formControlName="email"/>
+              <label for="on_label">Correo</label>
+            </p-floatlabel>
+             @if (form.get("email")?.touched && form.get("email")?.invalid) {
+              <p-message class="col-span-full" severity="error" variant="simple" size="small">El correo debe de tener un formato valido</p-message>
+            }
+            <p-floatlabel variant="on" class="col-span-full">
+              <input pInputText type="password" style="width: 100%" formControlName="password"/>
+              <label for="on_label">Contraseña</label>
+            </p-floatlabel>
+            @if (form.get("password")?.touched && form.get("password")?.invalid) {
+             <p-message class="col-span-full" severity="error" variant="simple" size="small">La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo.</p-message>
+           }
+            <p-floatlabel variant="on" class="col-span-full">
+              <input pInputText type="password" style="width: 100%" formControlName="confirmPassword"/>
+              <label for="on_label">Repetir Contraseña</label>
+            </p-floatlabel>
+            @if (form.get("confirmPassword")?.touched && form.errors?.['passwordsDontMatch']) {
+             <p-message class="col-span-full" severity="error" variant="simple" size="small">Las contraseñas deben de ser iguales</p-message>
+           }
+            <a
+              routerLink="/login"
+              class="text-sm  col-span-full text-[#bf5015] hover:underline hover:text-[#993e10] transition-all"
+            >
+              ¿Ya tienes una cuenta? Inicia sesión
+            </a>
+          </div>
+          <button
+          [disabled]="form.invalid"
+          routerLink="/"
+            class="self-end"
+            label="Crear Cuenta"
+            pButton
+            icon="pi pi-user-plus"
+          ></button>
+        </form>
+        <div class="md:hidden">
+          <p-divider layout="horizontal" />
+        </div>
+        <div class="hidden md:block">
+          <p-divider layout="vertical" />
+        </div>
+        <div
+          class="flex flex-col items-center justify-center text-center px-6 py-6 gap-4 rounded-xl bg-gradient-to-br from-[#fff3e8] via-[#ffd4b8] to-[#ffb989] shadow-inner min-h-[250px] h-fit"
+        >
+          <i class="pi pi-id-card text-[3rem] text-[#ff6b1f]"></i>
+          <h2 class="text-xl font-semibold text-[#732d0b]">¡Crea tu cuenta!</h2>
+
+          <p class="text-sm max-w-xs text-[#993e10]">
+            Únete a nuestra comunidad en segundos.<br />
+            Regístrate y empieza a disfrutar de todos los beneficios.
+          </p>
+
+          <div class="flex items-center gap-2 text-[#e65f1a] mt-2 text-sm">
+            <i class="pi pi-check-circle"></i>
+            <span>Registro rápido y fácil</span>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+<section class="flex justify-center items-center p-4 md:h-[calc(100vh_-_88px)]">
+  <div class="max-w-7xl">
+    <p-card header="Iniciar Sesión">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr]">
+        <form (ngSubmit)="onSubmit()" [formGroup]="form" class="grid gap-4 grid-rows-[1fr_auto] max-w-[368px] pt-4">
+          <div class="flex flex-col gap-4">
+            <p-floatlabel variant="on">
+              <input pInputText type="email" formControlName="email" #email style="width: 100%"  [invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+              <label for="on_label">Correo Electronico</label>
+            </p-floatlabel>
+            @if (form.get('email')?.invalid && form.get('email')?.touched) {
+              <p-message severity="error" size="small" variant="simple">Debe ser un correo valido</p-message>
+            }
+            <p-floatlabel variant="on">
+              <input pInputText type="password" formControlName="password" style="width: 100%" />
+              <label for="on_label">Contraseña</label>
+            </p-floatlabel>
+            @if (form.get('password')?.invalid && form.get('password')?.touched) {
+              <p-message severity="error" size="small" variant="simple">La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un símbolo.</p-message>
+            }
+            <div class="flex-grow"></div>
+            <a
+              routerLink="/register"
+              class="text-sm text-[#bf5015] hover:underline hover:text-[#993e10] transition-all"
+            >
+              ¿Aún no tienes una cuenta? Registrate
+            </a>
+          </div>
+          <button
+          [disabled]="form.invalid"
+          routerLink="/"
+            class="self-end"
+            label="Iniciar Sesion"
+            pButton
+            icon="pi pi-sign-in"
+          ></button>
+        </form>
+        <div class="md:hidden">
+          <p-divider layout="horizontal" />
+        </div>
+        <div class="hidden md:block">
+          <p-divider layout="vertical" />
+        </div>
+        <div
+          class="flex flex-col items-center justify-center text-center px-6 py-6 gap-4 rounded-xl bg-gradient-to-br from-[#fff3e8] via-[#ffd4b8] to-[#ffb989] shadow-inner min-h-[250px]"
+        >
+          <i class="pi pi-user text-[3rem] text-[#ff6b1f]"></i>
+          <h2 class="text-xl font-semibold text-[#732d0b]">¡Bienvenido!</h2>
+          <p class="text-sm max-w-xs text-[#993e10]">
+            Ingresa tus datos para acceder a tu cuenta y continuar disfrutando
+            de nuestros servicios.
+          </p>
+          <div class="flex items-center gap-2 text-[#e65f1a] mt-2 text-sm">
+            <i class="pi pi-lock"></i>
+            <span>Conexión segura</span>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</section>

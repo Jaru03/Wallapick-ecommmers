@@ -1,9 +1,15 @@
 <section>
   <div class="w-full mx-auto max-w-5xl grid md:grid-cols-[auto_auto] gap-x-8">
     <!-- <p-breadcrumb [model]="items" class="md: py-4 w-full" /> -->
+     <div class=" text-sm text-gray-800 p-3">
+       <a class="flex items-center gap-2" routerLink="/products">
+         <i class="pi pi-arrow-left" style="font-size: .8rem;"></i>
+         <span>Atras</span>
+        </a> 
+     </div>
     <p-breadcrumb
       [model]="items"
-      class="text-sm w-full block col-span-full overflow-x-auto whitespace-nowrap py-4"
+      class="text-sm w-full block col-span-full overflow-x-auto whitespace-nowrap pb-4"
     />
 
     <img

@@ -8,10 +8,11 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { Card } from "primeng/card";
 import { Carousel } from "primeng/carousel";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-page',
-  imports: [ButtonModule, Divider, ProductoComponent, BreadcrumbModule, AvatarModule, RatingModule, FormsModule, Card, Carousel],
+  imports: [ButtonModule, Divider, ProductoComponent, BreadcrumbModule, AvatarModule, RatingModule, FormsModule, Card, Carousel, RouterModule],
   templateUrl: './product-page.html',
   styleUrl: './product-page.css',
 })
@@ -29,7 +30,7 @@ export class ProductPage {
   responsiveOptions = [
   {
     breakpoint: '1400px',
-    numVisible: 4,
+    numVisible: 3,
     numScroll: 1,
   },
   {
