@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,12 +62,41 @@ public class ProductoControler {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable long id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
-        boolean eliminado = productoServicio.deleteProduct(id, token);
+        int resul = productoServicio.deleteProduct(id, token);
 
-        if (eliminado) {
+        if (resul == 1) {
             return ResponseEntity.ok("Producto eliminado correctamente.");
-        } else {
+        } else if (resul == 0){
             return ResponseEntity.status(404).body("Producto no encontrado o no autorizado para eliminar.");
         }
+        return ResponseEntity.status(500).body("Error al intentar eliminar el producto. Intentelo mas tarde.");
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<?> updateProduct(@RequestBody Producto producto, @RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        int resul = productoServicio.updateProduct(producto, token);
+
+        if (resul == 1) {
+            return ResponseEntity.ok("Producto actualizado correctamente: " + producto);
+        } else if (resul == 0){
+            return ResponseEntity.status(404).body("Producto no encontrado o no autorizado para actualizar.");
+        }
+        return ResponseEntity.status(500).body("Error al intentar actualizar el producto. Intentelo mas tarde.");
+    }
+
+    @PostMapping("/compra")
+    public ResponseEntity<?> comprarProducto(@RequestBody ArrayList<Long> ids, @RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        int resul = productoServicio.comprarProductos(ids, token);
+
+        if (resul == 1) {
+            return ResponseEntity.ok("Compra realizada correctamente.");
+        } else if (resul == 0) {
+            return ResponseEntity.status(401).body("Usuario no logeado");
+        } else if (resul == -1) {
+            return ResponseEntity.status(404).body("Producto no encontrado");
+        }
+        return ResponseEntity.status(500).body("Error al intentar comprar los productos.Intentelo mas tarde");
     }
 }

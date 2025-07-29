@@ -73,19 +73,59 @@ public class ProductoServicio {
         return productoRepositorio.findAll();
     }
 
-    public boolean deleteProduct(long id, String token) {
+    public int deleteProduct(long id, String token) {
         try {
             Usuario usuario = jwtUser.ObtenerUsuario(token);
             Producto producto = productoRepositorio.findById(id).orElse(null);
 
             if (producto != null && producto.getVendedor().getId() == usuario.getId()) {
                 productoRepositorio.delete(producto);
-                return true; // Producto eliminado correctamente
+                return 1; // Producto eliminado correctamente
             }
-            return false; // No se pudo eliminar el producto
+            return 0; // No se pudo eliminar el producto
         } catch (Exception e) {
-            return false; // Error al intentar eliminar el producto
+            return -1; // Error al intentar eliminar el producto
         }
     }
 
+    public int updateProduct(Producto producto, String token) {
+        try {
+            Usuario usuario = jwtUser.ObtenerUsuario(token);
+            Producto existingProduct = productoRepositorio.findById(producto.getId()).orElse(null);
+
+            if (existingProduct != null && existingProduct.getVendedor().getId() == usuario.getId()) {
+                existingProduct.setNombre(producto.getNombre());
+                existingProduct.setDescripcion(producto.getDescripcion());
+                existingProduct.setPrecio(producto.getPrecio());
+                existingProduct.setFechaPublicacion(new Date());
+                productoRepositorio.save(existingProduct);
+                return 1; // Producto actualizado correctamente
+            }
+            return 0; // No se pudo actualizar el producto
+        } catch (Exception e) {
+            return -1; // Error al intentar actualizar el producto
+        }
+    }
+
+    public int comprarProductos(ArrayList <Long> ids, String token) {
+        try {
+            Usuario usuario = jwtUser.ObtenerUsuario(token);
+            if (!"LOGGED".equals(usuario.getRole())) {
+                return 0; // Usuario no autorizado
+            }
+
+            for (Long id : ids) {
+                Producto producto = productoRepositorio.findById(id).orElse(null);
+                if (producto != null && producto.isEnVenta()) {
+                    producto.setEnVenta(false); // Marcar el producto como no en venta
+                    productoRepositorio.save(producto);
+                } else {
+                    return -1; // Producto no encontrado o no está en venta
+                }
+            }
+            return 1; // Compra exitosa
+        } catch (Exception e) {
+            return 2; // Error al intentar comprar los productos
+        }
+    }
 }
