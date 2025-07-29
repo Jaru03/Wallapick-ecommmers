@@ -57,4 +57,16 @@ public class ProductoControler {
             return ResponseEntity.status(500).body("Error interno del servidor al crear el producto.");
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable long id, @RequestHeader("Authorization") String token) {
+        token = token.replace("Bearer ", "");
+        boolean eliminado = productoServicio.deleteProduct(id, token);
+
+        if (eliminado) {
+            return ResponseEntity.ok("Producto eliminado correctamente.");
+        } else {
+            return ResponseEntity.status(404).body("Producto no encontrado o no autorizado para eliminar.");
+        }
+    }
 }

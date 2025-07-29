@@ -73,4 +73,19 @@ public class ProductoServicio {
         return productoRepositorio.findAll();
     }
 
+    public boolean deleteProduct(long id, String token) {
+        try {
+            Usuario usuario = jwtUser.ObtenerUsuario(token);
+            Producto producto = productoRepositorio.findById(id).orElse(null);
+
+            if (producto != null && producto.getVendedor().getId() == usuario.getId()) {
+                productoRepositorio.delete(producto);
+                return true; // Producto eliminado correctamente
+            }
+            return false; // No se pudo eliminar el producto
+        } catch (Exception e) {
+            return false; // Error al intentar eliminar el producto
+        }
+    }
+
 }
