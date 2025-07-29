@@ -86,7 +86,7 @@ public class ProductoControler {
     }
 
     @PostMapping("/compra")
-    public ResponseEntity<?> comprarProducto(@RequestBody ArrayList<Long> ids, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> comprarProducto(@RequestBody ArrayList<Long> ids,@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         int resul = productoServicio.comprarProductos(ids, token);
 
@@ -95,7 +95,7 @@ public class ProductoControler {
         } else if (resul == 0) {
             return ResponseEntity.status(401).body("Usuario no logeado");
         } else if (resul == -1) {
-            return ResponseEntity.status(404).body("Producto no encontrado");
+            return ResponseEntity.status(404).body("Producto o usuarios no encontrado");
         }
         return ResponseEntity.status(500).body("Error al intentar comprar los productos.Intentelo mas tarde");
     }
