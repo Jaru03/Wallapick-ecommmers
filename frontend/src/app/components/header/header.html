@@ -1,4 +1,4 @@
-<p-menubar [model]="itemsText">
+<p-menubar [model]="itemsText" class="h-[88px]">
   <ng-template #start>
     <img
       src="wallapick-fondo.jpeg"
@@ -7,28 +7,30 @@
       height="70"
       class="rounded-full"
     />
-  </ng-template >
+  </ng-template>
   <ng-template #end>
-    <div class="flex items-center gap-5">
-      
-      @if (loginService.isLogged() ) { 
-        <p-iconfield>
-            <p-inputicon class="pi pi-search" />
-            <input type="text" pInputText placeholder="Search" />
-        </p-iconfield>
-        
-        @for (item of itemsIcons; track $index) {
-      <a class="relative" routerLink="{{ item.routerLink }}">
-        <i class="pi {{ item.icon }}" style="font-size: 1.3rem;"></i>
+    <div class="flex items-center gap-2 sm:gap-5">
+      @if (loginService.isLogged() ) {
 
-        @if ($index === 2) {
-        <span
-          class="absolute text-xs -top-2 -right-2 bg-red-600 text-white w-4 flex justify-center items-center rounded-full"
-        >
-          0
-        </span>
-        }
+        <p-iconfield>
+          <p-inputicon class="pi pi-search" />
+          <input type="text" class="w-full" pInputText placeholder="Search" />
+        </p-iconfield>
+
+
+      @for (item of itemsIcons; track $index) {
+        @if ($index === 1) {
+        <a routerLink="{{ item.routerLink }}">
+          <p-overlaybadge value="0" badgeSize="small" severity="danger">
+            <i class="pi {{ item.icon }}" style="font-size: 1.3rem"></i>
+          </p-overlaybadge>
+        </a>
+        }@else {
+          <a class="relative" routerLink="{{ item.routerLink }}">
+        <i class="pi {{ item.icon }}" style="font-size: 1.3rem"></i>
       </a>
+        }
+
       } } @else {
       <button
         pButton

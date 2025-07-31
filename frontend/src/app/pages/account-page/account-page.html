@@ -1,42 +1,59 @@
 <section>
-    <div class="mx-auto max-w-7xl p-4 grid grid-cols-[auto_1fr] gap-8">
-        <p-card header="Perfil" class="w-sm" >
-            <div class="flex flex-col items-center gap-2">
+  <div
+    class="mx-auto max-w-7xl p-4 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 overflow-x-hidden"
+  >
+    <p-card
+      header="Perfil"
+      class=" md:w-sm  {{
+        optionSelected === ''
+          ? ''
+          : 'absolute opacity-0 md:static md:opacity-100'
+      }}"
+    >
+      <div class="flex flex-col items-center gap-2 {{optionSelected === '' ?'' : 'hidden md:flex'}}">
+        <i class="pi pi-user mb-4" style="font-size: 5rem"></i>
+        <h2 class="text-2xl font-semibold">Juan Perez</h2>
+        <p>correoelectronico&#64;email.com</p>
 
-                <i class="pi pi-user mb-4" style="font-size: 5rem;"></i>
-                <h2 class="text-2xl font-semibold">Juan Perez</h2>
-                <p>correoelectronico&#64;email.com</p>
+        <ul class="w-full">
+          <p-divider />
+          @for (option of options; track $index) {
+          <li
+            (click)="handlerOption(option)"
+            class="px-4 py-1 text-center cursor-pointer"
+          >
+            {{ option }}
+          </li>
+          <p-divider />
+          }
+        </ul>
 
-                <ul class="w-full">
+        <button pButton label="Cerrar Sesión" class="w-full"></button>
+      </div>
+    </p-card>
 
-                    <p-divider/>    
-                    @for (option of options; track $index) {
-                        <li class="px-4 py-1 text-center cursor-pointer">{{option}}</li>
-                        <p-divider/>    
-                    }
-                </ul>
-
-                <button pButton label="Cerrar Sesión" class="w-full"></button>
-            </div>
-        </p-card>
-        
-        <div class="grid grid-cols-2 gap-4 h-fit">
-            <h2 class="col-span-full text-2xl font-semibold pt-6">Datos Personales</h2>
-            <label class="flex flex-col gap-2">
-                Nombre
-                <input pInputText disabled value="Jose"/>
-            </label>
-            <label class="col-[2/3] flex flex-col gap-2">
-                Apellido
-                <input pInputText disabled value="Perez"/>
-            </label>
-            <label class="flex flex-col gap-2 col-span-full">
-                Correo
-                <input pInputText disabled value="correoelectronico&#64;email.com" />
-            </label>
-            <button pButton severity="contrast" label="Actualizar Datos" class="col-span-full mt-4"></button>
-            
-        </div>
-
+    <div
+    (click)="handlerOption('')"
+      class="text-sm flex z-10 justify-self-start md:hidden items-center gap-2 p-3 cursor-pointer {{
+        optionSelected === '' ? 'hidden' : ''
+      }}"
+    >
+      <i
+        class="pi pi-arrow-left"
+        style="font-size: 0.8rem"
+      ></i>
+      <span>Atras</span>
     </div>
+
+    @if (optionSelected === "Mi Perfil" || optionSelected === '') {
+        <app-perfil-component [optionSelected]="optionSelected"/>
+    
+    } @else if (optionSelected === "Mis Compras") {
+        <app-compras-component [optionSelected]="optionSelected"/>
+    } @else if (optionSelected === "Mis Ventas") {
+        <app-ventas-component [optionSelected]="optionSelected"/>
+    } @if (optionSelected === "Mis Favoritos") {
+        <app-favoritos-component [optionSelected]="optionSelected"/>
+    }
+  </div>
 </section>

@@ -7,10 +7,12 @@ import { ButtonModule } from 'primeng/button';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
+import { BadgeModule } from 'primeng/badge';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule,  Menubar, ButtonModule, InputIcon, IconField, InputTextModule],
+  imports: [RouterModule,  Menubar, ButtonModule, OverlayBadgeModule, InputIcon, IconField, InputTextModule, BadgeModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
@@ -24,7 +26,6 @@ export class Header {
   
   itemsIcons: MenuItem[] = [
     {icon: "pi-plus-circle", routerLink:"/sell"},
-    {icon: "pi-heart", routerLink:"/account/favorites"},
     {icon: "pi-shopping-cart", routerLink:"/cart"},
     {icon: "pi-user", routerLink:"/account"},
     
