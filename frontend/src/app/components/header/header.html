@@ -1,12 +1,14 @@
 <p-menubar [model]="itemsText" class="h-[88px]">
   <ng-template #start>
-    <img
+    <a routerLink="/">
+      <img
       src="wallapick-fondo.jpeg"
       alt="Logo de Wallapick"
       width="70"
       height="70"
       class="rounded-full"
-    />
+      />
+    </a>
   </ng-template>
   <ng-template #end>
     <div class="flex items-center gap-2 sm:gap-5">

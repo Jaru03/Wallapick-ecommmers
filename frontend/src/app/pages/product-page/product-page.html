@@ -1,7 +1,7 @@
 <section>
   <div class="w-full mx-auto max-w-5xl grid md:grid-cols-[auto_auto] gap-x-8">
     <!-- <p-breadcrumb [model]="items" class="md: py-4 w-full" /> -->
-     <div class=" text-sm text-gray-800 p-3">
+     <div class=" text-sm text-gray-800 dark:text-white p-3">
        <a class="flex items-center gap-2" routerLink="/products">
          <i class="pi pi-arrow-left" style="font-size: .8rem;"></i>
          <span>Atras</span>
@@ -20,10 +20,10 @@
 
     <div class="hidden md:block">
       <p-card class="p-4 pb-12 h-fit">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
           Título del Producto
         </h2>
-        <h3 class="text-lg font-medium text-gray-600 mb-1">
+        <h3 class="text-lg font-medium text-gray-600 dark:text-white mb-1">
           Estado del producto
         </h3>
         <p class="text-xl font-semibold mb-4">300$</p>
@@ -39,17 +39,17 @@
 
         <p-divider />
         <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
-        <p class="text-sm text-gray-700 my-2">
+        <p class="text-sm text-gray-700 dark:text-white my-2">
           Vendido por: <span class="font-medium">Nombre del Vendedor</span>
         </p>
         <p-rating [(ngModel)]="rating" [readonly]="true" />
-        <p class="text-sm text-gray-700 mt-2">15 ventas</p>
+        <p class="text-sm text-gray-700 dark:text-white mt-2">15 ventas</p>
       </p-card>
     </div>
 
     <div class="block md:hidden p-4">
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">Título del Producto</h2>
-      <h3 class="text-lg font-medium text-gray-600 mb-1">
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Título del Producto</h2>
+      <h3 class="text-lg font-medium text-gray-600 mb-1 dark:text-white">
         Estado del producto
       </h3>
       <p class="text-xl font-semibold mb-4">300$</p>
@@ -65,32 +65,32 @@
 
       <p-divider />
       <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
-      <p class="text-sm text-gray-700 my-2">
+      <p class="text-sm text-gray-700 dark:text-white my-2">
         Vendido por: <span class="font-medium">Nombre del Vendedor</span>
       </p>
       <p-rating [(ngModel)]="rating" [readonly]="true" />
-      <p class="text-sm text-gray-700 mt-2">15 ventas</p>
+      <p class="text-sm text-gray-700 dark:text-white mt-2">15 ventas</p>
     </div>
 
     <div class="p-4">
       <p-divider />
-      <h2 class="text-xl font-semibold text-gray-800 mb-2">
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">
         Detalles del producto
       </h2>
-      <p class="text-sm text-gray-700 leading-relaxed mb-2">
+      <p class="text-sm text-gray-700 dark:text-white leading-relaxed mb-2">
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum
         laboriosam consequuntur velit ad cum dicta pariatur dolor, corporis
         facilis quis delectus numquam distinctio temporibus consectetur culpa.
         Laudantium ipsam aut at.
       </p>
-      <p class="text-sm text-gray-600">
-        <span class="font-medium text-gray-800">Estado:</span> Como nuevo
+      <p class="text-sm text-gray-600 dark:text-white">
+        <span class="font-medium text-gray-800 dark:text-white  ">Estado:</span> Como nuevo
       </p>
       <p-divider />
     </div>
 
     <div class="col-span-full w-full max-w-full overflow-hidden">
-      <h2 class="text-xl font-bold text-gray-800 mb-4">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 px-4 dark:text-white">
         Productos que te podrían interesar
       </h2>
       <p-carousel
