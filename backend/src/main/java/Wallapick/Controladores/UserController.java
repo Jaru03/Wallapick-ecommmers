@@ -16,10 +16,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/")
-    public  ResponseEntity<?> registerUser(@RequestBody Usuario user){
-        if(userService.Register(user).equalsIgnoreCase("REGISTRADO")){
+    public  ResponseEntity<?> registrarUsuario(@RequestBody Usuario user){
+
+        String res = userService.resgistrar(user);
+        if(res.equalsIgnoreCase("REGISTRADO")){
             return ResponseEntity.ok("Usuario registrado correctamente");
-        } else if (userService.Register(user).equalsIgnoreCase("EXISTE")) {
+        } else if (res.equalsIgnoreCase("EXISTE")) {
             return ResponseEntity.status(409).body("El usuario ya existe");
         }
         else{
@@ -37,16 +39,16 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUsers(@PathVariable long id, @RequestHeader("Authorization") String token ){
+    public ResponseEntity<?> buscarUsuario(@PathVariable long id, @RequestHeader("Authorization") String token ){
         token = token.replace("Bearer ", "");
-        Usuario u = userService.getUser(id, token);
+        Usuario u = userService.buscarUsuario(id, token);
         if(u == null){
             return ResponseEntity.status(404).body("USUARIO NO ENCONTRADO");
         }
         return ResponseEntity.ok(u);
     }
     @GetMapping("/")
-    public ResponseEntity<?> getIdByUsernameAndPassword(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> buscarId(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         Long userId = userService.obtenerIdSiTokenValido(token);
 
@@ -58,10 +60,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestBody Usuario user,@RequestHeader("Authorization") String token ){
+    public ResponseEntity<?> actualizarUsuario(@RequestBody Usuario user,@RequestHeader("Authorization") String token ){
         token = token.replace("Bearer ", "");
 
-        if(userService.updateUser(user, token)){
+        if(userService.actualizarUsario(user, token)){
             return ResponseEntity.ok("Usuario actualizado correctamente" + user);
         } else {
             return ResponseEntity.status(403).body("ACCESO DENEGADO");
@@ -70,9 +72,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser( @RequestHeader("Authorization") String token, @PathVariable long id) {
+    public ResponseEntity<?> borrarUsuario( @RequestHeader("Authorization") String token, @PathVariable long id) {
         token = token.replace("Bearer ", "");
-        if(userService.deleteUser(id, token)){
+        if(userService.borrarUsuario(id, token)){
             return ResponseEntity.ok("Usuario eliminado correctamente");
         } else {
             return ResponseEntity.status(403).body("ACCESO DENEGADO");

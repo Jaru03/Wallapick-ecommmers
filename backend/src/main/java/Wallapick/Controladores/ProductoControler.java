@@ -17,7 +17,7 @@ public class ProductoControler {
     private ProductoServicio productoServicio;
 
     @GetMapping("/buscar")
-    public ResponseEntity<?> findProducts(@RequestParam String nombreParcial) {
+    public ResponseEntity<?> buscarProductosParcial(@RequestParam String nombreParcial) {
         List<Producto> productos = productoServicio.buscarProductosPorNombreParcial(nombreParcial);
         if (productos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -26,7 +26,7 @@ public class ProductoControler {
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> getMyPodructs(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> buscarMisProductos(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         List<Producto> productos = productoServicio.obtenerProductosDeUsuarioLogueado(token);
 
@@ -36,8 +36,8 @@ public class ProductoControler {
         return ResponseEntity.ok("Tus productos son: "+productos);
     }
     @GetMapping("/all")
-    public ResponseEntity<?> getAllProducts(){
-        List<Producto> productos = productoServicio.getAllProducts();
+    public ResponseEntity<?> buscarTodosProductos(){
+        List<Producto> productos = productoServicio.buscarProductos();
         if(productos == null) {
             return ResponseEntity.status(500).body("Servicio de productos no disponible.");
         }
@@ -45,10 +45,10 @@ public class ProductoControler {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createProduct(@RequestBody Producto producto, @RequestHeader("Authorization") String token){
+    public ResponseEntity<?>crearProducto(@RequestBody Producto producto, @RequestHeader("Authorization") String token){
         token = token.replace("Bearer ", "");
 
-        int resultado = productoServicio.createProduct(producto, token);
+        int resultado = productoServicio.crearProducto(producto, token);
 
         if (resultado == 0) {
             return ResponseEntity.status(400).body("Error al crear el producto. Verifica los datos.");
@@ -60,9 +60,9 @@ public class ProductoControler {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable long id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> borrarProducto(@PathVariable long id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
-        int resul = productoServicio.deleteProduct(id, token);
+        int resul = productoServicio.borrarProducto(id, token);
 
         if (resul == 1) {
             return ResponseEntity.ok("Producto eliminado correctamente.");
@@ -73,9 +73,9 @@ public class ProductoControler {
     }
 
     @PutMapping("/")
-    public ResponseEntity<?> updateProduct(@RequestBody Producto producto, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> actualizarProducto(@RequestBody Producto producto, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
-        int resul = productoServicio.updateProduct(producto, token);
+        int resul = productoServicio.actualizarProducto(producto, token);
 
         if (resul == 1) {
             return ResponseEntity.ok("Producto actualizado correctamente: " + producto);
@@ -85,18 +85,5 @@ public class ProductoControler {
         return ResponseEntity.status(500).body("Error al intentar actualizar el producto. Intentelo mas tarde.");
     }
 
-    @PostMapping("/compra")
-    public ResponseEntity<?> comprarProducto(@RequestBody ArrayList<Long> ids,@RequestHeader("Authorization") String token) {
-        token = token.replace("Bearer ", "");
-        int resul = productoServicio.comprarProductos(ids, token);
 
-        if (resul == 1) {
-            return ResponseEntity.ok("Compra realizada correctamente.");
-        } else if (resul == 0) {
-            return ResponseEntity.status(401).body("Usuario no logeado");
-        } else if (resul == -1) {
-            return ResponseEntity.status(404).body("Producto o usuarios no encontrado");
-        }
-        return ResponseEntity.status(500).body("Error al intentar comprar los productos.Intentelo mas tarde");
-    }
 }

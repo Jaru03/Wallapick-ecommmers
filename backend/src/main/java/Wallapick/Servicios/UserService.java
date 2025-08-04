@@ -18,7 +18,7 @@ public class UserService {
     private  JWTUser jwtUser;
 
 
-    public String Register(Usuario user){
+    public String resgistrar(Usuario user){
         Usuario existUser = userRepo.findByUsername(user.getUsername());
 
         if(existUser == null){
@@ -41,7 +41,7 @@ public class UserService {
 
     }
 
-    public Usuario getUser(long id,String token){
+    public Usuario buscarUsuario(long id,String token){
         try {
             jwtUser.ObtenerUsuario(token);
             Usuario u=  userRepo.findById(id).get();
@@ -52,7 +52,7 @@ public class UserService {
         }
     }
 
-    public boolean updateUser(Usuario user,String token){
+    public boolean actualizarUsario(Usuario user,String token){
         try {
             Usuario userLogged = jwtUser.ObtenerUsuario(token);
             Usuario existingUser = userRepo.findById(user.getId()).get();
@@ -67,7 +67,7 @@ public class UserService {
         }
     }
 
-    public boolean deleteUser(long id,String token){
+    public boolean borrarUsuario(long id,String token){
         try {
             Usuario userLogged = jwtUser.ObtenerUsuario(token);
             Usuario existingUser = userRepo.findById(id).get();
