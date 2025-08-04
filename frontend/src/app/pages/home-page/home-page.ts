@@ -14,7 +14,7 @@ export class HomePage {
 
   quotes = [
     {
-      text: 'I am Groot.'
+      text: 'I am Groot.',
       image: 'https://cdn.wallpapersafari.com/41/38/ruKsD7.jpg',
     },
     {
