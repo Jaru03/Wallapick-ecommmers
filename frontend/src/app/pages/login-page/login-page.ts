@@ -39,14 +39,14 @@ export class LoginPage {
 
   constructor() {
     this.form = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, Validators.min(3)]],
       password:['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)]]
     });
   }
 
   onSubmit() {
     console.log(this.form.value);
-    this.loginService.login()
+    this.loginService.login(this.form.value).subscribe()
     this.route.navigate(['/'])
   }
 }
