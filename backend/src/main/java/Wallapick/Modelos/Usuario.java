@@ -1,5 +1,6 @@
 package Wallapick.Modelos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,10 +35,12 @@ public class Usuario {
 
     // Productos vendidos
     @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Producto> vendidos = new ArrayList<>();
 
     // Compras realizadas
     @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Compra>compras = new ArrayList<>();
 
     @Transient

@@ -1,5 +1,6 @@
 package Wallapick.Modelos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -37,6 +38,7 @@ public class Producto {
 
     // Relación 1:1 con Compra (un producto puede ser comprado una sola vez)
     @OneToOne(mappedBy = "producto", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Compra compra;
 
     //private byte[] image;
