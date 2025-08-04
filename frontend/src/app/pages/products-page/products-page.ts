@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductoComponent } from '../producto-component/producto-component';
+import { ProductoComponent } from '../../components/producto-component/producto-component';
 import { DividerModule } from 'primeng/divider';
 import { FormsModule } from '@angular/forms';
 import { Slider } from 'primeng/slider';

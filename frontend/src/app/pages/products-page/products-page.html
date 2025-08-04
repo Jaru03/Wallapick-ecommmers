@@ -1,13 +1,17 @@
 <div class="mx-auto max-w-7xl p-6 grid gap-4 {{isView? 'md:grid-cols-[auto_1fr]' : 'md:grid-cols-1 '}}  relative">
-  <div class="absolute top-6 right-8">
+  <div class="absolute top-6 z-10 right-8 cursor-pointer hover:scale-105 transition-all ease-in">
     <i class="pi pi-filter" (click)="filterVisibility()" style="font-size: 1.5rem;"></i>
   </div>
   <p-card header="Filtros"class="p-4 text-gray-800 justify-start h-fit transition-all lg:block"
-  [ngClass]="isView ? 'block lg:block' : 'absolute lg:block -left-[1000px]'">
-    <!-- Categorías -->
+  [ngClass]="isView ? 'block fixed z-10 md:static w-full top-0 lg:block' : 'absolute lg:block -left-[1000px]'">
+  <div (click)="filterVisibility()" class="absolute md:hidden top-10 right-8 cursor-pointer">
+    <i class="pi pi-times text-red-600"></i>
+  </div>  
+  
+  <!-- Categorías -->
     <ul class="mb-6 space-y-1">
       @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
-      <li class="text-sm font-medium">Categoría {{ item }}</li>
+      <li class="text-sm font-medium cursor-pointer">Categoría {{ item }}</li>
       }
     </ul>
 
@@ -17,29 +21,31 @@
     <h3 class="text-lg font-semibold mt-6 mb-2">Precio</h3>
     <p-slider
       [(ngModel)]="rangeValues"
-      max="2000"
+      [max]="2000"
       [range]="true"
-      class="w-56 mt-4 mb-8"
+      class="md:w-56 mt-4 mb-8"
     />
 
-    <div class="flex gap-4 justify-center items-center">
+    <div class="grid grid-cols-2 gap-4">
       <p-floatlabel>
         <input
-          class="w-24 text-sm"
+          class="w-full md:w-24 text-sm"
           id="min"
           pInputText
           [(ngModel)]="rangeValues[0]"
+          readonly
         />
         <label for="min" class="text-sm font-medium">Min</label>
       </p-floatlabel>
 
       <p-floatlabel>
         <input
-          class="w-24 text-sm"
+          class="w-full md:w-24 text-sm"
           id="max"
           pInputText
           [(ngModel)]="rangeValues[1]"
-        />
+          readonly
+          />
         <label for="max" class="text-sm font-medium">Max</label>
       </p-floatlabel>
     </div>
@@ -63,12 +69,12 @@
     }
   </p-card>
 
-  <section class="grid grid-cols-1 transition-all ease-in {{ isView ? 'lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'}}  xl:grid-cols-3 gap-6">
+  <section class="grid grid-cols-1 transition-all ease-in {{ isView ? 'lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'}}   gap-6">
     <div class="col-span-full mb-6">
-      <h3 class="text-2xl font-bold text-gray-800 mb-1">
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">
         Encuentra lo que buscas
       </h3>
-      <p class="text-sm text-gray-600">
+      <p class="text-sm text-gray-600 dark:text-white">
         Se han encontrado
         {{ [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3].length }}
 

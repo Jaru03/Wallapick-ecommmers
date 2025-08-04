@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductoComponent } from "../producto-component/producto-component";
+import { ProductoComponent } from "../../components/producto-component/producto-component";
 import { CardModule } from 'primeng/card';
 import { Divider } from "primeng/divider";
 import { Button } from "primeng/button";

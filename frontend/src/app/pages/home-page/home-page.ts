@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProductoComponent } from '../producto-component/producto-component';
+import { ProductoComponent } from '../../components/producto-component/producto-component';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
 
@@ -15,18 +15,15 @@ export class HomePage {
   quotes = [
     {
       text: 'I am Groot.',
-      author: 'Groot',
       image: 'https://cdn.wallpapersafari.com/41/38/ruKsD7.jpg',
     },
     {
       text: "You're the head of security and your password is 'password'?",
-      author: 'Peter Parker',
       image:
         'https://r4.wallpaperflare.com/wallpaper/340/7/602/spider-man-spider-man-far-from-home-tom-holland-hd-wallpaper-fd155d90a9273dced67d96fdc3b7e466.jpg',
     },
     {
       text: "That really is America's ass.",
-      author: 'Captain America',
       image: 'https://images8.alphacoders.com/101/1012160.jpg',
     },
   ];
@@ -84,7 +81,7 @@ export class HomePage {
 
   responsiveOptions = [
     {
-      breakpoint: '1400px',
+      breakpoint: '2000px',
       numVisible: 3,
       numScroll: 1,
     },

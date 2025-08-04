@@ -1,0 +1,73 @@
+<section class="flex justify-center items-center">
+  <div class="w-full max-w-xl mx-auto flex items-center justify-center p-4">
+    <p-card header="Vender Producto">
+      <form class="grid justify-center gap-2 pt-3">
+        <label>
+          Titulo del Producto
+          <input
+            pInputText
+            class="w-full min-w-0"
+            type="text"
+            placeholder="Portatil Lenovo"
+          />
+        </label>
+        <label>
+          Precio
+          <input pInputText class="w-full" type="text" placeholder="200€" />
+        </label>
+        <label>
+          Categoría
+          <p-select
+            [options]="categories"
+            name="Categoría"
+            [(ngModel)]="categorySelect"
+            placeholder="Selecciona una Categoría"
+            class="w-full"
+          />
+        </label>
+        <label>
+          Sub-Categoría
+          <p-select
+            [options]="subcategoriesSelected()"
+            name="Sub-Categoría"
+            placeholder="Selecciona una Categoría"
+            class="w-full"
+          />
+        </label>
+        <label>
+          Estado del Producto
+          <p-select
+            [options]="states"
+            placeholder="Estado del Producto"
+            class="w-full"
+          />
+        </label>
+        
+
+        <label>
+          Descripcion
+          <textarea pTextarea [autoResize]="true" class="w-full"></textarea>
+        </label> 
+         <div class="flex items-center justify-between pr-4 gap-4 mb-4">
+          <label
+            for="file-upload"
+            class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-[#ff6b1f] hover:bg-[#e65f1a] active:bg-[#bf5015] text-black  text-sm font-medium rounded-lg shadow transition"
+          >
+          <i class="pi pi-upload"></i>
+            Subir
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            class="hidden"
+            onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'Ningún archivo seleccionado'"
+          />
+          <span id="file-name" class="text-sm text-gray-600 dark:text-white"
+            >Ningún archivo seleccionado</span
+          >
+        </div>
+        <button pButton class="w-full" label="Subir Producto"></button>
+      </form>
+    </p-card>
+  </div>
+</section>
