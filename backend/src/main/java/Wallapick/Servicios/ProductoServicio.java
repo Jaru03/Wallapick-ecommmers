@@ -10,6 +10,8 @@ import Wallapick.Utils.JWTUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,7 +63,13 @@ public class ProductoServicio {
                 }
 
                 producto.setVendedor(vendedor);
-                producto.setPrecio(producto.getPrecio() * 0.26);
+
+                // Calcular precio con 30% de impuesto
+                BigDecimal precioOriginal = BigDecimal.valueOf(producto.getPrecio());
+                BigDecimal impuesto = precioOriginal.multiply(BigDecimal.valueOf(0.30));
+                BigDecimal precioFinal = precioOriginal.add(impuesto).setScale(2, RoundingMode.HALF_UP);
+                producto.setPrecio(precioFinal.doubleValue());
+
                 producto.setFechaPublicacion(new Date());
                 productoRepositorio.save(producto);
 
@@ -70,9 +78,11 @@ public class ProductoServicio {
 
             return 0; // usuario no tiene rol adecuado
         } catch (Exception e) {
+            e.printStackTrace(); // importante para depurar errores
             return -1; // error interno
         }
     }
+
     public List<Producto> buscarProductos() {
         return productoRepositorio.findAll();
     }
