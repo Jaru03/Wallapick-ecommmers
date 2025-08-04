@@ -29,7 +29,7 @@ export class ProductPage {
 
   responsiveOptions = [
   {
-    breakpoint: '1400px',
+    breakpoint: '2000px',
     numVisible: 3,
     numScroll: 1,
   },
