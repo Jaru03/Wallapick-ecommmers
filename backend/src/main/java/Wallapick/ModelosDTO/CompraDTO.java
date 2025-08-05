@@ -13,12 +13,7 @@ public class CompraDTO {
     private double precioFinal;
 
 
-    public CompraDTO(Compra c) {
-        this.id = c.getId();
-        this.vendedor = c.getVendedor().getUsername();
-        this.fechaCompra = c.getFechaCompra();
-        this.precioFinal = c.getPrecioFinal();
-    }
+
 
     public CompraDTO(Compra c, boolean incluirProducto) {
         this.id = c.getId();

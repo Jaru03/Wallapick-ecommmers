@@ -26,15 +26,15 @@ public class CompraService {
     @Autowired
     private JWTUser jwtUser;
 
-    public List<CompraDTO> getComprasByUserId(Long userId, String token) {
+    public List<CompraDTO> getComprasByUserId( Long comprador_id,String token) {
         try {
             jwtUser.ObtenerUsuario(token); // Validación del token
 
-            List<Compra> compras = compraRepositorio.findByComprador_Id(userId);
+            List<Compra> compras = compraRepositorio.findByComprador_Id(comprador_id);
 
             // Convertir las entidades a DTOs
             return compras.stream()
-                    .map(compra -> new CompraDTO(compra,true)) // usamos el constructor con el flag para evitar recursión
+                    .map(compra -> new CompraDTO(compra,false)) // usamos el constructor con el flag para evitar recursión
                     .toList();
 
         } catch (Exception e) {
@@ -45,9 +45,9 @@ public class CompraService {
 
     public int comprarProductos(ArrayList<Long> ids, String token) {
         try {
-            Usuario usuario = jwtUser.ObtenerUsuario(token);
+            Usuario usuario_comprador = jwtUser.ObtenerUsuario(token);
 
-            if (!"LOGGED".equals(usuario.getRole())) {
+            if (!"LOGGED".equals(usuario_comprador.getRole())) {
                 return 0; // Usuario no autorizado
             }
 
@@ -62,8 +62,11 @@ public class CompraService {
                 if (vendedor == null) {
                     return -1; // Vendedor no encontrado
                 }
+                if(usuario_comprador.getId() == vendedor.getId()) {
+                    return -2; // No se puede comprar el propio producto
+                }
 
-                Compra com = new Compra(producto, usuario, vendedor, new Date(), producto.getPrecio());
+                Compra com = new Compra(producto, vendedor, usuario_comprador,  new Date(), producto.getPrecio());
                 compraRepositorio.save(com);
 
                 producto.setEnVenta(false); // Marcar como vendido

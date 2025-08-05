@@ -18,15 +18,15 @@ public class CompraController {
     private CompraService compraService;
 
     @GetMapping("/{id}")
-    public Respuesta getComprasById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+    public Respuesta<?> getComprasById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         List<CompraDTO> compras = compraService.getComprasByUserId(id, token);
 
         if (compras.isEmpty()) {
-            return new Respuesta<String>(404,"No se encontraron compras para el usuario con ID: " + id);
+            return new Respuesta<String>(404, "No se encontraron compras para el usuario con ID: " + id);
         }
 
-        return new Respuesta<String>(200,compras);
+        return new Respuesta<List<CompraDTO>>(200, compras);
     }
 
     @PostMapping("")
@@ -34,14 +34,19 @@ public class CompraController {
         token = token.replace("Bearer ", "");
         int resul = compraService.comprarProductos(ids, token);
 
-        if (resul == 1) {
-            return new Respuesta<String>(200,"Compra realizada correctamente.");
-        } else if (resul == 0) {
-            return new Respuesta<String>(401,"Usuario no logeado.");
-        } else if (resul == -1) {
-            return new Respuesta<String>(404,"Producto o usuarios no encontrado.");
+        switch (resul){
+            case -2:
+                return new Respuesta<String>(400,"No puedes comprar tu propio producto.");
+            case -1:
+                return new Respuesta<String>(404,"Producto o usuarios no encontrado.");
+            case 0:
+                return new Respuesta<String>(401,"Usuario no logeado.");
+            case 1:
+                return new Respuesta<String>(200,"Compra realizada correctamente.");
+            default:
+                return new Respuesta<String>(500,"Error al intentar comprar los productos.Intentelo mas tarde.");
         }
-        return new Respuesta<String>(500,"Error al intentar comprar los productos.Intentelo mas tarde.");
+
     }
 
 
