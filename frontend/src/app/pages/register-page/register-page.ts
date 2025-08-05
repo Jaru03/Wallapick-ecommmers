@@ -5,13 +5,13 @@ import { Card } from 'primeng/card';
 import { InputText } from 'primeng/inputtext';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Message } from 'primeng/message';
@@ -28,15 +28,18 @@ import { LoginService } from '../../services/login-service';
     ButtonModule,
     ReactiveFormsModule,
     Message,
+    Toast,
   ],
   templateUrl: './register-page.html',
   styleUrl: './register-page.css',
+  providers: [MessageService],
 })
 export class RegisterPage {
   form: FormGroup;
   formBuilder = inject(FormBuilder);
   route = inject(Router);
   auth = inject(LoginService);
+  messageService = inject(MessageService);
 
   constructor() {
     this.form = this.formBuilder.group(
@@ -68,10 +71,18 @@ export class RegisterPage {
 
   onSubmit() {
     console.log(this.form.value);
-    
 
-    this.auth
-      .register(this.form.value)
-      .subscribe((data: any) => console.log(data));
+    this.auth.register(this.form.value).subscribe((data: any) => {
+      if (data.codigo === 200) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Registrado Correctamente',
+          detail: 'Redirigiendo al login...',
+        });
+        setTimeout(() => {
+          this.route.navigate(['/login']);
+        }, 1000);
+      }
+    });
   }
 }
