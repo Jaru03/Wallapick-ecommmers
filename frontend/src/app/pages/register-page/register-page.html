@@ -5,18 +5,25 @@
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid gap-4 grid-rows-[1fr_auto] pt-4">
           <div class="grid grid-cols-2 gap-4 max-w-[368px]">
             <p-floatlabel variant="on">
-              <input pInputText style="width: 100%" formControlName="firstName" />
+              <input pInputText style="width: 100%" formControlName="name" />
               <label for="on_label">Nombre</label>
             </p-floatlabel>
-            @if (form.get("firstName")?.touched && form.get("firstName")?.invalid) {
+            @if (form.get("name")?.touched && form.get("name")?.invalid) {
               <p-message class="col-[1/2]" severity="error" variant="simple" size="small">El nombre debe de tener minimo 3 letras</p-message>
             }
             <p-floatlabel class="col-[2/3] row-[1/2]" variant="on">
-              <input pInputText style="width: 100%" formControlName="lastName"/>
+              <input pInputText style="width: 100%" formControlName="lastname"/>
               <label for="on_label">Apellido</label>
             </p-floatlabel>
-            @if (form.get("lastName")?.touched && form.get("lastName")?.invalid) {
+            @if (form.get("lastname")?.touched && form.get("lastname")?.invalid) {
               <p-message class="col-[2/3]" severity="error" variant="simple" size="small">El apellido debe de tener minimo 3 letras</p-message>
+            }
+            <p-floatlabel variant="on" class="col-span-full">
+              <input pInputText style="width: 100%" formControlName="username"/>
+              <label for="on_label">Username</label>
+            </p-floatlabel>
+             @if (form.get("username")?.touched && form.get("username")?.invalid) {
+              <p-message class="col-span-full" severity="error" variant="simple" size="small">El correo debe de tener un formato valido</p-message>
             }
             <p-floatlabel variant="on" class="col-span-full">
               <input pInputText email style="width: 100%" formControlName="email"/>
@@ -48,7 +55,6 @@
           </div>
           <button
           [disabled]="form.invalid"
-          routerLink="/"
             class="self-end"
             label="Crear Cuenta"
             pButton

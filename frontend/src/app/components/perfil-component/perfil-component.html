@@ -1,0 +1,27 @@
+<div
+      class="grid grid-cols-1 md:grid-cols-2 gap-4 h-fit {{
+        optionSelected() === '' ? 'hidden md:grid ' : optionSelected() === 'Mi Perfil' ? '' : 'hidden md:block'
+      }}"
+    >
+      <h2 class="col-span-full text-2xl font-semibold pt-6">
+        Datos Personales
+      </h2>
+      <label class="flex flex-col gap-2">
+        Nombre
+        <input pInputText disabled value="Jose" />
+      </label>
+      <label class="md:col-[2/3] flex flex-col gap-2">
+        Apellido
+        <input pInputText disabled value="Perez" />
+      </label>
+      <label class="flex flex-col gap-2 col-span-full">
+        Correo
+        <input pInputText disabled value="correoelectronico&#64;email.com" />
+      </label>
+      <button
+        pButton
+        severity="contrast"
+        label="Actualizar Datos"
+        class="col-span-full mt-4"
+      ></button>
+    </div>

@@ -5,14 +5,14 @@
         <form (ngSubmit)="onSubmit()" [formGroup]="form" class="grid gap-4 grid-rows-[1fr_auto] max-w-[368px] pt-4">
           <div class="flex flex-col gap-4">
             <p-floatlabel variant="on">
-              <input pInputText type="email" formControlName="email" #email style="width: 100%"  [invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
-              <label for="on_label">Correo Electronico</label>
+              <input pInputText type="text" formControlName="username" style="width: 100%"  [invalid]="form.get('username')?.invalid && form.get('username')?.touched" />
+              <label for="on_label">Username</label>
             </p-floatlabel>
-            @if (form.get('email')?.invalid && form.get('email')?.touched) {
-              <p-message severity="error" size="small" variant="simple">Debe ser un correo valido</p-message>
+            @if (form.get('username')?.invalid && form.get('username')?.touched) {
+              <p-message severity="error" size="small" variant="simple">Debe ser un usuario valido</p-message>
             }
             <p-floatlabel variant="on">
-              <input pInputText type="password" formControlName="password" style="width: 100%" />
+              <input pInputText type="password" formControlName="password" style="width: 100%" [invalid]="form.get('password')?.invalid && form.get('password')?.touched" />
               <label for="on_label">Contraseña</label>
             </p-floatlabel>
             @if (form.get('password')?.invalid && form.get('password')?.touched) {
@@ -28,7 +28,7 @@
           </div>
           <button
           [disabled]="form.invalid"
-          routerLink="/"
+          type="submit"
             class="self-end"
             label="Iniciar Sesion"
             pButton

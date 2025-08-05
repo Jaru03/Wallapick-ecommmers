@@ -3,7 +3,7 @@ import { Divider } from 'primeng/divider';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Card } from 'primeng/card';
 import { InputText } from 'primeng/inputtext';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import {
   AbstractControl,
@@ -14,23 +14,36 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Message } from "primeng/message";
+import { Message } from 'primeng/message';
+import { LoginService } from '../../services/login-service';
 
 @Component({
   selector: 'app-register-page',
-  imports: [Divider, FloatLabel, Card, InputText, RouterModule, ButtonModule, ReactiveFormsModule, Message],
+  imports: [
+    Divider,
+    FloatLabel,
+    Card,
+    InputText,
+    RouterModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    Message,
+  ],
   templateUrl: './register-page.html',
   styleUrl: './register-page.css',
 })
 export class RegisterPage {
   form: FormGroup;
   formBuilder = inject(FormBuilder);
+  route = inject(Router);
+  auth = inject(LoginService);
 
   constructor() {
     this.form = this.formBuilder.group(
       {
-        firstName: ['', [Validators.required, Validators.minLength(3)]],
-        lastName: ['', [Validators.required, Validators.minLength(3)]],
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        lastname: ['', [Validators.required, Validators.minLength(3)]],
+        username: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -53,8 +66,12 @@ export class RegisterPage {
     );
   }
 
-  onSubmit(){
-    console.log(this.form.value)
-    this.form.reset()
+  onSubmit() {
+    console.log(this.form.value);
+    
+
+    this.auth
+      .register(this.form.value)
+      .subscribe((data: any) => console.log(data));
   }
 }

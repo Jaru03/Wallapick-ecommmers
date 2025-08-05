@@ -11,13 +11,6 @@
                             [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + item.image"
                             [alt]="item.name"
                         />
-                        <p-tag
-                            [value]="item.inventoryStatus"
-                            [severity]="getSeverity(item)"
-                            class="absolute dark:!bg-surface-900"
-                            [style.left.px]="4"
-                            [style.top.px]="4"
-                        />
                     </div>
                     <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                         <div class="flex flex-row md:flex-col justify-between items-start gap-2">
@@ -66,13 +59,7 @@
                                     [alt]="product.name"
                                     style="max-width: 300px"
                                 />
-                                <p-tag
-                                    [value]="product.inventoryStatus"
-                                    [severity]="getSeverity(product)"
-                                    class="absolute dark:!bg-surface-900"
-                                    [style.left.px]="4"
-                                    [style.top.px]="4"
-                                />
+
                             </div>
                         </div>
                         <div class="pt-6">
