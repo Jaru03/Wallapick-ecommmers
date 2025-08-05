@@ -1,6 +1,8 @@
 package Wallapick.Controladores;
 
+import Wallapick.Modelos.Respuesta;
 import Wallapick.Modelos.Usuario;
+import Wallapick.ModelosDTO.UsuarioDTO;
 import Wallapick.Servicios.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,69 +17,72 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/")
-    public  ResponseEntity<?> registrarUsuario(@RequestBody Usuario user){
+    @PostMapping("")
+    public Respuesta registrarUsuario(@RequestBody Usuario user){
 
         String res = userService.resgistrar(user);
         if(res.equalsIgnoreCase("REGISTRADO")){
-            return ResponseEntity.ok("Usuario registrado correctamente");
+            return new Respuesta<String>(200, "Usuario registrado correctamente.");
+
         } else if (res.equalsIgnoreCase("EXISTE")) {
-            return ResponseEntity.status(409).body("El usuario ya existe");
+            return new Respuesta<String>(409,"El usuario ya existe.");
         }
         else{
-            return ResponseEntity.badRequest().body("ERROR");
+            return new Respuesta<String>(400,"Error al registrar el usuario. Verifica los datos.");
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity <?> login(@RequestBody Usuario user) {
+    public Respuesta login(@RequestBody Usuario user) {
         String respuesta = userService.Login(user);
         if(respuesta.equalsIgnoreCase("ACCESO DENEGADO")){
-            return ResponseEntity.status(404).body("USUARIO NO ENCONTRADO O CONTRASEÑA INCORRECTA");
+            return new Respuesta<String>(404,"Usuario no encontrado o contraseña incorrecta");
         }
-        return ResponseEntity.ok("Bienvenido, su token es ---->   " + respuesta);
+        return new Respuesta<String>(200, respuesta);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarUsuario(@PathVariable long id, @RequestHeader("Authorization") String token ){
+    public Respuesta buscarUsuario(@PathVariable long id, @RequestHeader("Authorization") String token ){
         token = token.replace("Bearer ", "");
-        Usuario u = userService.buscarUsuario(id, token);
+        UsuarioDTO u = userService.buscarUsuario(id, token);
         if(u == null){
-            return ResponseEntity.status(404).body("USUARIO NO ENCONTRADO");
+            return new Respuesta<String>(404,"Usuario no encontrado");
         }
-        return ResponseEntity.ok(u);
+        return new Respuesta<UsuarioDTO>(200,u);
     }
-    @GetMapping("/")
-    public ResponseEntity<?> buscarId(@RequestHeader("Authorization") String token) {
+    @GetMapping("")
+    public Respuesta buscarId(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         Long userId = userService.obtenerIdSiTokenValido(token);
 
         if (userId != null) {
-            return ResponseEntity.ok("ID del usuario: " + userId);
+            return new Respuesta<Long>(200, userId);
         } else {
-            return ResponseEntity.status(401).body("Credenciales inválidas");
+            return new Respuesta<String>(401,"Credenciales inválidas");
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarUsuario(@RequestBody Usuario user,@RequestHeader("Authorization") String token ){
+    @PatchMapping("/{id}")
+    public Respuesta actualizarUsuario(@RequestBody Usuario user,@RequestHeader("Authorization") String token ){
         token = token.replace("Bearer ", "");
 
         if(userService.actualizarUsario(user, token)){
-            return ResponseEntity.ok("Usuario actualizado correctamente" + user);
+            UsuarioDTO u = new UsuarioDTO(user);
+            return new Respuesta<UsuarioDTO>(200,u);
         } else {
-            return ResponseEntity.status(403).body("ACCESO DENEGADO");
+            return new Respuesta<String>(403,"Acceso denegado.");
         }
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> borrarUsuario( @RequestHeader("Authorization") String token, @PathVariable long id) {
+    public Respuesta borrarUsuario( @RequestHeader("Authorization") String token, @PathVariable long id) {
         token = token.replace("Bearer ", "");
         if(userService.borrarUsuario(id, token)){
-            return ResponseEntity.ok("Usuario eliminado correctamente");
+            return new Respuesta<String>(200,"Usuario eliminado correctamente");
         } else {
-            return ResponseEntity.status(403).body("ACCESO DENEGADO");
+            return new Respuesta<String>(403,"Acceso denegado.");
+
         }
 
     }

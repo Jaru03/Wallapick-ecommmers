@@ -3,6 +3,7 @@ package Wallapick.Servicios;
 import Wallapick.Modelos.Compra;
 import Wallapick.Modelos.Producto;
 import Wallapick.Modelos.Usuario;
+import Wallapick.ModelosDTO.ProductoDTO;
 import Wallapick.Repositorios.CompraRepositorio;
 import Wallapick.Repositorios.ProductoRepositorio;
 import Wallapick.Repositorios.UsuarioRepositorio;
@@ -29,18 +30,26 @@ public class ProductoServicio {
 
 
 
-    public List<Producto> buscarProductosPorNombreParcial(String nombreParcial) {
-        return productoRepositorio.findByNombreContainingIgnoreCase(nombreParcial);
+    public List<ProductoDTO> buscarProductosPorNombreParcial(String nombreParcial) {
+        List<Producto> productos = productoRepositorio.findByNombreContainingIgnoreCase(nombreParcial);
+
+        return productos.stream()
+                .map(ProductoDTO::new) // Usar el constructor que convierte de Producto a ProductoDTO
+                .toList();
     }
 
-    public List<Producto> obtenerProductosDeUsuarioLogueado(String token) {
+
+    public List<ProductoDTO> obtenerProductosDeUsuarioLogueado(String token) {
         try {
-            Usuario usuario = jwtUser.ObtenerUsuario(token);
+            Usuario usuario = jwtUser.ObtenerUsuario(token); // puede lanzar excepción si el token es inválido
 
             if ("LOGGED".equals(usuario.getRole())) {
-                return productoRepositorio.findByVendedor_Id(usuario.getId());
+                List<Producto> productos = productoRepositorio.findByVendedor_Id(usuario.getId());
+
+                return productos.stream()
+                        .map(ProductoDTO::new)
+                        .toList();
             } else {
-                //No logeado
                 return new ArrayList<>();
             }
         } catch (Exception e) {
@@ -83,9 +92,14 @@ public class ProductoServicio {
         }
     }
 
-    public List<Producto> buscarProductos() {
-        return productoRepositorio.findAll();
+    public List<ProductoDTO> buscarProductos() {
+        List<Producto> productos = productoRepositorio.findAll();
+
+        return productos.stream()
+                .map(ProductoDTO::new) // utiliza el constructor DTO que ya tienes
+                .toList();
     }
+
 
     public int borrarProducto(long id, String token) {
         try {

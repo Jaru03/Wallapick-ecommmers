@@ -1,6 +1,8 @@
 package Wallapick.Controladores;
 
 import Wallapick.Modelos.Producto;
+import Wallapick.Modelos.Respuesta;
+import Wallapick.ModelosDTO.ProductoDTO;
 import Wallapick.Servicios.ProductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,73 +19,77 @@ public class ProductoControler {
     private ProductoServicio productoServicio;
 
     @GetMapping("/buscar")
-    public ResponseEntity<?> buscarProductosParcial(@RequestParam String nombreParcial) {
-        List<Producto> productos = productoServicio.buscarProductosPorNombreParcial(nombreParcial);
+    public Respuesta buscarProductosParcial(@RequestParam String nombreParcial) {
+        List<ProductoDTO> productos = productoServicio.buscarProductosPorNombreParcial(nombreParcial);
         if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return new Respuesta<String>(204,"No hay productos con esa cadena");
         }
-        return ResponseEntity.ok(productos);
+        return new Respuesta<String>(200, productos);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> buscarMisProductos(@RequestHeader("Authorization") String token) {
+    @GetMapping("")
+    public Respuesta buscarMisProductos(@RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
-        List<Producto> productos = productoServicio.obtenerProductosDeUsuarioLogueado(token);
 
-        if(productos.isEmpty()){
-            return ResponseEntity.status(404).body("No se encontraron productos para el usuario logueado.");
+        List<ProductoDTO> productosDTO = productoServicio.obtenerProductosDeUsuarioLogueado(token);
+
+        if (productosDTO == null || productosDTO.isEmpty()) {
+            return new Respuesta<String>(404, "No se encontraron productos para el usuario logueado.");
         }
-        return ResponseEntity.ok("Tus productos son: "+productos);
+
+        return new Respuesta<String>(200, productosDTO);
     }
+
     @GetMapping("/all")
-    public ResponseEntity<?> buscarTodosProductos(){
-        List<Producto> productos = productoServicio.buscarProductos();
+    public Respuesta buscarTodosProductos(){
+        List<ProductoDTO> productos = productoServicio.buscarProductos();
         if(productos == null) {
-            return ResponseEntity.status(500).body("Servicio de productos no disponible.");
+            return new Respuesta<String>(500,"Servicio de productos no disponible.");
         }
-        return ResponseEntity.ok(productos);
+        return new Respuesta<String>(200,productos);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<?>crearProducto(@RequestBody Producto producto, @RequestHeader("Authorization") String token){
+    @PostMapping("")
+    public Respuesta crearProducto(@RequestBody Producto producto, @RequestHeader("Authorization") String token){
         token = token.replace("Bearer ", "");
 
         int resultado = productoServicio.crearProducto(producto, token);
 
         if (resultado == 0) {
-            return ResponseEntity.status(400).body("Error al crear el producto. Verifica los datos.");
+            return new Respuesta<String>(400,"Error al crear el producto. Verifica los datos.");
         } else if (resultado == 1) {
-            return ResponseEntity.ok("Producto creado correctamente: " + producto);
+            ProductoDTO productoDTO = new ProductoDTO(producto);
+            return new Respuesta<ProductoDTO>(200, productoDTO);
         } else {
-            return ResponseEntity.status(500).body("Error interno del servidor al crear el producto.");
+            return new Respuesta<String>(500,"Error interno del servidor al crear el producto.");
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> borrarProducto(@PathVariable long id, @RequestHeader("Authorization") String token) {
+    public Respuesta borrarProducto(@PathVariable long id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         int resul = productoServicio.borrarProducto(id, token);
 
         if (resul == 1) {
-            return ResponseEntity.ok("Producto eliminado correctamente.");
+            return new Respuesta<String>(200,"Producto eliminado correctamente.");
         } else if (resul == 0){
-            return ResponseEntity.status(404).body("Producto no encontrado o no autorizado para eliminar.");
+            return  new Respuesta<String>(400,"Producto no encontrado o no autorizado para eliminar.");
         }
-        return ResponseEntity.status(500).body("Error al intentar eliminar el producto. Intentelo mas tarde.");
+        return new Respuesta<String>(200,"Error al intentar eliminar el producto. Intentelo mas tarde.");
     }
 
-    @PutMapping("/")
-    public ResponseEntity<?> actualizarProducto(@RequestBody Producto producto, @RequestHeader("Authorization") String token) {
+    @PatchMapping("")
+    public Respuesta actualizarProducto(@RequestBody Producto producto, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         int resul = productoServicio.actualizarProducto(producto, token);
 
         if (resul == 1) {
-            return ResponseEntity.ok("Producto actualizado correctamente: " + producto);
+            ProductoDTO p = new ProductoDTO(producto);
+            return  new Respuesta<ProductoDTO>(200,p);
         } else if (resul == 0){
-            return ResponseEntity.status(404).body("Producto no encontrado o no autorizado para actualizar.");
+            return  new Respuesta<String>(404,"Producto no encontrado o no autorizado para actualizar.");
         }
-        return ResponseEntity.status(500).body("Error al intentar actualizar el producto. Intentelo mas tarde.");
+        return  new Respuesta<String>(500,"Error al intentar actualizar el producto. Intentelo mas tarde.");
     }
-
 
 }

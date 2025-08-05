@@ -1,6 +1,8 @@
 package Wallapick.Controladores;
 
 import Wallapick.Modelos.Compra;
+import Wallapick.Modelos.Respuesta;
+import Wallapick.ModelosDTO.CompraDTO;
 import Wallapick.Servicios.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +18,30 @@ public class CompraController {
     private CompraService compraService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getComprasById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+    public Respuesta getComprasById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
-        List<Compra> compras = compraService.getComprasByUserId(id, token);
+        List<CompraDTO> compras = compraService.getComprasByUserId(id, token);
 
         if (compras.isEmpty()) {
-            return ResponseEntity.status(404).body("No se encontraron compras para el usuario con ID: " + id);
+            return new Respuesta<String>(404,"No se encontraron compras para el usuario con ID: " + id);
         }
 
-        return ResponseEntity.ok(compras);
+        return new Respuesta<String>(200,compras);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<?> comprarProducto(@RequestBody ArrayList<Long> ids, @RequestHeader("Authorization") String token) {
+    @PostMapping("")
+    public Respuesta comprarProducto(@RequestBody ArrayList<Long> ids, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         int resul = compraService.comprarProductos(ids, token);
 
         if (resul == 1) {
-            return ResponseEntity.ok("Compra realizada correctamente.");
+            return new Respuesta<String>(200,"Compra realizada correctamente.");
         } else if (resul == 0) {
-            return ResponseEntity.status(401).body("Usuario no logeado");
+            return new Respuesta<String>(401,"Usuario no logeado.");
         } else if (resul == -1) {
-            return ResponseEntity.status(404).body("Producto o usuarios no encontrado");
+            return new Respuesta<String>(404,"Producto o usuarios no encontrado.");
         }
-        return ResponseEntity.status(500).body("Error al intentar comprar los productos.Intentelo mas tarde");
+        return new Respuesta<String>(500,"Error al intentar comprar los productos.Intentelo mas tarde.");
     }
 
 

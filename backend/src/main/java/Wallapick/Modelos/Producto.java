@@ -148,4 +148,20 @@ public class Producto {
     public void setCompra(Compra compra) {
         this.compra = compra;
     }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", category='" + category + '\'' +
+                ", precio=" + precio +
+                ", enVenta=" + enVenta +
+                ", fechaPublicacion=" + fechaPublicacion +
+                ", vendedor=" + vendedor +
+                ", compra=" + compra +
+                ", estado='" + estado + '\'' +
+                '}';
+    }
 }

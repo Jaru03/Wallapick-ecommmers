@@ -3,6 +3,7 @@ package Wallapick.Servicios;
 import Wallapick.Modelos.Compra;
 import Wallapick.Modelos.Producto;
 import Wallapick.Modelos.Usuario;
+import Wallapick.ModelosDTO.CompraDTO;
 import Wallapick.Repositorios.CompraRepositorio;
 import Wallapick.Repositorios.ProductoRepositorio;
 import Wallapick.Repositorios.UsuarioRepositorio;
@@ -25,15 +26,22 @@ public class CompraService {
     @Autowired
     private JWTUser jwtUser;
 
-    public List<Compra> getComprasByUserId(Long userId, String token) {
+    public List<CompraDTO> getComprasByUserId(Long userId, String token) {
         try {
-            jwtUser.ObtenerUsuario(token);
-            return compraRepositorio.findByComprador_Id(userId);
+            jwtUser.ObtenerUsuario(token); // Validación del token
+
+            List<Compra> compras = compraRepositorio.findByComprador_Id(userId);
+
+            // Convertir las entidades a DTOs
+            return compras.stream()
+                    .map(compra -> new CompraDTO(compra,true)) // usamos el constructor con el flag para evitar recursión
+                    .toList();
+
         } catch (Exception e) {
-            // Manejo de excepciones, como token inválido
-            return null;
+            return new ArrayList<>(); // Mejor que retornar null
         }
     }
+
 
     public int comprarProductos(ArrayList<Long> ids, String token) {
         try {

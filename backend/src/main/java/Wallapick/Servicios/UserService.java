@@ -1,6 +1,7 @@
 package Wallapick.Servicios;
 
 import Wallapick.Modelos.Usuario;
+import Wallapick.ModelosDTO.UsuarioDTO;
 import Wallapick.Repositorios.UsuarioRepositorio;
 import Wallapick.Utils.JWTUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,12 @@ public class UserService {
 
     }
 
-    public Usuario buscarUsuario(long id,String token){
+    public UsuarioDTO buscarUsuario(long id,String token){
         try {
             jwtUser.ObtenerUsuario(token);
-            Usuario u=  userRepo.findById(id).get();
-            u.setPassword("");
-            return u;
+            Usuario u=userRepo.findById(id).get();
+            UsuarioDTO uDTO = new UsuarioDTO(u);
+            return uDTO;
         } catch (Exception e) {
             return null;
         }
