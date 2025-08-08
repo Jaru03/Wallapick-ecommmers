@@ -36,6 +36,13 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation'com.stripe:stripe-java:24.+'
+
+	// Cliente HTTP simple
+	implementation 'org.springframework.boot:spring-boot-starter'
+
+	// Para serialización JSON (ya incluido en web starter)
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 	// STRIPE
 	implementation 'com.stripe:stripe-java:24.+'

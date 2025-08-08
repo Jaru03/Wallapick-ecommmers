@@ -26,11 +26,11 @@ public class CompraService {
     @Autowired
     private JWTUser jwtUser;
 
-    public List<CompraDTO> getComprasByUserId( Long comprador_id,String token) {
+    public List<CompraDTO> getComprasByUserId(String token) {
         try {
-            jwtUser.ObtenerUsuario(token); // Validación del token
+            Usuario u = jwtUser.ObtenerUsuario(token); // Validación del token
 
-            List<Compra> compras = compraRepositorio.findByComprador_Id(comprador_id);
+            List<Compra> compras = compraRepositorio.findByComprador_Id(u.getId());
 
             // Convertir las entidades a DTOs
             return compras.stream()
