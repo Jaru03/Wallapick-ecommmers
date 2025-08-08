@@ -27,6 +27,7 @@ public class Producto {
     private double precio;
 
     private boolean enVenta = true;
+    private String estado; //No enum puesto que al recibirlo de front, se recibira desde un checkbox
 
     @PastOrPresent
     @Temporal(TemporalType.DATE)
@@ -43,7 +44,7 @@ public class Producto {
 
     //private byte[] image;
 
-    private String estado; //No enum puesto que al recibirlo de front, se recibira desde un checkbox
+
 
     public Producto() {
     }

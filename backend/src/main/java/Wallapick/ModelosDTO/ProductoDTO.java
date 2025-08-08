@@ -45,19 +45,7 @@ public class ProductoDTO {
         }
     }
 
-    // Constructor con bandera para controlar si se incluye la compra
-    public ProductoDTO(Producto p, boolean incluirCompra) {
-        this.id = p.getId();
-        this.nombre = p.getNombre();
-        this.descripcion = p.getDescripcion();
-        this.precio = p.getPrecio();
-        this.enVenta = p.isEnVenta();
-        this.fechaPublicacion = p.getFechaPublicacion();
-        this.vendedor = new UsuarioDTO(p.getVendedor());
-
-        if (incluirCompra && p.getCompra() != null) {
-            this.compra = new CompraDTO(p.getCompra(), false); // sin incluir producto
-        }
+    public ProductoDTO() {
     }
 
     // Getters y Setters

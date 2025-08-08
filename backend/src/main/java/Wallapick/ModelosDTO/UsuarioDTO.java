@@ -27,8 +27,9 @@ public class UsuarioDTO {
         this.email = user.getEmail();
         this.name = user.getName();
         this.lastname = user.getLastname();
+    }
 
-
+    public UsuarioDTO() {
     }
 
     public Long getId() {

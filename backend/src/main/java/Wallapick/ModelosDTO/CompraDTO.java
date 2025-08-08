@@ -18,13 +18,16 @@ public class CompraDTO {
     public CompraDTO(Compra c, boolean incluirProducto) {
         this.id = c.getId();
 
-        if (incluirProducto && c.getProducto() != null) {
+
             this.producto = c.getProducto().getNombre(); // o cualquier otro atributo relevante
-        }
+
         this.comprador = c.getComprador().getUsername();
         this.vendedor = c.getVendedor().getUsername();
         this.fechaCompra = c.getFechaCompra();
         this.precioFinal = c.getPrecioFinal();
+    }
+
+    public CompraDTO() {
     }
 
     public Long getId() {

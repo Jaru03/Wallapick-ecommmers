@@ -53,16 +53,30 @@ public class UserService {
         }
     }
 
-    public boolean actualizarUsario(Usuario user,String token){
+    public boolean actualizarUsario(Usuario user, String token) {
         try {
             Usuario userLogged = jwtUser.ObtenerUsuario(token);
-            Usuario existingUser = userRepo.findById(user.getId()).get();
-            if(userLogged.getRole().equals("LOGGED") || existingUser.getId().equals(userLogged.getId())) {
+            Usuario existingUser = userRepo.findById(user.getId()).orElse(null);
 
-                userRepo.save(userLogged);
+            if (existingUser == null) {
+                return false;
+            }
+
+            if (userLogged.getRole().equals("LOGGED") && existingUser.getId().equals(userLogged.getId())) {
+                existingUser.setUsername(user.getUsername());
+                existingUser.setName(user.getName());
+                existingUser.setLastname(user.getLastname());
+                existingUser.setEmail(user.getEmail());
+
+                if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                    existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                }
+
+                userRepo.save(existingUser);
                 return true;
             }
             return false;
+
         } catch (Exception e) {
             return false;
         }

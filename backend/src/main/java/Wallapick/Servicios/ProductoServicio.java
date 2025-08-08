@@ -121,19 +121,29 @@ public class ProductoServicio {
             Usuario usuario = jwtUser.ObtenerUsuario(token);
             Producto existingProduct = productoRepositorio.findById(producto.getId()).orElse(null);
 
-            if (existingProduct != null && existingProduct.getVendedor().getId() == usuario.getId()) {
+            if (existingProduct != null && existingProduct.getVendedor().getId().equals(usuario.getId())) {
                 existingProduct.setNombre(producto.getNombre());
                 existingProduct.setDescripcion(producto.getDescripcion());
                 existingProduct.setPrecio(producto.getPrecio());
                 existingProduct.setFechaPublicacion(new Date());
                 productoRepositorio.save(existingProduct);
+
+                // Copiar los campos actualizados a producto (objeto pasado por referencia)
+                producto.setNombre(existingProduct.getNombre());
+                producto.setDescripcion(existingProduct.getDescripcion());
+                producto.setPrecio(existingProduct.getPrecio());
+                producto.setFechaPublicacion(existingProduct.getFechaPublicacion());
+                producto.setVendedor(existingProduct.getVendedor());
+
                 return 1; // Producto actualizado correctamente
             }
-            return 0; // No se pudo actualizar el producto
+            return 0; // No autorizado o producto no encontrado
         } catch (Exception e) {
-            return -1; // Error al intentar actualizar el producto
+            return -1; // Error
         }
     }
+
+
 
 
 
