@@ -12,7 +12,7 @@
   </ng-template>
   <ng-template #end>
     <div class="flex items-center gap-2 sm:gap-5">
-      @if (loginService.isLogged() ) {
+      @if (loginService.userLogged() ) {
 
         <p-iconfield>
           <p-inputicon class="pi pi-search" />

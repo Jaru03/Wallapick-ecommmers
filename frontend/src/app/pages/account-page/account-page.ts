@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Card } from "primeng/card";
 import { Divider } from "primeng/divider";
@@ -7,6 +7,7 @@ import { PerfilComponent } from "../../components/perfil-component/perfil-compon
 import { ComprasComponent } from "../../components/compras-component/compras-component";
 import { VentasComponent } from "../../components/ventas-component/ventas-component";
 import { FavoritosComponent } from "../../components/favoritos-component/favoritos-component";
+import { LoginService } from '../../services/login-service';
 
 @Component({
   selector: 'app-account-page',
@@ -17,10 +18,15 @@ import { FavoritosComponent } from "../../components/favoritos-component/favorit
 export class AccountPage {
   options: string[] = ["Mi Perfil", "Mis Compras", "Mis Ventas","Mis Favoritos"]
   optionSelected = ''
+  loginService = inject(LoginService);
 
   handlerOption(option: string){
     this.optionSelected = option
     console.log(this.optionSelected)
+  }
+
+  logOut(){
+    this.loginService.logout()
   }
 
 }
