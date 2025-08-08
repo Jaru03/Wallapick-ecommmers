@@ -85,11 +85,14 @@ public class ProductoControler {
 
         if (resul == 1) {
             ProductoDTO p = new ProductoDTO(producto);
-            return  new Respuesta<ProductoDTO>(200,p);
-        } else if (resul == 0){
-            return  new Respuesta<String>(404,"Producto no encontrado o no autorizado para actualizar.");
+            return new Respuesta<ProductoDTO>(200, p);
+        } else if (resul == 0) {
+            return new Respuesta<String>(404, "Producto no encontrado o no autorizado para actualizar.");
         }
-        return  new Respuesta<String>(500,"Error al intentar actualizar el producto. Intentelo mas tarde.");
+        return new Respuesta<String>(500, "Error al intentar actualizar el producto. Inténtelo más tarde.");
     }
+
+
+
 
 }

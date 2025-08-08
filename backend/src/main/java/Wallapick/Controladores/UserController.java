@@ -62,7 +62,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("")
     public Respuesta actualizarUsuario(@RequestBody Usuario user,@RequestHeader("Authorization") String token ){
         token = token.replace("Bearer ", "");
 

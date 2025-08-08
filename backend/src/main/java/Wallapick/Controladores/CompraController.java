@@ -17,13 +17,13 @@ public class CompraController {
     @Autowired
     private CompraService compraService;
 
-    @GetMapping("/{id}")
-    public Respuesta<?> getComprasById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+    @GetMapping("")
+    public Respuesta obtenerComprasId( @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
-        List<CompraDTO> compras = compraService.getComprasByUserId(id, token);
+        List<CompraDTO> compras = compraService.getComprasByUserId( token);
 
         if (compras.isEmpty()) {
-            return new Respuesta<String>(404, "No se encontraron compras para el usuario con ID: " + id);
+            return new Respuesta<String>(404, "No se encontraron compras para el usuario con ese ID");
         }
 
         return new Respuesta<List<CompraDTO>>(200, compras);
