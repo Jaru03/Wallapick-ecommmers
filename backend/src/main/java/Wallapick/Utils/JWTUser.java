@@ -1,6 +1,6 @@
 package Wallapick.Utils;
 
-import Wallapick.Modelos.Usuario;
+import Wallapick.Models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -19,22 +19,25 @@ public class JWTUser {
         key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String GenerateToken(Usuario u) {
+    public String generateToken(User user) {
+
         return Jwts.builder()
-                .claim("id", u.getId())
-                .claim("username", u.getUsername())
-                .claim("role", u.getRole())
+                .claim("id", user.getId())
+                .claim("username", user.getUsername())
+                .claim("role", user.getRole())
                 .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
     }
 
-    public Usuario ObtenerUsuario(String token) throws Exception {
+    public User getUser(String token) throws Exception {
+
         Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
-        Usuario u = new Usuario();
-        u.setId(claims.get("id", Long.class));
-        u.setUsername(claims.get("username", String.class));
-        u.setRole(claims.get("role", String.class));
-        return u;
+        User user = new User();
+        user.setId(claims.get("id", Long.class));
+        user.setUsername(claims.get("username", String.class));
+        user.setRole(claims.get("role", String.class));
+
+        return user;
     }
 }

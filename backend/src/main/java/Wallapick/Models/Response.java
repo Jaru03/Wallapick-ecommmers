@@ -1,38 +1,38 @@
-package Wallapick.Modelos;
+package Wallapick.Models;
 
 import java.util.List;
 
-public class Respuesta<T> {
-    private int codigo;
+public class Response<T> {
+
+    private int code;
     private String status;
     private T data;
     private List<?> datas;
 
-    public Respuesta(int codigo, String status, T data) {
-        this.codigo = codigo;
+    public Response() {
+    }
+
+    public Response(int code, String status, T data) {
+        this.code = code;
         this.status = status;
         this.data = data;
     }
 
-    public Respuesta(int codigo, T data) {
-        this.codigo = codigo;
+    public Response(int code, T data) {
+        this.code = code;
         this.data = data;
     }
-    public Respuesta(int codigo,List<?> datas) {
-        this.codigo = codigo;
+    public Response(int code, List<?> datas) {
+        this.code = code;
         this.datas = datas;
     }
 
-
-    public Respuesta() {
+    public int getCode() {
+        return code;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getStatus() {

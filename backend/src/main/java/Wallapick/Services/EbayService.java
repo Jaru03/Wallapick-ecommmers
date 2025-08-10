@@ -1,39 +1,51 @@
-package Wallapick.Servicios;
+package Wallapick.Services;
 
-import Wallapick.Modelos.ItemSummary;
+import Wallapick.Models.ItemEbay;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class EbayService {
 
-    /*@Value("${ebay.client.id}")
-    private String clientId;
+    // @Value("${ebay.client.id}")
+    // private String clientId;
 
-    @Value("${ebay.client.secret}")
-    private String clientSecret;*/
+    // @Value("${ebay.client.secret}")
+    // private String clientSecret;
 
     private String accessToken;
     private long tokenExpirationTime = 0;
-
     private final RestTemplate restTemplate = new RestTemplate();
 
-    // ====================== Obtener token OAuth2 ======================
+    // ====================== Build common Headers ======================
+
+    private HttpHeaders buildHeaders() {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(getAccessToken());
+        headers.set("Accept-Language", "es-ES");
+        headers.set("X-EBAY-C-MARKETPLACE-ID", "EBAY_ES");
+        headers.set("X-EBAY-C-ENDUSERCTX", "contextualLocation=country=ES");
+
+        return headers;
+    }
+
+    // ====================== Get token OAuth2 ======================
+
     private String getAccessToken() {
+
         if (accessToken != null && System.currentTimeMillis() < tokenExpirationTime) {
             return accessToken;
         }
 
-
+        // Añadir la función getAccessToken entera de la memoria
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -57,26 +69,13 @@ public class EbayService {
         return accessToken;
     }
 
-    // ====================== Construir Headers Comunes ======================
-    private HttpHeaders buildHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(getAccessToken());
-        headers.set("Accept-Language", "es-ES");
-        headers.set("X-EBAY-C-MARKETPLACE-ID", "EBAY_ES");
-        headers.set("X-EBAY-C-ENDUSERCTX", "contextualLocation=country=ES");
-        return headers;
-    }
+    // ====================== Search products ======================
 
-    // ====================== Buscar productos ======================
+    public List<ItemEbay> getItemSummaries(String nameItem) {
 
-    public List<ItemSummary> getItemSummaries(String query) {
-        String url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + query + "&limit=10";
+        String url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + nameItem + "&limit=10";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(getAccessToken());
-        headers.set("Accept-Language", "es-ES");
-        headers.set("X-EBAY-C-MARKETPLACE-ID", "EBAY_ES");
-        headers.set("X-EBAY-C-ENDUSERCTX", "contextualLocation=country=ES");
+        HttpHeaders headers = buildHeaders();
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
@@ -87,26 +86,30 @@ public class EbayService {
                 String.class
         );
 
-        List<ItemSummary> summaries = new ArrayList<>();
+        List<ItemEbay> summaryItems = new ArrayList<>();
 
         try {
+
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.getBody());
             JsonNode items = root.path("itemSummaries");
 
             if (items.isArray()) {
+
                 for (JsonNode item : items) {
 
-                    ItemSummary summary = new ItemSummary();
+                    ItemEbay summary = new ItemEbay();
                     summary.setId(item.path("itemId").asText(null));
-
                     summary.setTitle(item.path("title").asText(null));
 
                     List<String> categoryList = new ArrayList<>();
 
                     if (item.has("categories") && item.get("categories").isArray()) {
+
                         for (JsonNode categoryNode : item.get("categories")) {
+
                             String categoryName = categoryNode.path("categoryName").asText(null);
+
                             if (categoryName != null) {
                                 categoryList.add(categoryName);
                             }
@@ -115,39 +118,52 @@ public class EbayService {
 
                     summary.setCategories(categoryList);
 
-                    // Precio con moneda
+                    // Price with currency
+
                     double price = 0.0;
+
                     if (item.has("price")) {
+
                         JsonNode priceNode = item.get("price");
+
                         if (priceNode.has("value")) {
                             price = priceNode.path("value").asDouble();
                         }
                     }
+
                     summary.setPrice(price);
 
-                    // Imagenes complementarias
-                    List<String> imageList = new ArrayList<>();
+                    // Additional images
+
+                    List<String> imagesList = new ArrayList<>();
 
                     if (item.has("additionalImages") && item.get("additionalImages").isArray()) {
+
                         for (JsonNode imageNode : item.get("additionalImages")) {
+
                             String imageName = imageNode.path("imageUrl").asText(null);
+
                             if (imageName != null) {
-                                imageList.add(imageName);
+                                imagesList.add(imageName);
                             }
                         }
                     }
-                    summary.setImages(imageList);
 
-                    // Imagen principal desde "thumbnailImages"
+                    summary.setImages(imagesList);
+
+                    // Main image from "thumbnailImages"
+
                     if (item.has("thumbnailImages") && item.get("thumbnailImages").isArray()) {
                         JsonNode firstThumb = item.get("thumbnailImages").get(0);
+
                         if (firstThumb != null) {
                             String thumbUrl = firstThumb.path("imageUrl").asText(null);
-                            summary.setPrincipalImage(thumbUrl);
+                            summary.setMainImage(thumbUrl);
                         }
                     }
 
-                    summaries.add(summary);
+                    summaryItems.add(summary);
+
                 }
             }
 
@@ -155,30 +171,17 @@ public class EbayService {
             e.printStackTrace();
         }
 
-        return summaries;
+        return summaryItems;
     }
-    /*
-    public Map searchItems(String query) {
-        String url = "https://api.ebay.com/buy/browse/v1/item_summary/search?q=" + query + "&limit=10";
 
-        HttpHeaders headers = buildHeaders();
-        HttpEntity<Void> entity = new HttpEntity<>(headers);
+    // ====================== Get details from the product ======================
 
-        ResponseEntity<Map> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                Map.class
-        );
-
-        return response.getBody();
-    }*/
-
-    // ====================== Obtener detalles de producto ======================
     public Map getItemDetails(String itemId) {
+
         String url = "https://api.ebay.com/buy/browse/v1/item/" + itemId;
 
         HttpHeaders headers = buildHeaders();
+
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<Map> response = restTemplate.exchange(
@@ -190,11 +193,15 @@ public class EbayService {
 
         return response.getBody();
     }
-    //- ====================== Obtener categorías ======================
+
+    // ====================== Get categories ======================
+
     public Map getCategories() {
+
         String url = "https://api.ebay.com/commerce/v1/category_tree";
 
         HttpHeaders headers = buildHeaders();
+
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<Map> response = restTemplate.exchange(

@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -19,13 +20,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
-                .csrf(csrf -> csrf.disable())  // Deshabilitar CSRF para APIs REST
+                .csrf(csrf -> csrf.disable())  // Disable CSRF for APIs REST
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**", "/producto/**",  "/compra/**","/api/ebay/**","/create-checkout-session").permitAll()  // Permitir sin autenticación
-                        .anyRequest().authenticated()  // El resto requiere autenticación
+                        .requestMatchers("/user/**", "/product/**", "/order/**", "/api/ebay/**", "/api/stripe").permitAll()  // Allow without authentication
+                        .anyRequest().authenticated()  // The rest requires authentication
                 )
-                .httpBasic(Customizer.withDefaults()); // Otras opciones de autenticación
+                .httpBasic(Customizer.withDefaults()); // Other authentication options
 
         return http.build();
     }

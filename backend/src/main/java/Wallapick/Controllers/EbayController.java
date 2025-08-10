@@ -1,22 +1,21 @@
-package Wallapick.Controladores;
+package Wallapick.Controllers;
 
-
-import Wallapick.Servicios.EbayService;
+import Wallapick.Services.EbayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/ebay")
-@CrossOrigin // para permitir llamadas desde tu frontend Angular
+@CrossOrigin // To allow calls from frontend Angular
 public class EbayController {
 
     @Autowired
     private EbayService ebayService;
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchItems(@RequestParam String q) {
-        return ResponseEntity.ok(ebayService.getItemSummaries(q));
+    public ResponseEntity<?> searchItems(@RequestParam String nameItem) {
+        return ResponseEntity.ok(ebayService.getItemSummaries(nameItem)); // nameItem in english
     }
 
     @GetMapping("/item/{itemId}")

@@ -1,27 +1,26 @@
-package Wallapick.Modelos;
-
-import lombok.Data;
+package Wallapick.Models;
 
 import java.util.List;
 
-public class ItemSummary {
+public class ItemEbay {
+
     private String id;
     private String title;
     private double price;
-    private String principalImage;
+    private String mainImage;
     private List<String> images;
     private List<String> categories;
 
-    public ItemSummary() {
+    public ItemEbay() {
     }
 
-    public ItemSummary(List<String> categories, List<String> images, double price, String title, String id, String principalImage) {
-        this.categories = categories;
-        this.images = images;
-        this.price = price;
-        this.title = title;
+    public ItemEbay(String id, String title, double price, String mainImage, List<String> images, List<String> categories) {
         this.id = id;
-        this.principalImage = principalImage;
+        this.title = title;
+        this.price = price;
+        this.mainImage = mainImage;
+        this.images = images;
+        this.categories = categories;
     }
 
     public String getId() {
@@ -48,7 +47,6 @@ public class ItemSummary {
         this.price = price;
     }
 
-
     public List<String> getCategories() {
         return categories;
     }
@@ -65,11 +63,11 @@ public class ItemSummary {
         this.images = images;
     }
 
-    public String getPrincipalImage() {
-        return principalImage;
+    public String getMainImage() {
+        return mainImage;
     }
 
-    public void setPrincipalImage(String principalImage) {
-        this.principalImage = principalImage;
+    public void setMainImage(String mainImage) {
+        this.mainImage = mainImage;
     }
 }

@@ -1,35 +1,34 @@
-package Wallapick.ModelosDTO;
+package Wallapick.ModelsDTO;
 
-import Wallapick.Modelos.Usuario;
+import Wallapick.Models.User;
 
 import java.util.List;
 
-public class UsuarioDTO {
+public class UserDTO {
+
     private Long id;
     private String username;
     private String email;
     private String name;
     private String lastname;
 
+    public UserDTO() {
+    }
 
-    public UsuarioDTO(Long id, String username, String email, String name, String lastname, List<ProductoDTO> vendedor, List<CompraDTO> compras) {
+    public UserDTO(Long id, String username, String email, String name, String lastname, List<ProductDTO> vendedor, List<OrderDTO> compras) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
         this.lastname = lastname;
-
     }
 
-    public UsuarioDTO(Usuario user) {
+    public UserDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.name = user.getName();
         this.lastname = user.getLastname();
-    }
-
-    public UsuarioDTO() {
     }
 
     public Long getId() {
@@ -71,6 +70,4 @@ public class UsuarioDTO {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
-
 }

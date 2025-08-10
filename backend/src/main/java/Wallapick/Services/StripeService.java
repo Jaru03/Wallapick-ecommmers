@@ -1,11 +1,9 @@
-package Wallapick.Servicios;
+package Wallapick.Services;
 
-import Wallapick.ModelosDTO.ProductoDTO;
-import com.stripe.Stripe;
+import Wallapick.ModelsDTO.ProductDTO;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,26 +12,26 @@ import java.util.List;
 @Service
 public class StripeService {
 
-   /* @Value("${stripe.secretKey}")
-    private String secretKey;*/
+    //@Value("${stripe.secretKey}")
+    //private String secretKey;
 
-    public Session checkoutProducts(List<ProductoDTO> productosDto) throws StripeException {
-
+    public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 
-        for (ProductoDTO productoDto : productosDto) {
-            long precioEnCentavos = Math.round(productoDto.getPrecio() * 100);
+        for (ProductDTO productDto : productsDto) {
+
+            long priceInCents = Math.round(productDto.getPrice() * 100);
 
             SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
-                    .setQuantity(1L)  // Si quieres permitir cantidad variable, deberías añadir ese atributo a ProductoDTO
+                    .setQuantity(1L)  // If you want to allow variable quantity, you should add that attribute to ProductDTO
                     .setPriceData(
                             SessionCreateParams.LineItem.PriceData.builder()
                                     .setCurrency("eur")
-                                    .setUnitAmount(precioEnCentavos)
+                                    .setUnitAmount(priceInCents)
                                     .setProductData(
                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                    .setName(productoDto.getNombre())
+                                                    .setName(productDto.getName())
                                                     .build()
                                     ).build()
                     ).build();
@@ -43,8 +41,8 @@ public class StripeService {
 
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://www.youtube.com/watch?v=BczS-wbxgp4")
-                .setCancelUrl("https://www.youtube.com/watch?v=BczS-wbxgp4")
+                .setSuccessUrl("https://www.google.com")
+                .setCancelUrl("https://www.google.com")
                 .addAllLineItem(lineItems)
                 .build();
 

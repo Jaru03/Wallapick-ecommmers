@@ -1,7 +1,7 @@
-package Wallapick.Controladores;
+package Wallapick.Controllers;
 
-import Wallapick.ModelosDTO.ProductoDTO;
-import Wallapick.Servicios.StripeService;
+import Wallapick.ModelsDTO.ProductDTO;
+import Wallapick.Services.StripeService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,24 +9,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/stripe")
 public class StripeController {
 
     @Autowired
-    StripeService stripeService;
+    private StripeService stripeService;
 
-    @PostMapping("/create-checkout-session")
-    public ResponseEntity<String> createCheckoutSession(@RequestBody List<ProductoDTO> productosDTO) {
+    @PostMapping("/createCheckoutSession")
+    public ResponseEntity<String> createCheckoutSession(@RequestBody List<ProductDTO> productsDTO) {
+
         try {
-            Session session = stripeService.checkoutProducts(productosDTO);
+
+            Session session = stripeService.checkoutProducts(productsDTO);
             return ResponseEntity.ok(session.getUrl());
+
         } catch (StripeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error creando la sesión: " + e.getMessage());
+                    .body("Error creating the session: " + e.getMessage());
         }
 
     }

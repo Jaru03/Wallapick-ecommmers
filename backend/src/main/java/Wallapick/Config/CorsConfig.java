@@ -10,15 +10,17 @@ public class CorsConfig {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
+
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")  // Aplica a todos los endpoints
-                        .allowedOrigins("http://localhost:4200")  // Tu frontend Angular
+                registry.addMapping("/**")  // Apply to all endpoints
+                        .allowedOrigins("http://localhost:4200")  // Frontend Angular
                         .allowedMethods("*") // GET, POST, PUT, DELETE, etc.
-                        .allowedHeaders("*") // Permite todos los headers
-                        .allowCredentials(true); // Opcional, si usas cookies o auth
+                        .allowedHeaders("*") // Allow all headers
+                        .allowCredentials(true); // Optional, if you use cookies or auth
             }
+
         };
     }
 }

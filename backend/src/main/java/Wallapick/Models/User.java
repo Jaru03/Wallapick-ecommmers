@@ -1,4 +1,4 @@
-package Wallapick.Modelos;
+package Wallapick.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Usuario {
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,32 +34,30 @@ public class Usuario {
     @NotBlank
     private String email;
 
-    // Productos vendidos
-    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Sold products
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Producto> vendidos = new ArrayList<>();
+    private List<Product> soldProducts = new ArrayList<>();
 
-    // Compras realizadas
-    @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Orders
+    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Compra>compras = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
     @Transient
     private String role = "UNLOGGED";
 
-    // Constructor vacío y getters/setters omitidos por brevedad...
+    public User() {}
 
-    public Usuario() {}
-
-    public Usuario(Long id, String username, String password, String name, String lastname, String email, List<Producto> vendidos, List<Compra> compras, String role) {
+    public User(Long id, String username, String password, String name, String lastname, String email, List<Product> soldProducts, List<Order> orders, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
-        this.vendidos = vendidos;
-        this.compras = compras;
+        this.soldProducts = soldProducts;
+        this.orders = orders;
         this.role = role;
     }
 
@@ -110,20 +109,20 @@ public class Usuario {
         this.email = email;
     }
 
-    public List<Producto> getVendidos() {
-        return vendidos;
+    public List<Product> getSoldProducts() {
+        return soldProducts;
     }
 
-    public void setVendidos(List<Producto> vendidos) {
-        this.vendidos = vendidos;
+    public void setSoldProducts(List<Product> soldProducts) {
+        this.soldProducts = soldProducts;
     }
 
-    public List<Compra> getCompras() {
-        return compras;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setCompras(List<Compra> compras) {
-        this.compras = compras;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     public String getRole() {
@@ -136,17 +135,16 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
-                ", vendidos=" + vendidos +
-                ", compras=" + compras +
+                ", soldProducts=" + soldProducts +
+                ", orders=" + orders +
                 ", role='" + role + '\'' +
                 '}';
     }
 }
-
