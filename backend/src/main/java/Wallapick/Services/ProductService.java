@@ -70,7 +70,7 @@ public class ProductService {
 
     public List<ProductDTO> searchProductsPartial(String partialName) {
 
-        List<Product> products = productRepository.findByPartialNameContainingIgnoreCase(partialName);
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(partialName);
 
         return products.stream()
                 .map(ProductDTO::new) // Use the constructor that converts from Product to ProductDTO

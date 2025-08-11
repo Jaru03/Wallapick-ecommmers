@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
     @Id

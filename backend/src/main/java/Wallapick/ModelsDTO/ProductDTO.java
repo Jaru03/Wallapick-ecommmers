@@ -42,8 +42,8 @@ public class ProductDTO {
         this.seller = new UserDTO(p.getSeller());
 
         // The order is only included if the product is not for sale
-        if (!this.forSale && p.getCompra() != null) {
-            this.orderDTO = new OrderDTO(p.getCompra(), false); // Avoid recursion
+        if (!this.forSale && p.getOrder() != null) {
+            this.orderDTO = new OrderDTO(p.getOrder(), false); // Avoid recursion
         }
     }
 

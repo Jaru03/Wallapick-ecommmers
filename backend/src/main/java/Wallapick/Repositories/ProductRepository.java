@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByPartialNameContainingIgnoreCase(String partialName);
+    List<Product> findByNameContainingIgnoreCase(String partialName);
     List<Product> findBySellerId(Long sellerId);
 }

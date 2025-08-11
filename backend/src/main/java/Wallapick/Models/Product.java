@@ -39,7 +39,7 @@ public class Product {
     private User seller;
 
     // 1:1 relationship with order (a product can be ordered only once)
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private Order order;
 
