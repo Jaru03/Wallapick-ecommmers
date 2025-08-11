@@ -17,6 +17,8 @@ public class StripeService {
 
     public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
+        // Add Stripe.apiKey = secretKey
+
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 
         for (ProductDTO productDto : productsDto) {
