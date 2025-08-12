@@ -19,7 +19,7 @@ public class StripeService {
 
     public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
-        // Stripe.apiKey = secretKey;
+        //Stripe.apiKey = secretKey;
 
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 

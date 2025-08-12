@@ -66,7 +66,7 @@ public class ProductController {
             return new Response<String>(500,"Product service unavailable.");
         }
 
-        return new Response<String>(200,productsTO);
+        return new Response<String>(200, productsTO);
     }
 
     @PatchMapping("")

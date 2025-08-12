@@ -115,7 +115,7 @@ public class ProductService {
             User user = jwtUser.getUser(token);
             Product existingProduct = productRepository.findById(product.getId()).orElse(null);
 
-            if (existingProduct != null && existingProduct.getSeller().getId().equals(user.getId())) {
+            if (existingProduct != null && existingProduct.getSeller().getId().equals(user.getId()) && existingProduct.isForSale()) {
 
                 existingProduct.setName(product.getName());
                 existingProduct.setDescription(product.getDescription());
@@ -147,7 +147,7 @@ public class ProductService {
             User user = jwtUser.getUser(token);
             Product product = productRepository.findById(id).orElse(null);
 
-            if (product != null && product.getSeller().getId() == user.getId()) {
+            if (product != null && product.getSeller().getId() == user.getId() && product.isForSale()) {
                 productRepository.delete(product);
                 return 1; // Success
             }

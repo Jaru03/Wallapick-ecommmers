@@ -4,6 +4,7 @@ import Wallapick.Models.Order;
 import Wallapick.Models.Product;
 import Wallapick.Models.User;
 import Wallapick.ModelsDTO.OrderDTO;
+import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Repositories.OrderRepository;
 import Wallapick.Repositories.ProductRepository;
 import Wallapick.Repositories.UserRepository;
@@ -47,32 +48,34 @@ public class OrderService {
         }
     }
 
-    public int orderProducts(ArrayList<Long> ids, String token) {
+    public List<ProductDTO> orderProducts(ArrayList<Long> ids, String token) {
 
         try {
 
             User buyer = jwtUser.getUser(token);
 
             if (!"LOGGED".equals(buyer.getRole())) {
-                return 0; // User not authorized
+                return null; // User not authorized
             }
+
+            List<ProductDTO> orderedProducts = new ArrayList<>();
 
             for (Long id : ids) {
 
                 Product product = productRepository.findById(id).orElse(null);
 
                 if (product == null || !product.isForSale()) {
-                    return -1; // Product not found or not for sale
+                    return null; // Product not found or not for sale
                 }
 
                 User seller = userRepository.findById(product.getSeller().getId()).orElse(null);
 
                 if (seller == null) {
-                    return -1; // Seller not found
+                    return null; // Seller not found
                 }
 
                 if(buyer.getId() == seller.getId()) {
-                    return -2; // Can't order your own product
+                    return null; // Can't order your own product
                 }
 
                 Order order = new Order(product, seller, buyer, new Date(), product.getPrice());
@@ -81,13 +84,17 @@ public class OrderService {
                 product.setForSale(false); // Mark as sold
                 product.setOrder(order); // Assign order
                 productRepository.save(product);
+
+                ProductDTO productDTO = new ProductDTO(product);
+                orderedProducts.add(productDTO);
+
             }
 
-            return 1; // Success
+            return orderedProducts; // Success
 
         } catch (Exception e) {
             e.printStackTrace();
-            return 2; // Error trying to order
+            return null; // Error trying to order
         }
     }
 }

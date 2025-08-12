@@ -54,7 +54,7 @@ public class Product {
         this.description = description;
         this.category = category;
         this.price = price;
-        this.forSale = forSale;
+        this.forSale = true;
         this.status = status;
         this.releaseDate = releaseDate;
         this.seller = seller;
