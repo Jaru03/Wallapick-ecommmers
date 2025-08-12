@@ -75,7 +75,7 @@ public class OrderService {
                     return -2; // Can't order your own product
                 }
 
-                Order order = new Order(product, seller, buyer,  new Date(), product.getPrice());
+                Order order = new Order(product, seller, buyer, new Date(), product.getPrice());
                 orderRepository.save(order);
 
                 product.setForSale(false); // Mark as sold

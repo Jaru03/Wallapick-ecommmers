@@ -1,5 +1,6 @@
 package Wallapick.Controllers;
 
+import Wallapick.Models.Response;
 import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Services.StripeService;
 import com.stripe.exception.StripeException;
@@ -22,16 +23,15 @@ public class StripeController {
     private StripeService stripeService;
 
     @PostMapping("/createCheckoutSession")
-    public ResponseEntity<String> createCheckoutSession(@RequestBody List<ProductDTO> productsDTO) {
+    public Response createCheckoutSession(@RequestBody List<ProductDTO> productsDTO) {
 
         try {
 
             Session session = stripeService.checkoutProducts(productsDTO);
-            return ResponseEntity.ok(session.getUrl());
+            return new Response<String>(200, session.getUrl());
 
         } catch (StripeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error creating the session: " + e.getMessage());
+            return new Response<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error creating the session: " + e.getMessage());
         }
 
     }

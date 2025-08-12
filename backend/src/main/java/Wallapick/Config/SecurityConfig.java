@@ -24,7 +24,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // Disable CSRF for APIs REST
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**", "/product/**", "/order/**", "/api/ebay/**", "/api/stripe").permitAll()  // Allow without authentication
+                        .requestMatchers("/user/**", "/product/**", "/order/**", "/api/ebay/**", "/api/stripe/**").permitAll()  // Allow without authentication
                         .anyRequest().authenticated()  // The rest requires authentication
                 )
                 .httpBasic(Customizer.withDefaults()); // Other authentication options

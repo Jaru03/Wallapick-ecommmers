@@ -1,9 +1,11 @@
 package Wallapick.Services;
 
 import Wallapick.ModelsDTO.ProductDTO;
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class StripeService {
 
     public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
-        // Add Stripe.apiKey = secretKey
+        // Stripe.apiKey = secretKey;
 
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 

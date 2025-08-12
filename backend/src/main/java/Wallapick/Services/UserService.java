@@ -27,9 +27,9 @@ public class UserService {
         if(existUser == null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            return "Registered.";
+            return "REGISTERED";
         }else{
-            return "Exists.";
+            return "EXISTED";
         }
     }
 
@@ -41,7 +41,7 @@ public class UserService {
             existUser.setRole("LOGGED");
             return jwtUser.generateToken(existUser);
         }else{
-            return "Access denied.";
+            return "ACCESS DENIED";
         }
 
     }
@@ -117,7 +117,7 @@ public class UserService {
             User userLogged = jwtUser.getUser(token);
             User existingUser = userRepository.findById(id).get();
 
-            if(userLogged.getRole().equals("LOGGED") || existingUser.getId().equals(userLogged.getId())) {
+            if(userLogged.getRole().equals("LOGGED") && existingUser.getId().equals(userLogged.getId())) {
                 userRepository.deleteById(id);
                 return true;
             }

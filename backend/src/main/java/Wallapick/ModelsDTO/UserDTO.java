@@ -15,7 +15,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String email, String name, String lastname, List<ProductDTO> vendedor, List<OrderDTO> compras) {
+    public UserDTO(Long id, String username, String email, String name, String lastname) {
         this.id = id;
         this.username = username;
         this.email = email;

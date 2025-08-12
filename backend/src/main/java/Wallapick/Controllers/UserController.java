@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Response searchUser(@PathVariable long id, @RequestHeader("Authorization") String token ){
+    public Response searchUser(@PathVariable long id, @RequestHeader("Authorization") String token){
 
         token = token.replace("Bearer ", "");
         UserDTO userDTO = userService.searchUser(id, token);
