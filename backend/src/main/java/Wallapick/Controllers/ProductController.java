@@ -20,7 +20,7 @@ public class ProductController {
     public Response createProduct(@RequestBody Product product, @RequestHeader("Authorization") String token){
 
         token = token.replace("Bearer ", "");
-        int response = productService.crearProducto(product, token);
+        int response = productService.createProduct(product, token);
 
         if (response == 0) {
             return new Response<String>(400,"Error creating the product. Please check de information.");
@@ -38,10 +38,10 @@ public class ProductController {
         List<ProductDTO> productsDTO = productService.searchProductsPartial(partialName);
 
         if (productsDTO.isEmpty()) {
-            return new Response<String>(204,"No products found with that string.");
+            return new Response<String>(204,"No products found with this name.");
         }
 
-        return new Response<String>(200, productsDTO);
+        return new Response<List<ProductDTO>>(200, productsDTO);
     }
 
     @GetMapping("/searchMyProducts")
@@ -58,15 +58,15 @@ public class ProductController {
     }
 
     @GetMapping("/searchAll")
-    public Response searchAll(){
+    public Response searchAll() {
 
-        List<ProductDTO> productsTO = productService.searchAll();
+        List<ProductDTO> productsDTO = productService.searchAll();
 
-        if(productsTO == null) {
+        if(productsDTO == null) {
             return new Response<String>(500,"Product service unavailable.");
         }
 
-        return new Response<String>(200, productsTO);
+        return new Response<String>(200, productsDTO);
     }
 
     @PatchMapping("")
@@ -97,7 +97,6 @@ public class ProductController {
             return  new Response<String>(400,"No product found or not authorized to delete.");
         }
 
-        return new Response<String>(200,"Error trying to delete the product. Please try again later.");
+        return new Response<String>(200, "Internal server error while deleting the product.");
     }
-
 }

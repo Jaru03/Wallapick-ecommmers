@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -19,6 +22,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private BlacklistService blacklistService;
 
     public String registerUser(User user){
 
@@ -37,8 +43,9 @@ public class UserService {
 
         User existUser = userRepository.findByUsername(user.getUsername());
 
-        if(existUser != null && passwordEncoder.matches(user.getPassword(),existUser.getPassword())){
+        if(existUser != null && passwordEncoder.matches(user.getPassword(), existUser.getPassword())){
             existUser.setRole("LOGGED");
+            userRepository.save(existUser);
             return jwtUser.generateToken(existUser);
         }else{
             return "ACCESS DENIED";
@@ -46,38 +53,42 @@ public class UserService {
 
     }
 
-    public UserDTO searchUser(long id, String token){
+    public boolean logoutUser(String token) {
 
         try {
 
-            jwtUser.getUser(token);
-            User user = userRepository.findById(id).get();
-            UserDTO userDTO = new UserDTO(user);
-            return userDTO;
+            long expiration = jwtUser.getExpirationDate(token).getTime() - System.currentTimeMillis();
+
+            if (expiration > 0) {
+                blacklistService.blacklistToken(token, expiration, TimeUnit.MILLISECONDS);
+                return true;
+            }
+
+            return false;
 
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public UserDTO searchUser(long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
             return null;
         }
+        return new UserDTO(user);
     }
 
     public Long searchId(String token) {
-
         try {
-
-            User userLogged = jwtUser.getUser(token);
-
-            if (userLogged != null && "LOGGED".equals(userLogged.getRole())) {
-                return userLogged.getId();
-            } else {
-                return null;
-            }
-
+            User user = jwtUser.getUser(token);
+            return user.getId();
         } catch (Exception e) {
             return null;
         }
     }
 
-    public boolean updateUser(User user, String token) {
+    public boolean updateUser(User user, String token){
 
         try {
 

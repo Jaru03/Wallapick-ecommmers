@@ -15,6 +15,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -31,7 +32,7 @@ public class ProductService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public int crearProducto(Product product, String token) {
+    public int createProduct(Product product, String token) {
 
         try {
 
@@ -50,21 +51,23 @@ public class ProductService {
 
                 // Calculate price with 30% tax
                 BigDecimal originalPrice = BigDecimal.valueOf(product.getPrice());
-                BigDecimal tax = originalPrice.multiply(BigDecimal.valueOf(0.30));
-                BigDecimal finalPrice = originalPrice.add(tax).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal taxRate = BigDecimal.valueOf(0.30);
+                BigDecimal taxAmount = originalPrice.multiply(taxRate);
+                BigDecimal finalPrice = originalPrice.add(taxAmount).setScale(2, RoundingMode.HALF_UP);
                 product.setPrice(finalPrice.doubleValue());
 
-                product.setReleaseDate(new Date());
+                product.setForSale(true);
                 productRepository.save(product);
+
+                // Update the product with the generated ID and final price
+                product.setId(product.getId());
+                product.setPrice(finalPrice.doubleValue());
 
                 return 1; // Success
             }
-
-            return 0; // User doesn't have the appropriate role
-
+            return 0; // User is not logged
         } catch (Exception e) {
-            e.printStackTrace();
-            return -1; // Intern error
+            return -1; // Internal server error
         }
     }
 
@@ -73,8 +76,9 @@ public class ProductService {
         List<Product> products = productRepository.findByNameContainingIgnoreCase(partialName);
 
         return products.stream()
-                .map(ProductDTO::new) // Use the constructor that converts from Product to ProductDTO
-                .toList();
+                .filter(Product::isForSale)
+                .map(ProductDTO::new)
+                .collect(Collectors.toList());
     }
 
     public List<ProductDTO> searchMyProducts(String token) {
@@ -104,8 +108,9 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
 
         return products.stream()
-                .map(ProductDTO::new) // Use the DTO constructor
-                .toList();
+                .filter(Product::isForSale)
+                .map(ProductDTO::new)
+                .collect(Collectors.toList());
     }
 
     public int updateProduct(Product product, String token) {
@@ -115,7 +120,7 @@ public class ProductService {
             User user = jwtUser.getUser(token);
             Product existingProduct = productRepository.findById(product.getId()).orElse(null);
 
-            if (existingProduct != null && existingProduct.getSeller().getId().equals(user.getId()) && existingProduct.isForSale()) {
+            if (existingProduct != null && existingProduct.getSeller().getId() == user.getId() && existingProduct.isForSale()) {
 
                 existingProduct.setName(product.getName());
                 existingProduct.setDescription(product.getDescription());
@@ -158,5 +163,4 @@ public class ProductService {
             return -1;
         }
     }
-
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -31,11 +33,15 @@ public class OrderService {
     @Autowired
     private JWTUser jwtUser;
 
+    @Autowired
+    private BlacklistService blacklistService;
+
     public List<OrderDTO> getOrdersUser(String token) {
 
         try {
 
-            User user = jwtUser.getUser(token); // Token validation
+            // JWT token validation is now handled by the JwtRequestFilter
+            User user = jwtUser.getUser(token);
             List<Order> orders = orderRepository.findByBuyerId(user.getId());
 
             // Convert entities to DTO
@@ -52,6 +58,7 @@ public class OrderService {
 
         try {
 
+            // JWT token validation is now handled by the JwtRequestFilter
             User buyer = jwtUser.getUser(token);
 
             if (!"LOGGED".equals(buyer.getRole())) {

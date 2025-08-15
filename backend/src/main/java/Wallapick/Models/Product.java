@@ -1,6 +1,7 @@
 package Wallapick.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -21,14 +22,15 @@ public class Product {
     private String description;
 
     @NotNull
-    private String category; // Not ENUM since it will be received from the frontend as a checkbox
+    private String category;
 
     @Positive
     private double price;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private boolean forSale = true;
 
-    private String status; // Not ENUM since it will be received from the frontend as a checkbox
+    private String status;
 
     @PastOrPresent
     @Temporal(TemporalType.DATE)
@@ -38,17 +40,14 @@ public class Product {
     @JoinColumn(name = "id_seller", nullable = false)
     private User seller;
 
-    // 1:1 relationship with order (a product can be ordered only once)
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     @JsonIgnore
     private Order order;
 
-    //private byte[] image;
-
     public Product() {
     }
 
-    public Product(Long id, String name, String description, String category, double price, boolean forSale, String status, Date releaseDate, User seller /*,byte[] image */) {
+    public Product(Long id, String name, String description, String category, double price, boolean forSale, String status, Date releaseDate, User seller) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -58,7 +57,6 @@ public class Product {
         this.status = status;
         this.releaseDate = releaseDate;
         this.seller = seller;
-        // this.image = image;
     }
 
     public Long getId() {
@@ -140,16 +138,6 @@ public class Product {
     public void setOrder(Order order) {
         this.order = order;
     }
-
-/*
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-*/
 
     @Override
     public String toString() {

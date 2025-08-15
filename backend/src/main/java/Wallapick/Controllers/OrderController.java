@@ -41,6 +41,5 @@ public class OrderController {
         }
 
         return new Response<List<ProductDTO>>(200, productsToOrder);
-
     }
 }

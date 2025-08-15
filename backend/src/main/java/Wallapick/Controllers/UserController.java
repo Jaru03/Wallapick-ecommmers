@@ -4,8 +4,12 @@ import Wallapick.Models.Response;
 import Wallapick.Models.User;
 import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Services.UserService;
+import Wallapick.Services.BlacklistService;
+import Wallapick.Utils.JWTUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/user")
@@ -13,6 +17,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JWTUser jwtUser;
+
+    @Autowired
+    private BlacklistService blacklistService;
 
     @PostMapping("")
     public Response registerUser(@RequestBody User user){
@@ -37,14 +47,27 @@ public class UserController {
         if(response.equalsIgnoreCase("ACCESS DENIED")){
             return new Response<String>(404,"User not found or incorrect password.");
         }
+
         return new Response<String>(200, response);
     }
 
-    @GetMapping("/{id}")
-    public Response searchUser(@PathVariable long id, @RequestHeader("Authorization") String token){
+    @PostMapping("/logout")
+    public Response logoutUser(@RequestHeader("Authorization") String token) {
 
         token = token.replace("Bearer ", "");
-        UserDTO userDTO = userService.searchUser(id, token);
+
+        if(userService.logoutUser(token)){
+            return new Response<String>(200, "Logout successful.");
+        }else {
+            return new Response<String>(400, "Invalid token.");
+        }
+
+    }
+
+    @GetMapping("/{id}")
+    public Response searchUser(@PathVariable long id, @RequestHeader("Authorization") String token) {
+
+        UserDTO userDTO = userService.searchUser(id);
 
         if(userDTO == null){
             return new Response<String>(404,"User not found.");
@@ -85,10 +108,9 @@ public class UserController {
         token = token.replace("Bearer ", "");
 
         if(userService.deleteUser(id, token)){
-            return new Response<String>(200,"User deleted successfully.");
+            return new Response<String>(200, "User deleted successfully.");
         } else {
             return new Response<String>(403,"Access denied.");
-
         }
     }
 }
