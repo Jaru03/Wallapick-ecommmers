@@ -10,6 +10,7 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String description;
+    private String category;
     private double price;
     private boolean forSale;
     private Date releaseDate;
@@ -21,10 +22,11 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String description, double price, boolean forSale, Date releaseDate, UserDTO seller, OrderDTO orderDTO) {
+    public ProductDTO(Long id, String name, String description, String category, double price, boolean forSale, Date releaseDate, UserDTO seller, OrderDTO orderDTO) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.category = category;
         this.price = price;
         this.forSale = forSale;
         this.releaseDate = releaseDate;
@@ -36,6 +38,7 @@ public class ProductDTO {
         this.id = p.getId();
         this.name = p.getName();
         this.description = p.getDescription();
+        this.category = p.getCategory();
         this.price = p.getPrice();
         this.forSale = p.isForSale();
         this.releaseDate = p.getReleaseDate();
@@ -69,6 +72,14 @@ public class ProductDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public double getPrice() {

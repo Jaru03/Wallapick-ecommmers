@@ -3,7 +3,6 @@ package Wallapick.Services;
 import Wallapick.Models.Order;
 import Wallapick.Models.Product;
 import Wallapick.Models.User;
-import Wallapick.ModelsDTO.OrderDTO;
 import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Repositories.OrderRepository;
 import Wallapick.Repositories.ProductRepository;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +34,7 @@ public class OrderService {
     @Autowired
     private BlacklistService blacklistService;
 
-    public List<OrderDTO> getOrdersUser(String token) {
+    public List<ProductDTO> getOrdersUser(String token) {
 
         try {
 
@@ -44,10 +42,13 @@ public class OrderService {
             User user = jwtUser.getUser(token);
             List<Order> orders = orderRepository.findByBuyerId(user.getId());
 
-            // Convert entities to DTO
-            return orders.stream()
-                    .map(order -> new OrderDTO(order,false)) // Use the constructor with a flag to avoid recursion
-                    .toList();
+            // Get the list of products of the orders
+            List<ProductDTO> productsDTO = orders.stream()
+                    .map(Order::getProducto) // Access to the product of each order
+                    .map(product -> new ProductDTO(product)) // Convert each product to a productDTO
+                    .collect(Collectors.toList());
+
+            return productsDTO;
 
         } catch (Exception e) {
             return new ArrayList<>();
@@ -60,10 +61,6 @@ public class OrderService {
 
             // JWT token validation is now handled by the JwtRequestFilter
             User buyer = jwtUser.getUser(token);
-
-            if (!"LOGGED".equals(buyer.getRole())) {
-                return null; // User not authorized
-            }
 
             List<ProductDTO> orderedProducts = new ArrayList<>();
 

@@ -45,12 +45,9 @@ public class User {
     @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
-    @Transient
-    private String role = "UNLOGGED";
-
     public User() {}
 
-    public User(Long id, String username, String password, String name, String lastname, String email, List<Product> soldProducts, List<Order> orders, String role) {
+    public User(Long id, String username, String password, String name, String lastname, String email, List<Product> soldProducts, List<Order> orders) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -59,7 +56,6 @@ public class User {
         this.email = email;
         this.soldProducts = soldProducts;
         this.orders = orders;
-        this.role = role;
     }
 
     public Long getId() {
@@ -126,14 +122,6 @@ public class User {
         this.orders = orders;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -145,7 +133,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", soldProducts=" + soldProducts +
                 ", orders=" + orders +
-                ", role='" + role + '\'' +
                 '}';
     }
 }

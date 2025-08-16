@@ -37,35 +37,30 @@ public class ProductService {
         try {
 
             User user = jwtUser.getUser(token);
+            User seller = userRepository.findById(user.getId()).orElse(null);
 
-            if (user.getRole().equalsIgnoreCase("LOGGED")) {
-
-                User seller = userRepository.findById(user.getId())
-                        .orElse(null);
-
-                if (seller == null) {
-                    return 0;
-                }
-
-                product.setSeller(seller);
-
-                // Calculate price with 30% tax
-                BigDecimal originalPrice = BigDecimal.valueOf(product.getPrice());
-                BigDecimal taxRate = BigDecimal.valueOf(0.30);
-                BigDecimal taxAmount = originalPrice.multiply(taxRate);
-                BigDecimal finalPrice = originalPrice.add(taxAmount).setScale(2, RoundingMode.HALF_UP);
-                product.setPrice(finalPrice.doubleValue());
-
-                product.setForSale(true);
-                productRepository.save(product);
-
-                // Update the product with the generated ID and final price
-                product.setId(product.getId());
-                product.setPrice(finalPrice.doubleValue());
-
-                return 1; // Success
+            if (seller == null) {
+                return 0;
             }
-            return 0; // User is not logged
+
+            product.setSeller(seller);
+
+            // Calculate price with 30% tax
+            BigDecimal originalPrice = BigDecimal.valueOf(product.getPrice());
+            BigDecimal taxRate = BigDecimal.valueOf(0.30);
+            BigDecimal taxAmount = originalPrice.multiply(taxRate);
+            BigDecimal finalPrice = originalPrice.add(taxAmount).setScale(2, RoundingMode.HALF_UP);
+            product.setPrice(finalPrice.doubleValue());
+
+            product.setForSale(true);
+            productRepository.save(product);
+
+            // Update the product with the generated ID and final price
+            product.setId(product.getId());
+            product.setPrice(finalPrice.doubleValue());
+
+            return 1; // Success
+
         } catch (Exception e) {
             return -1; // Internal server error
         }
@@ -86,24 +81,18 @@ public class ProductService {
         try {
 
             User user = jwtUser.getUser(token); // It can throw an exception if the token is invalid
+            List<Product> products = productRepository.findBySellerId(user.getId());
 
-            if ("LOGGED".equals(user.getRole())) {
+            return products.stream()
+                    .map(ProductDTO::new)
+                    .toList();
 
-                List<Product> products = productRepository.findBySellerId(user.getId());
-
-                return products.stream()
-                        .map(ProductDTO::new)
-                        .toList();
-
-            } else {
-                return new ArrayList<>();
-            }
         } catch (Exception e) {
             return new ArrayList<>();
         }
     }
 
-    public List<ProductDTO> searchAll() {
+    public List<ProductDTO> getAll() {
 
         List<Product> products = productRepository.findAll();
 

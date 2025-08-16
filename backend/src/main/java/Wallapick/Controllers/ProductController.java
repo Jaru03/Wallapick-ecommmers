@@ -57,10 +57,10 @@ public class ProductController {
         return new Response<String>(200, productsDTO);
     }
 
-    @GetMapping("/searchAll")
-    public Response searchAll() {
+    @GetMapping("/getAll")
+    public Response getAll() {
 
-        List<ProductDTO> productsDTO = productService.searchAll();
+        List<ProductDTO> productsDTO = productService.getAll();
 
         if(productsDTO == null) {
             return new Response<String>(500,"Product service unavailable.");

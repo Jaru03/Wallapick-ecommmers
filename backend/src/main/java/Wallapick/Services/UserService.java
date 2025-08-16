@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -44,7 +44,6 @@ public class UserService {
         User existUser = userRepository.findByUsername(user.getUsername());
 
         if(existUser != null && passwordEncoder.matches(user.getPassword(), existUser.getPassword())){
-            existUser.setRole("LOGGED");
             userRepository.save(existUser);
             return jwtUser.generateToken(existUser);
         }else{
@@ -95,19 +94,79 @@ public class UserService {
             User userLogged = jwtUser.getUser(token);
             User existingUser = userRepository.findById(user.getId()).orElse(null);
 
+            String username = existingUser.getUsername();
+            String name = existingUser.getName();
+            String lastname = existingUser.getLastname();
+            String email = existingUser.getEmail();
+
             if (existingUser == null) {
                 return false;
             }
 
-            if (userLogged.getRole().equals("LOGGED") && existingUser.getId().equals(userLogged.getId())) {
+            if (existingUser.getId().equals(userLogged.getId())) {
 
-                existingUser.setUsername(user.getUsername());
-                existingUser.setName(user.getName());
-                existingUser.setLastname(user.getLastname());
-                existingUser.setEmail(user.getEmail());
+                List<User> users = userRepository.findAll();
 
-                if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-                    existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                // Check email is not used
+                int i = 0;
+                boolean emailFound = false;
+
+                if(user.getEmail() != null){
+
+                    while (!emailFound && i < users.size()){
+                        if (users.get(i).getEmail().equals(user.getEmail())){
+                            emailFound = true;
+                        }
+                        i++;
+                    }
+
+                    if(!emailFound){
+
+                        existingUser.setEmail(user.getEmail());
+                        user.setUsername(username);
+
+                        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                        }
+
+                        if (user.getName() != null && !user.getName().isEmpty()){
+                            existingUser.setName(user.getName());
+                        }else {
+                            user.setName(name);
+                        }
+
+                        if (user.getLastname() != null && !user.getLastname().isEmpty()){
+                            existingUser.setLastname(user.getLastname());
+                        }else {
+                            user.setLastname(lastname);
+                        }
+
+                    }else {
+                        return false;
+                    }
+
+                }else {
+
+                    user.setUsername(username);
+
+                    if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                    }
+
+                    if (user.getName() != null && !user.getName().isEmpty()){
+                        existingUser.setName(user.getName());
+                    }else {
+                        user.setName(name);
+                    }
+
+                    if (user.getLastname() != null && !user.getLastname().isEmpty()){
+                        existingUser.setLastname(user.getLastname());
+                    }else {
+                        user.setLastname(lastname);
+                    }
+
+                    user.setEmail(email);
+
                 }
 
                 userRepository.save(existingUser);
@@ -128,7 +187,7 @@ public class UserService {
             User userLogged = jwtUser.getUser(token);
             User existingUser = userRepository.findById(id).get();
 
-            if(userLogged.getRole().equals("LOGGED") && existingUser.getId().equals(userLogged.getId())) {
+            if(existingUser.getId().equals(userLogged.getId())) {
                 userRepository.deleteById(id);
                 return true;
             }

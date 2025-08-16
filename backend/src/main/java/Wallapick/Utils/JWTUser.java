@@ -24,7 +24,6 @@ public class JWTUser {
         return Jwts.builder()
                 .claim("id", user.getId())
                 .claim("username", user.getUsername())
-                .claim("role", user.getRole())
                 .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(key, Jwts.SIG.HS256)
                 .compact();
@@ -36,8 +35,6 @@ public class JWTUser {
         User user = new User();
         user.setId(claims.get("id", Long.class));
         user.setUsername(claims.get("username", String.class));
-        user.setRole(claims.get("role", String.class));
-
         return user;
     }
 

@@ -2,8 +2,6 @@ package Wallapick.ModelsDTO;
 
 import Wallapick.Models.User;
 
-import java.util.List;
-
 public class UserDTO {
 
     private Long id;
