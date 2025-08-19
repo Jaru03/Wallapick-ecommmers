@@ -3,6 +3,7 @@ package Wallapick.Services;
 import Wallapick.Models.Product;
 import Wallapick.Models.User;
 import Wallapick.ModelsDTO.ProductDTO;
+import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Repositories.OrderRepository;
 import Wallapick.Repositories.ProductRepository;
 import Wallapick.Repositories.UserRepository;
@@ -90,6 +91,18 @@ public class ProductService {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+
+    public ProductDTO getProduct(long id){
+
+        Product product = productRepository.findById(id).orElse(null);
+
+        if (product == null){
+            return null;
+        }
+
+        return new ProductDTO(product);
+
     }
 
     public List<ProductDTO> getAll() {
