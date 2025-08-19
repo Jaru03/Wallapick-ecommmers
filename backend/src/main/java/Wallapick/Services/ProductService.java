@@ -3,7 +3,6 @@ package Wallapick.Services;
 import Wallapick.Models.Product;
 import Wallapick.Models.User;
 import Wallapick.ModelsDTO.ProductDTO;
-import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Repositories.OrderRepository;
 import Wallapick.Repositories.ProductRepository;
 import Wallapick.Repositories.UserRepository;
