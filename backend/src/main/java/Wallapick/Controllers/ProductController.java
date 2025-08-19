@@ -57,6 +57,20 @@ public class ProductController {
         return new Response<String>(200, productsDTO);
     }
 
+    @GetMapping("/{id}")
+    public Response getProduct(@PathVariable long id){
+
+        ProductDTO productDTO = new ProductDTO();
+        productDTO = productService.getProduct(id);
+
+        if (productDTO != null) {
+            return new Response<ProductDTO>(200, productDTO);
+        } else {
+            return new Response<String>(404, "Product not found");
+        }
+
+    }
+
     @GetMapping("/getAll")
     public Response getAll() {
 
