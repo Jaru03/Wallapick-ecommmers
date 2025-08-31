@@ -44,10 +44,13 @@ public class Product {
     @JsonIgnore
     private Order order;
 
+    @NotNull
+    private String image;
+
     public Product() {
     }
 
-    public Product(Long id, String name, String description, String category, double price, boolean forSale, String status, Date releaseDate, User seller) {
+    public Product(Long id, String name, String description, String category, double price, boolean forSale, String status, Date releaseDate, User seller, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,6 +60,7 @@ public class Product {
         this.status = status;
         this.releaseDate = releaseDate;
         this.seller = seller;
+        this.image = image;
     }
 
     public Long getId() {
@@ -137,6 +141,14 @@ public class Product {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

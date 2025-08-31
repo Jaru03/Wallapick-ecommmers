@@ -92,6 +92,18 @@ public class ProductService {
         }
     }
 
+    public ProductDTO getProduct(long id){
+
+        Product product = productRepository.findById(id).orElse(null);
+
+        if (product == null){
+            return null;
+        }
+
+        return new ProductDTO(product);
+
+    }
+
     public List<ProductDTO> getAll() {
 
         List<Product> products = productRepository.findAll();
