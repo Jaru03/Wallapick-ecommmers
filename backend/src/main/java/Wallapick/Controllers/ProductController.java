@@ -4,8 +4,11 @@ import Wallapick.Models.Product;
 import Wallapick.Models.Response;
 import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Services.ProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,12 +32,12 @@ public class ProductController {
         int response = productService.createProduct(product, image, token);
 
         if (response == 0) {
-            return new Respuesta(400,"Error creating the product. Please check the information.");
+            return new Response(400,"Error creating the product. Please check the information.");
         } else if (response == 1) {
-            ProductoDTO productDTO = new ProductoDTO(product);
-            return new Respuesta<ProductoDTO>(200, productDTO);
+            ProductDTO productDTO = new ProductDTO(product);
+            return new Response<ProductDTO>(200, productDTO);
         } else {
-            return new Respuesta(500,"Internal server error while creating the product.");
+            return new Response(500,"Internal server error while creating the product.");
         }
     }
     /*
