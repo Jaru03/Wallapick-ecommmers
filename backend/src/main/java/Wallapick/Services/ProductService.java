@@ -31,7 +31,7 @@ public class ProductService {
 
     @Autowired
     private OrderRepository orderRepository;
-
+    /*
     public int createProduct(Product product, String token) {
 
         try {
@@ -63,6 +63,37 @@ public class ProductService {
 
         } catch (Exception e) {
             return -1; // Internal server error
+        }
+    }*/
+    public int createProduct(Product product, MultipartFile image, String token) {
+        try {
+            User user = jwtUser.getUser(token);
+            User seller = usurRepository.findById(user.getId()).orElse(null);
+
+            if (seller == null) {
+                return 0;
+            }
+
+            // Subir imagen a Cloudinary
+            Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+            String imageUrl = (String) uploadResult.get("secure_url");
+
+            // Guardar datos del producto
+            product.setSeller(seller);
+            product.setImage(imageUrl); // Guardamos la URL en la BD
+
+            BigDecimal originalPrice = BigDecimal.valueOf(producto.getPrecio());
+            BigDecimal taxRate = BigDecimal.valueOf(0.30);
+            BigDecimal taxAmount = originalPrice.multiply(taxRate);
+            BigDecimal finalPrice = originalPrice.add(taxAmount).setScale(2, RoundingMode.HALF_UP);
+            product.setPrice(finalPrice.doubleValue());
+
+            product.setForSale(true);
+            productRepository.save(producto);
+
+            return 1; // Éxito
+        } catch (Exception e) {
+            return -1; // Error interno
         }
     }
 
