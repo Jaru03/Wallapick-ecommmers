@@ -71,6 +71,7 @@ public class UserService {
     }
 
     public UserDTO searchUser(long id) {
+
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
             return null;

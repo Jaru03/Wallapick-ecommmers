@@ -194,14 +194,32 @@ public class EbayService {
         return response.getBody();
     }
 
-    // ====================== Get categories ======================
+    // ====================== Obtener categoryTreeId ======================
+    private String getCategoryTreeId() {
+        String url = "https://api.ebay.com/commerce/taxonomy/v1/get_default_category_tree_id?marketplace_id=EBAY_ES";
 
-    public Map getCategories() {
-
-        String url = "https://api.ebay.com/commerce/v1/category_tree";
 
         HttpHeaders headers = buildHeaders();
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
 
+        ResponseEntity<Map> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                Map.class
+        );
+
+        Map body = response.getBody();
+        return (String) body.get("categoryTreeId");
+    }
+
+    // ====================== Obtener categorías ======================
+    public Map getCategories() {
+        String categoryTreeId = getCategoryTreeId();
+        String url = "https://api.ebay.com/commerce/taxonomy/v1/category_tree/" + categoryTreeId;
+
+
+        HttpHeaders headers = buildHeaders();
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<Map> response = restTemplate.exchange(
@@ -214,3 +232,4 @@ public class EbayService {
         return response.getBody();
     }
 }
+

@@ -4,8 +4,11 @@ import Wallapick.Models.Product;
 import Wallapick.Models.Response;
 import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Services.ProductService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,6 +19,28 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @PostMapping(value = "", consumes = {"multipart/form-data"})
+    public Response createProduct(
+            @RequestPart("product") String productJson,
+            @RequestPart("image") MultipartFile image,
+            @RequestHeader("Authorization") String token) throws JsonProcessingException {
+
+        // Convertir JSON a objeto Producto
+        Product product = new ObjectMapper().readValue(productJson, Product.class);
+
+        token = token.replace("Bearer ", "");
+        int response = productService.createProduct(product, image, token);
+
+        if (response == 0) {
+            return new Response(400,"Error creating the product. Please check the information.");
+        } else if (response == 1) {
+            ProductDTO productDTO = new ProductDTO(product);
+            return new Response<ProductDTO>(200, productDTO);
+        } else {
+            return new Response(500,"Internal server error while creating the product.");
+        }
+    }
+    /*
     @PostMapping("")
     public Response createProduct(@RequestBody Product product, @RequestHeader("Authorization") String token){
 
@@ -30,7 +55,7 @@ public class ProductController {
         } else {
             return new Response<String>(500,"Internal server error while creating the product.");
         }
-    }
+    }*/
 
     @GetMapping("/searchProductsPartial")
     public Response searchProductsPartial(@RequestParam String partialName) {

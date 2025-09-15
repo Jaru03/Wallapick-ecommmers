@@ -38,15 +38,19 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation'com.stripe:stripe-java:24.+'
 
-	// Cliente HTTP simple
+	// Cloudinary
+	implementation 'com.cloudinary:cloudinary-http5:2.0.0'
+
+	// Client HTTP
 	implementation 'org.springframework.boot:spring-boot-starter'
 
-	// Para serialización JSON (ya incluido en web starter)
+	// For JSON serialization (already included in the web starter)
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
-	// STRIPE
+	// Stripe
 	implementation 'com.stripe:stripe-java:24.+'
 
+	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
