@@ -91,7 +91,7 @@
                                     class="flex-auto whitespace-nowrap"
                                     outlined
                                     ></button>
-                                    <button label="Ver Producto" class="col-span-full" severity="secondary" routerLink="/products/1" pButton icon="pi pi-eye" ></button>
+                                    <button label="Ver Producto" class="col-span-full" severity="secondary" [routerLink]="['/products/', product.id]" pButton icon="pi pi-eye" ></button>
                                 </div>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { ProductoComponent } from '../../components/producto-component/producto-component';
@@ -8,7 +8,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { Card } from "primeng/card";
 import { Carousel } from "primeng/carousel";
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-page',
@@ -17,6 +17,10 @@ import { RouterModule } from '@angular/router';
   styleUrl: './product-page.css',
 })
 export class ProductPage {
+  route = inject(ActivatedRoute)
+  id = this.route.snapshot.paramMap.get('id')
+  rating = 5;
+
   items = [
     { label: 'Home', icon: 'pi pi-home', routerLink: '/' },
     { label: 'Computer' },
@@ -24,8 +28,6 @@ export class ProductPage {
     { label: 'Keyboard' },
     { label: 'Wireless' },
   ];
-
-  rating = 5;
 
   responsiveOptions = [
   {
@@ -49,7 +51,6 @@ export class ProductPage {
     numScroll: 1,
   },
 ];
-
 
    products = [
     [{

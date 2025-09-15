@@ -28,8 +28,8 @@ import { LoginService } from '../../services/login-service';
     ButtonModule,
     ReactiveFormsModule,
     Message,
-    Toast,
-  ],
+    Toast
+],
   templateUrl: './register-page.html',
   styleUrl: './register-page.css',
   providers: [MessageService],
@@ -73,15 +73,22 @@ export class RegisterPage {
     console.log(this.form.value);
 
     this.auth.register(this.form.value).subscribe((data: any) => {
-      if (data.codigo === 200) {
+      
+      if (data.code === 200) {
         this.messageService.add({
           severity: 'success',
           summary: 'Registrado Correctamente',
-          detail: 'Redirigiendo al login...',
+          detail: 'Registrado.',
         });
         setTimeout(() => {
           this.route.navigate(['/login']);
         }, 1000);
+      }else{
+        this.messageService.add({
+          severity: 'error',
+          summary: `Error ${data.code}`,
+          detail: data.data,
+        });
       }
     });
   }

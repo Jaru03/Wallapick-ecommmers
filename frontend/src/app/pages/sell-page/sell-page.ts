@@ -1,10 +1,12 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Card } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
+import { ProductService } from '../../services/product-service';
+import { MessageService } from 'primeng/api';
 
 type Category = {
   title: string;
@@ -21,12 +23,49 @@ type Category = {
     TextareaModule,
     ButtonModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './sell-page.html',
   styleUrl: './sell-page.css',
 })
 export class SellPage {
   categorySelect = signal<string>('');
+  form: FormGroup;
+  formBuilder =  inject(FormBuilder);
+  productService = inject(ProductService)
+  messageService = inject(MessageService)
+
+  constructor() {
+    this.form = this.formBuilder.group({
+      name: [''],
+      description: [''],
+      category: [''],
+      price: [''],
+      status: ['']
+    })
+  }
+
+  onSubmit(){
+    const price = +this.form.get("price")?.value
+    this.form.get("price")?.setValue(price)
+    console.log(this.form.value);
+    
+    this.productService.createProduct(this.form.value).subscribe((data:any) => {
+      if (data.code === 200) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Producto Creado',
+          detail: 'Creado.',
+        });
+      }else{
+        this.messageService.add({
+          severity: 'error',
+          summary: `Error ${data.code}`,
+          detail: data.data,
+        });
+      }
+    })
+  }
 
   categories: string[] = [
     'Tecnología',

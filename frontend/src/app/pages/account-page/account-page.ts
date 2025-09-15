@@ -8,6 +8,7 @@ import { ComprasComponent } from "../../components/compras-component/compras-com
 import { VentasComponent } from "../../components/ventas-component/ventas-component";
 import { FavoritosComponent } from "../../components/favoritos-component/favoritos-component";
 import { LoginService } from '../../services/login-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-page',
@@ -19,6 +20,7 @@ export class AccountPage {
   options: string[] = ["Mi Perfil", "Mis Compras", "Mis Ventas","Mis Favoritos"]
   optionSelected = ''
   loginService = inject(LoginService);
+  router = inject(Router)
 
   handlerOption(option: string){
     this.optionSelected = option
@@ -26,7 +28,8 @@ export class AccountPage {
   }
 
   logOut(){
-    this.loginService.logout()
+    this.loginService.logout().subscribe();
+    this.router.navigate(['/'])
   }
 
 }

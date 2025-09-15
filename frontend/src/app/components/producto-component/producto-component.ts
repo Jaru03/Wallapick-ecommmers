@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 export class ProductoComponent {
   layout = input<'grid' | 'list'>('grid');
 
+  
   product = input<any>([{
     id: '1000',
     name: 'Bamboo Watch',

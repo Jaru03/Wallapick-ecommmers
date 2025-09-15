@@ -1,7 +1,7 @@
 <section class="flex justify-center items-center">
   <div class="w-full max-w-xl mx-auto flex items-center justify-center p-4">
     <p-card header="Vender Producto">
-      <form class="grid justify-center gap-2 pt-3">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid justify-center gap-2 pt-3">
         <label>
           Titulo del Producto
           <input
@@ -9,11 +9,12 @@
             class="w-full min-w-0"
             type="text"
             placeholder="Portatil Lenovo"
+            formControlName="name"
           />
         </label>
         <label>
           Precio
-          <input pInputText class="w-full" type="text" placeholder="200€" />
+          <input pInputText class="w-full" type="text" placeholder="200€" formControlName="price" />
         </label>
         <label>
           Categoría
@@ -23,6 +24,8 @@
             [(ngModel)]="categorySelect"
             placeholder="Selecciona una Categoría"
             class="w-full"
+            formControlName="category"
+
           />
         </label>
         <label>
@@ -40,13 +43,15 @@
             [options]="states"
             placeholder="Estado del Producto"
             class="w-full"
+            formControlName="status"
+            
           />
         </label>
         
 
         <label>
           Descripcion
-          <textarea pTextarea [autoResize]="true" class="w-full"></textarea>
+          <textarea pTextarea [autoResize]="true" class="w-full" formControlName="description"></textarea>
         </label> 
          <div class="flex items-center justify-between pr-4 gap-4 mb-4">
           <label

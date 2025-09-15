@@ -7,7 +7,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { MyPreset } from './utils/myPresetPrimeNg';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
+import { jwtInterceptor } from './interceptors/jwt-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,12 +20,13 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'enabled',
       })),
     provideAnimations(),
+    MessageService,
     provideAnimationsAsync(),
         providePrimeNG({
             theme: {
                 preset: MyPreset
             }
         }),
-    provideHttpClient()
+    provideHttpClient(withInterceptors([jwtInterceptor]))
   ]
 };

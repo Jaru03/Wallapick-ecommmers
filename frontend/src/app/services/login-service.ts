@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 type LoginData = {
   username: string;
@@ -26,7 +26,7 @@ export class LoginService {
   login(userData: LoginData) {
     return this.http.post(`${this.baseUrl}/user/login`, userData).pipe(
       map((response: any) => {
-        if (response.codigo === 200) {
+        if (response.code === 200) {
         localStorage.setItem('token', response.data);}
         console.log(response);
       })
@@ -39,13 +39,14 @@ export class LoginService {
 
   logout() {
     localStorage.removeItem('token');
+    return this.http.post(`${this.baseUrl}/user/logout`, null);
   }
 
-  toggle() {
+  toggle():void {
     this.isLogged.update((value) => !value);
   }
 
-  userLogged():boolean{
+  userLogged():boolean {
     if (localStorage.getItem('token')) {
       return true;
     }

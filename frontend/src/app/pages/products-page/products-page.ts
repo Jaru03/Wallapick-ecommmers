@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, linkedSignal, OnInit } from '@angular/core';
 import { ProductoComponent } from '../../components/producto-component/producto-component';
 import { DividerModule } from 'primeng/divider';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Checkbox } from 'primeng/checkbox';
 import { Card } from "primeng/card";
 import { CommonModule } from '@angular/common';
+import { ProductService } from '../../services/product-service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-products-page',
@@ -15,12 +17,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './products-page.html',
   styleUrl: './products-page.css',
 })
-export class ProductsPage {
+export class ProductsPage{
   rangeValues: number[] = [0, 2000];
   estadoSeleccionado : string[]= []
   isView:boolean = false;
+  productsService = inject(ProductService)
+  products:any = linkedSignal(toSignal(this.productsService.getAllProducts(), {initialValue: []}))
 
   filterVisibility(){
     this.isView = !this.isView;
   }
+
 }

@@ -46,7 +46,10 @@ export class LoginPage {
 
   onSubmit() {
     console.log(this.form.value);
-    this.loginService.login(this.form.value).subscribe()
-    this.route.navigate(['/'])
+    this.loginService.login(this.form.value).subscribe({
+      next: () => {
+        this.route.navigate(['/'])
+      }
+    })
   }
 }
