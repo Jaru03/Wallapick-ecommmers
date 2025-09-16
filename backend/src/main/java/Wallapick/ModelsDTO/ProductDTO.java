@@ -14,6 +14,7 @@ public class ProductDTO {
     private double price;
     private boolean forSale;
     private Date releaseDate;
+    private String image;
     private UserDTO seller;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,7 +23,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String description, String category, double price, boolean forSale, Date releaseDate, UserDTO seller, OrderDTO orderDTO) {
+    public ProductDTO(Long id, String name, String description, String category, double price, boolean forSale, Date releaseDate,String image, UserDTO seller, OrderDTO orderDTO) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,6 +31,7 @@ public class ProductDTO {
         this.price = price;
         this.forSale = forSale;
         this.releaseDate = releaseDate;
+        this.image = image;
         this.seller = seller;
         this.orderDTO = orderDTO;
     }
@@ -42,6 +44,7 @@ public class ProductDTO {
         this.price = p.getPrice();
         this.forSale = p.isForSale();
         this.releaseDate = p.getReleaseDate();
+        this.image = p.getImage();
         this.seller = new UserDTO(p.getSeller());
 
         // The order is only included if the product is not for sale
@@ -104,6 +107,14 @@ public class ProductDTO {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public UserDTO getSeller() {
