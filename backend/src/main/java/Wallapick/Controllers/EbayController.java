@@ -1,12 +1,14 @@
 package Wallapick.Controllers;
 
+import Wallapick.Models.ItemEbay;
 import Wallapick.Services.EbayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/ebay")
 @CrossOrigin // To allow calls from frontend Angular
 public class EbayController {
 
@@ -26,4 +28,11 @@ public class EbayController {
     public ResponseEntity<?> getCategories() {
         return ResponseEntity.ok(ebayService.getCategories());
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> getItemsByCategory(@PathVariable String categoryId) {
+        List<ItemEbay> items = ebayService.getItemsByCategory(categoryId);
+        return ResponseEntity.ok(items);
+    }
+
 }
