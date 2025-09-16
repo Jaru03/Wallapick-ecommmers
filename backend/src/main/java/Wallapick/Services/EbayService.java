@@ -3,6 +3,7 @@ package Wallapick.Services;
 import Wallapick.Models.ItemEbay;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,11 +15,11 @@ import java.util.Map;
 @Service
 public class EbayService {
 
-    // @Value("${ebay.client.id}")
-    // private String clientId;
+     @Value("${ebay.client.id}")
+     private String clientId;
 
-    // @Value("${ebay.client.secret}")
-    // private String clientSecret;
+     @Value("${ebay.client.secret}")
+     private String clientSecret;
 
     private String accessToken;
     private long tokenExpirationTime = 0;

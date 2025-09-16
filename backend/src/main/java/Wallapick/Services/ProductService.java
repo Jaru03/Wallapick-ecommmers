@@ -94,6 +94,7 @@ public class ProductService {
             BigDecimal taxAmount = originalPrice.multiply(taxRate);
             BigDecimal finalPrice = originalPrice.add(taxAmount).setScale(2, RoundingMode.HALF_UP);
             product.setPrice(finalPrice.doubleValue());
+            product.setStatus(product.getStatus());
 
             product.setForSale(true);
             productRepository.save(product);

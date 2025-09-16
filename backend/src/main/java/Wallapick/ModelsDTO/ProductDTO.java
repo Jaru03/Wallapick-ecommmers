@@ -16,6 +16,7 @@ public class ProductDTO {
     private Date releaseDate;
     private String image;
     private UserDTO seller;
+    private String status;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private OrderDTO orderDTO;
