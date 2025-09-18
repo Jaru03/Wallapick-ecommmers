@@ -14,10 +14,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 1000)
     @NotBlank
     private String name;
 
-    @NotBlank
+    //@NotBlank
     @Column(length = 1000)
     private String description;
 
@@ -37,7 +38,7 @@ public class Product {
     private Date releaseDate = new Date();
 
     @ManyToOne
-    @JoinColumn(name = "id_seller", nullable = false)
+    @JoinColumn(name = "id_seller", nullable = true)
     private User seller;
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
@@ -45,23 +46,53 @@ public class Product {
     private Order order;
 
     @NotNull
+    @Column(length = 1000)
     private String image;
+
+    @Column(length = 1000)
+    private String urlEbayProduct;
+
+    private String idEbay;
 
     public Product() {
     }
 
-    public Product(Long id, String name, String description, String category, double price, boolean forSale, String status, Date releaseDate, User seller, String image) {
+    public Product(Long id, String name, String description, String category, double price, boolean forSale, String status, Date releaseDate, User seller, String image, String idEbay) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
         this.price = price;
+        this.idEbay = idEbay;
         this.forSale = true;
         this.status = status;
         this.releaseDate = releaseDate;
         this.seller = seller;
         this.image = image;
     }
+    public Product(ItemEbay e, String category) {
+        this.name = e.getTitle();
+        if(e.getShortDescription() == null){
+            this.description = "No description available";
+        }
+        else{
+            this.description = e.getShortDescription();
+        }
+        this.category = category;
+        this.price = e.getPrice() != null ? e.getPrice().value : 0.0;
+        this.forSale = true;
+        this.status = e.getCondition();
+        this.urlEbayProduct = e.getItemWebUrl();
+        this.idEbay = e.getItemId();
+
+        // Manejar el caso de imagen nula
+        if (e.getImage() != null) {
+            this.image = e.getImage().imageUrl;
+        } else {
+            this.image = "https://res.cloudinary.com/dpntbtjej/image/upload/v1758185535/404_mcewsz.jpg"; // o null si prefieres
+        }
+    }
+
 
     public Long getId() {
         return id;
@@ -165,5 +196,13 @@ public class Product {
                 ", seller=" + seller +
                 ", order=" + order +
                 '}';
+    }
+
+    public String getUrlEbayProduct() {
+        return urlEbayProduct;
+    }
+
+    public void setUrlEbayProduct(String urlEbayProduct) {
+        this.urlEbayProduct = urlEbayProduct;
     }
 }
