@@ -47,6 +47,9 @@ dependencies {
 	// For JSON serialization (already included in the web starter)
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0'
+
 	// Stripe
 	implementation 'com.stripe:stripe-java:24.+'
 
