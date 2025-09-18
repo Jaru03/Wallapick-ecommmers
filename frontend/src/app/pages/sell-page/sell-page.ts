@@ -34,6 +34,7 @@ export class SellPage {
   formBuilder =  inject(FormBuilder);
   productService = inject(ProductService)
   messageService = inject(MessageService)
+  selectedFile: File | null = null;
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -41,16 +42,25 @@ export class SellPage {
       description: [''],
       category: [''],
       price: [''],
-      status: ['']
+      status: [''],
     })
   }
 
   onSubmit(){
     const price = +this.form.get("price")?.value
     this.form.get("price")?.setValue(price)
-    console.log(this.form.value);
+
+    const formData = new FormData();
+    const productData = this.form.value;
+
+    formData.append('product', JSON.stringify(productData));
+    formData.append('image', this.selectedFile as Blob);
+
+    for (const key of formData.keys()) {
+    console.log(`${key}: ${formData.get(key)}`);
+  }
     
-    this.productService.createProduct(this.form.value).subscribe((data:any) => {
+    this.productService.createProduct(formData).subscribe((data:any) => {
       if (data.code === 200) {
         this.messageService.add({
           severity: 'success',
@@ -65,6 +75,13 @@ export class SellPage {
         });
       }
     })
+  }
+
+  onImageSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.selectedFile = fileInput.files[0];
+    }
   }
 
   categories: string[] = [

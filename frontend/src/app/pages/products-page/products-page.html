@@ -30,8 +30,19 @@
 
     <!-- Categorías -->
     <ul class="mb-6 space-y-1">
-      @for (item of [1, 2, 3, 4, 5, 6]; track $index) {
-      <li class="text-sm font-medium cursor-pointer">Categoría {{ item }}</li>
+      <li
+        class="text-sm font-medium cursor-pointer"
+        (click)="selectCategory('All')"
+      >
+        Todas
+      </li>
+      @for (item of categoriesArray; track $index) {
+      <li
+        class="text-sm font-medium cursor-pointer"
+        (click)="selectCategory(item)"
+      >
+        {{ item }}
+      </li>
       }
     </ul>
 
@@ -94,30 +105,33 @@
       isView ? 'lg:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
     }}   gap-6"
   >
-  @if (products()?.datas) {
-    <div class="col-span-full mb-6">        
-        <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">
-          Encuentra lo que buscas
-        </h3>
-        <p class="text-sm text-gray-600 dark:text-white">
-          Se han encontrado
-          {{ products().datas.length }}
-          
-          artículos para ti
-        </p>
-      </div>
-        <app-producto-component [product]="products().datas" />
-      
+    @if (products()?.datas.length > 0) {
+    <div class="col-span-full mb-6">
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">
+        Encuentra lo que buscas
+      </h3>
+      <p class="text-sm text-gray-600 dark:text-white">
+        Se han encontrado
+        {{ products().datas.length }}
+
+        artículos para ti
+      </p>
+    </div>
+    <app-producto-component
+      [product]="filteredProducts()"
+      class="col-span-full"
+    />
+
     }@else {
-      <div class="col-span-full mb-6">        
-          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">
-            No se han encontrado Productos :(
-          </h3>
-        </div>
-        <div class="justify-self-center col-span-full">
-          <img src="404.webp" alt="404">
-        </div>
-      
+    <div class="col-span-full mb-6">
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-1">
+        No se han encontrado Productos :(
+      </h3>
+    </div>
+    <div class="justify-self-center col-span-full">
+      <img src="404.webp" alt="404" />
+    </div>
+
     }
   </section>
 </div>

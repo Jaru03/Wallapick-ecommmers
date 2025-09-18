@@ -65,6 +65,8 @@
             id="file-upload"
             type="file"
             class="hidden"
+            (change)="onImageSelected($event)"
+            accept="image/*"
             onchange="document.getElementById('file-name').textContent = this.files[0]?.name || 'Ningún archivo seleccionado'"
           />
           <span id="file-name" class="text-sm text-gray-600 dark:text-white"

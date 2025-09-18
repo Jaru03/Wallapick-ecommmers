@@ -9,6 +9,7 @@ import { VentasComponent } from "../../components/ventas-component/ventas-compon
 import { FavoritosComponent } from "../../components/favoritos-component/favoritos-component";
 import { LoginService } from '../../services/login-service';
 import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-account-page',
@@ -31,5 +32,20 @@ export class AccountPage {
     this.loginService.logout().subscribe();
     this.router.navigate(['/'])
   }
+
+  userId = this.loginService.token().id;
+  dataUser!: any;
+  dataUser$ = this.loginService.dataUser(this.userId).subscribe((data:any) => {
+    
+    if(data.code === 200){
+      this.dataUser = data.data;
+    }
+    console.log(data);
+  })
+
+  handleUpdateUserData(updatedData: any) {
+    this.dataUser = updatedData;
+  }
+
 
 }

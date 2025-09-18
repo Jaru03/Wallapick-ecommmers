@@ -13,24 +13,25 @@
     />
 
     <img
-      src="/wallapick.png"
-      class="aspect-square p-4 w-full max-w-full"
+      [src]="product()?.data.image"
+      class="aspect-auto p-4 w-full"
       alt=""
     />
 
     <div class="hidden md:block">
       <p-card class="p-4 pb-12 h-fit">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-          Título del Producto
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2 capitalize">
+          {{product()?.data.name}}
         </h2>
         <h3 class="text-lg font-medium text-gray-600 dark:text-white mb-1">
-          Estado del producto
+          {{product()?.data.status}}
         </h3>
-        <p class="text-xl font-semibold mb-4">300$</p>
+        <p class="text-xl font-semibold mb-4">{{product()?.data.price}}€</p>
 
         <div class="flex gap-4">
-          <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" />
+          <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" (click)="addCart()"/>
           <p-button
+          (click)="onBuy()"
             icon="pi pi-shopping-bag"
             label="Comprar"
             severity="secondary"
@@ -40,7 +41,7 @@
         <p-divider />
         <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
         <p class="text-sm text-gray-700 dark:text-white my-2">
-          Vendido por: <span class="font-medium">Nombre del Vendedor</span>
+          Vendido por: <span class="font-medium">{{product()?.data.seller.username}}</span>
         </p>
         <p-rating [(ngModel)]="rating" [readonly]="true" />
         <p class="text-sm text-gray-700 dark:text-white mt-2">15 ventas</p>
@@ -48,15 +49,16 @@
     </div>
 
     <div class="block md:hidden p-4">
-      <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Título del Producto</h2>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2"> {{product()?.data.name}}</h2>
       <h3 class="text-lg font-medium text-gray-600 mb-1 dark:text-white">
         Estado del producto
       </h3>
-      <p class="text-xl font-semibold mb-4">300$</p>
+      <p class="text-xl font-semibold mb-4">{{product()?.data.price}}€</p>
 
       <div class="flex gap-4">
-        <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" />
+        <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" (click)="addCart()"/>
         <p-button
+          (click)="onBuy()"
           icon="pi pi-shopping-bag"
           label="Comprar"
           severity="secondary"
@@ -66,7 +68,7 @@
       <p-divider />
       <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
       <p class="text-sm text-gray-700 dark:text-white my-2">
-        Vendido por: <span class="font-medium">Nombre del Vendedor</span>
+        Vendido por: <span class="font-medium">{{product()?.data.seller.username}}</span>
       </p>
       <p-rating [(ngModel)]="rating" [readonly]="true" />
       <p class="text-sm text-gray-700 dark:text-white mt-2">15 ventas</p>
@@ -78,10 +80,7 @@
         Detalles del producto
       </h2>
       <p class="text-sm text-gray-700 dark:text-white leading-relaxed mb-2">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum
-        laboriosam consequuntur velit ad cum dicta pariatur dolor, corporis
-        facilis quis delectus numquam distinctio temporibus consectetur culpa.
-        Laudantium ipsam aut at.
+        {{product()?.data.description}}
       </p>
       <p class="text-sm text-gray-600 dark:text-white">
         <span class="font-medium text-gray-800 dark:text-white  ">Estado:</span> Como nuevo
@@ -89,20 +88,6 @@
       <p-divider />
     </div>
 
-    <div class="col-span-full w-full max-w-full overflow-hidden">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 px-4 dark:text-white">
-        Productos que te podrían interesar
-      </h2>
-      <p-carousel
-        [value]="products"
-        [circular]="false"
-        [responsiveOptions]="responsiveOptions"
-        class="w-full"
-      >
-        <ng-template let-product pTemplate="item">
-          <app-producto-component [product]="product" />
-        </ng-template>
-      </p-carousel>
-    </div>
+    
   </div>
 </section>

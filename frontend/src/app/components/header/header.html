@@ -23,7 +23,7 @@
       @for (item of itemsIcons; track $index) {
         @if ($index === 1) {
         <a routerLink="{{ item.routerLink }}">
-          <p-overlaybadge value="0" badgeSize="small" severity="danger">
+          <p-overlaybadge [value]="cartLength" badgeSize="small" severity="danger">
             <i class="pi {{ item.icon }}" style="font-size: 1.3rem"></i>
           </p-overlaybadge>
         </a>

@@ -16,8 +16,8 @@
         }}"
       >
         <i class="pi pi-user mb-4" style="font-size: 5rem"></i>
-        <h2 class="text-2xl font-semibold">Juan Perez</h2>
-        <p>correoelectronico&#64;email.com</p>
+        <h2 class="text-2xl font-semibold">{{dataUser?.name}} {{dataUser?.lastname}} </h2>
+        <p>{{dataUser?.email}}</p>
 
         <ul class="w-full">
           <p-divider />
@@ -47,7 +47,7 @@
     </div>
 
     @if (optionSelected === "Mi Perfil" || optionSelected === '') {
-    <app-perfil-component [optionSelected]="optionSelected" />
+    <app-perfil-component [userData]="dataUser" [optionSelected]="optionSelected" (userDataUpdated)="handleUpdateUserData($event)" />
 
     } @else if (optionSelected === "Mis Compras") {
     <app-compras-component [optionSelected]="optionSelected" />

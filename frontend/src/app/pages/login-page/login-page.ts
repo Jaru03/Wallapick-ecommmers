@@ -5,7 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Button, ButtonModule } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { Router, RouterModule } from '@angular/router';
-import { MessageModule } from 'primeng/message';
+import { Message, MessageModule } from 'primeng/message';
 import {
   FormBuilder,
   FormControl,
@@ -14,6 +14,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { LoginService } from '../../services/login-service';
+import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'app-login-page',
@@ -26,16 +28,19 @@ import { LoginService } from '../../services/login-service';
     RouterModule,
     MessageModule,
     ReactiveFormsModule,
+    Message,
+    Toast
   ],
   templateUrl: './login-page.html',
   styleUrl: './login-page.css',
 })
 export class LoginPage {
-  form: FormGroup;
   route = inject(Router)
+  form: FormGroup;
   formBuilder = inject(FormBuilder)
   loginService = inject(LoginService)
   isLogged = this.loginService.isLogged
+  messageService = inject(MessageService);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -46,9 +51,18 @@ export class LoginPage {
 
   onSubmit() {
     console.log(this.form.value);
-    this.loginService.login(this.form.value).subscribe({
-      next: () => {
-        this.route.navigate(['/'])
+    this.loginService.login(this.form.value).subscribe((data) => {
+
+
+      if(data.code === 200
+      ){
+        this.route.navigate(['/'])}
+      else{
+        this.messageService.add({
+          severity: 'error',
+          summary: `Error ${data.code}`,
+          detail: data.data,
+        });
       }
     })
   }

@@ -3,18 +3,19 @@
     class="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-6 p-4 gap-4 md:p-6"
   >
     <p-card header="Carrito de Compras" class="md:col-[1/5]">
-      @for (item of [1,2,3,4,5,6]; track $index) {
-      <app-producto-component [layout]="'list'" />
-      }
+      
+      <app-producto-component [layout]="'list'" [product]="product()" />
     </p-card>
     <p-card class="md:col-[5/7] h-fit pb-8" header="Total del Carrito">
-      <div class="flex justify-between mt-8">
+      <!-- <div class="flex justify-between mt-8">
         <span class="font-semibold">Total Parcial</span> 12$
       </div>
       <p-divider />
-      <div class="flex justify-between"><span class="font-semibold">Impuestos</span> 0.41$</div>
-      <p-divider />
-      <div class="flex justify-between mb-8"><span class="font-semibold">Total</span> 12.41$</div>
+      <div class="flex justify-between"><span class="font-semibold">Impuestos</span> 0.41$</div> -->
+      
+      <p-divider /> 
+      <div class="flex justify-between my-4"><span class="font-semibold">Total</span> €{{totalSummaries()}}</div>
+      <p-divider /> 
       <div class="grid grid-cols-2 pt-4 justify-items-center ">
         <p-button label="Finalizar Compra" icon="pi pi-credit-card" />
         <p-button label="Seguir Comprando" routerLink="/products" severity="secondary" />

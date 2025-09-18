@@ -27,8 +27,11 @@ export class LoginService {
     return this.http.post(`${this.baseUrl}/user/login`, userData).pipe(
       map((response: any) => {
         if (response.code === 200) {
-        localStorage.setItem('token', response.data);}
+          localStorage.setItem('token', response.data);
+        }
         console.log(response);
+
+        return response;
       })
     );
   }
@@ -42,11 +45,11 @@ export class LoginService {
     return this.http.post(`${this.baseUrl}/user/logout`, null);
   }
 
-  toggle():void {
+  toggle(): void {
     this.isLogged.update((value) => !value);
   }
 
-  userLogged():boolean {
+  userLogged(): boolean {
     if (localStorage.getItem('token')) {
       return true;
     }
@@ -54,4 +57,32 @@ export class LoginService {
     return false;
   }
 
+  token() {
+    const storedToken = localStorage.getItem('token');
+    if (!storedToken) return null;
+
+    try {
+      const base64Url = storedToken.split('.')[1]; // Extrae el payload
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      console.error('Token inválido o malformado:', e);
+      return null;
+    }
+  }
+
+  dataUser(id: string) {
+    return this.http.get(`${this.baseUrl}/user/${id}`)
+  }
+
+  updateUser(userData: any) {
+    return this.http.patch(`${this.baseUrl}/user`, userData)
+  }
 }
