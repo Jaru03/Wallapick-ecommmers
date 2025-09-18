@@ -64,6 +64,9 @@ public class ProductDTO {
         if (!this.forSale && p.getOrder() != null) {
             this.orderDTO = new OrderDTO(p.getOrder(), false); // Avoid recursion
         }
+        
+        this.urlEbayProduct = p.getUrlEbayProduct();
+        this.status = p.getStatus();
     }
 
 
