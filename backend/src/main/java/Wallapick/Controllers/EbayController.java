@@ -46,4 +46,9 @@ public class EbayController {
         }
         return new Response<>(200, "Detalles del producto obtenidos", itemDetails);
     }
+
+    /**
+     * Rellena la BD con productos de varias categorías
+     */
+
 }
