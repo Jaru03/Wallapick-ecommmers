@@ -1,12 +1,14 @@
 package Wallapick.ModelsDTO;
 
+import Wallapick.Models.ItemEbay;
 import Wallapick.Models.Product;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 import java.util.Date;
 
 public class ProductDTO {
-
     private Long id;
     private String name;
     private String description;
@@ -15,7 +17,9 @@ public class ProductDTO {
     private boolean forSale;
     private Date releaseDate;
     private String image;
-    private UserDTO seller;
+    private String seller;
+    private String status;
+    private String urlEbayProduct;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private OrderDTO orderDTO;
@@ -23,7 +27,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(Long id, String name, String description, String category, double price, boolean forSale, Date releaseDate,String image, UserDTO seller, OrderDTO orderDTO) {
+    public ProductDTO(Long id, String name, String description, String category, double price, boolean forSale, Date releaseDate, String image, String seller, String status, String urlEbayProduct, OrderDTO orderDTO) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,6 +37,8 @@ public class ProductDTO {
         this.releaseDate = releaseDate;
         this.image = image;
         this.seller = seller;
+        this.status = status;
+        this.urlEbayProduct = urlEbayProduct;
         this.orderDTO = orderDTO;
     }
 
@@ -45,13 +51,21 @@ public class ProductDTO {
         this.forSale = p.isForSale();
         this.releaseDate = p.getReleaseDate();
         this.image = p.getImage();
-        this.seller = new UserDTO(p.getSeller());
+        if(p.getSeller() == null){
+            this.seller = "EBAY_SELLER";
+        }
+        else{
+            this.seller = p.getSeller().getUsername();
+
+        }
+        this.status = p.getStatus();
 
         // The order is only included if the product is not for sale
         if (!this.forSale && p.getOrder() != null) {
             this.orderDTO = new OrderDTO(p.getOrder(), false); // Avoid recursion
         }
     }
+
 
     public Long getId() {
         return id;
@@ -117,11 +131,11 @@ public class ProductDTO {
         this.image = image;
     }
 
-    public UserDTO getSeller() {
+    public String getSeller() {
         return seller;
     }
 
-    public void setSeller(UserDTO seller) {
+    public void setSeller(String seller) {
         this.seller = seller;
     }
 
@@ -132,4 +146,21 @@ public class ProductDTO {
     public void setOrderDTO(OrderDTO orderDTO) {
         this.orderDTO = orderDTO;
     }
+
+    public String getUrlEbayProduct() {
+        return urlEbayProduct;
+    }
+
+    public void setUrlEbayProduct(String urlEbayProduct) {
+        this.urlEbayProduct = urlEbayProduct;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }
