@@ -1,34 +1,46 @@
 package Wallapick.Models;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ItemEbay {
 
-    private String id;
-    private String title;
-    private double price;
-    private String mainImage;
-    private List<String> images;
-    private List<String> categories;
+
+    private String itemId;
+    private String title;//name
+    private String shortDescription;//description
+    private Price price;
+    private Image image;
+    private String itemWebUrl;
+    private String condition;//status
+
 
     public ItemEbay() {
     }
 
-    public ItemEbay(String id, String title, double price, String mainImage, List<String> images, List<String> categories) {
-        this.id = id;
+    public ItemEbay(String itemId, String title, String shortDescription, Price price, Image image, String itemWebUrl, String condition) {
+        this.itemId = itemId;
         this.title = title;
+        this.shortDescription = shortDescription;
         this.price = price;
-        this.mainImage = mainImage;
-        this.images = images;
-        this.categories = categories;
+        this.image = image;
+        this.itemWebUrl = itemWebUrl;
+        this.condition = condition;
     }
 
-    public String getId() {
-        return id;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+
+    public static class Price {
+        public double value;
+    }
+
+    public static class Image {
+        public String imageUrl;
     }
 
     public String getTitle() {
@@ -39,35 +51,43 @@ public class ItemEbay {
         this.title = title;
     }
 
-    public double getPrice() {
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public Price getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Price price) {
         this.price = price;
     }
 
-    public List<String> getCategories() {
-        return categories;
+    public Image getImage() {
+        return image;
     }
 
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public List<String> getImages() {
-        return images;
+    public String getItemWebUrl() {
+        return itemWebUrl;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setItemWebUrl(String itemWebUrl) {
+        this.itemWebUrl = itemWebUrl;
     }
 
-    public String getMainImage() {
-        return mainImage;
+    public String getCondition() {
+        return condition;
     }
 
-    public void setMainImage(String mainImage) {
-        this.mainImage = mainImage;
+    public void setCondition(String condition) {
+        this.condition = condition;
     }
 }
