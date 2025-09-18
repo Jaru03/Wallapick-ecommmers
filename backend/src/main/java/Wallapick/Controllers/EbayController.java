@@ -29,9 +29,11 @@ public class EbayController {
     @GetMapping("/search")
     public Response searchItems() {
         String[] categorias = {"ordenador", "camiseta", "dron", "libro", "juego de mesa", "pelicula", "disfraz", "pantalon", "coleccion", "comic"};
-
+        ebayService.guardarProductosEbay(categorias);
         return new Response<>(200, "Productos importados correctamente");
     }
+
+
 
     /**
      * Obtiene detalles de un producto específico desde eBay
