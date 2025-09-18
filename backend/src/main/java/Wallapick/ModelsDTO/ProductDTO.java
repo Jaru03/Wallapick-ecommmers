@@ -1,10 +1,8 @@
 package Wallapick.ModelsDTO;
 
-import Wallapick.Models.ItemEbay;
 import Wallapick.Models.Product;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
 
 import java.util.Date;
 
@@ -58,13 +56,11 @@ public class ProductDTO {
             this.seller = p.getSeller().getUsername();
 
         }
-        this.status = p.getStatus();
-
         // The order is only included if the product is not for sale
         if (!this.forSale && p.getOrder() != null) {
             this.orderDTO = new OrderDTO(p.getOrder(), false); // Avoid recursion
         }
-        
+
         this.urlEbayProduct = p.getUrlEbayProduct();
         this.status = p.getStatus();
     }
