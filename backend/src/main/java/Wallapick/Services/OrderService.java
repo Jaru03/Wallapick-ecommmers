@@ -31,8 +31,7 @@ public class OrderService {
     @Autowired
     private JWTUser jwtUser;
 
-    @Autowired
-    private BlacklistService blacklistService;
+
 
     public List<ProductDTO> getOrdersUser(String token) {
 
@@ -44,7 +43,7 @@ public class OrderService {
 
             // Get the list of products of the orders
             List<ProductDTO> productsDTO = orders.stream()
-                    .map(Order::getProducto) // Access to the product of each order
+                    .map(Order::getProduct) // Access to the product of each order
                     .map(product -> new ProductDTO(product)) // Convert each product to a productDTO
                     .collect(Collectors.toList());
 
