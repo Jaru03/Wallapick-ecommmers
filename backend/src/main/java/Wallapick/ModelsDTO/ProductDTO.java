@@ -1,10 +1,7 @@
 package Wallapick.ModelsDTO;
 
-
 import Wallapick.Models.Product;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-
 
 
 import java.util.Date;
@@ -63,20 +60,15 @@ public class ProductDTO {
        else{
            this.seller = p.getSeller().getUsername();
 
+        }
+        // The order is only included if the product is not for sale
+        if (!this.forSale && p.getOrder() != null) {
+            this.orderDTO = new OrderDTO(p.getOrder(), false); // Avoid recursion
+        }
 
-       }
-       this.status = p.getStatus();
-
-
-       // The order is only included if the product is not for sale
-       if (!this.forSale && p.getOrder() != null) {
-           this.orderDTO = new OrderDTO(p.getOrder(), false); // Avoid recursion
-       }
-
-
-       this.urlEbayProduct = p.getUrlEbayProduct();
-       this.status = p.getStatus();
-   }
+        this.urlEbayProduct = p.getUrlEbayProduct();
+        this.status = p.getStatus();
+    }
 
 
 

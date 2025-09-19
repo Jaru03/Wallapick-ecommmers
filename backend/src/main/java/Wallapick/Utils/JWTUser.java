@@ -38,8 +38,5 @@ public class JWTUser {
         return user;
     }
 
-   // Returns the token's expiration date
-    public Date getExpirationDate(String token) {
-        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getExpiration();
-    }
+
 }
