@@ -22,15 +22,15 @@ public class UserController {
     @PostMapping("")
     public Response registerUser(@RequestBody User user){
 
-        String response = userService.registerUser(user);
+        int response = userService.registerUser(user);
 
-        if(response.equalsIgnoreCase("REGISTERED")){
-            return new Response<String>(200, "User registered successfully.");
-        } else if (response.equalsIgnoreCase("EXISTED")) {
-            return new Response<String>(409,"User already exists.");
+        if(response == -1){
+            return new Response<String>(406, "Username igual");
+        } else if (response == -2) {
+            return new Response<String>(406,"Email existe");
         }
         else{
-            return new Response<String>(400,"Error registering the user. Please verify the data.");
+            return new Response<String>(200,"ta joya");
         }
     }
 
