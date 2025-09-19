@@ -28,7 +28,7 @@ public class  SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Allow without authentication these endpoints
-                        .requestMatchers("/user/**", "/product/**", "/order/**", "/ebay/**", "/api/stripe/**").permitAll()
+                        .requestMatchers("/user/**", "/product/**", "/order/**", "/ebay/**", "/stripe/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
