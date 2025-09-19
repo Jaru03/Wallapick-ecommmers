@@ -41,10 +41,8 @@
         <p-divider />
         <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
         <p class="text-sm text-gray-700 dark:text-white my-2">
-          Vendido por: <span class="font-medium">{{product()?.data.seller.username}}</span>
+          Vendido por: <span class="font-medium">{{product()?.data.seller}}</span>
         </p>
-        <p-rating [(ngModel)]="rating" [readonly]="true" />
-        <p class="text-sm text-gray-700 dark:text-white mt-2">15 ventas</p>
       </p-card>
     </div>
 
@@ -68,10 +66,8 @@
       <p-divider />
       <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
       <p class="text-sm text-gray-700 dark:text-white my-2">
-        Vendido por: <span class="font-medium">{{product()?.data.seller.username}}</span>
+        Vendido por: <span class="font-medium">{{product()?.data.seller}}</span>
       </p>
-      <p-rating [(ngModel)]="rating" [readonly]="true" />
-      <p class="text-sm text-gray-700 dark:text-white mt-2">15 ventas</p>
     </div>
 
     <div class="p-4">
