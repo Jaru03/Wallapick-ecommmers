@@ -4,7 +4,6 @@ import Wallapick.Models.Response;
 import Wallapick.Models.User;
 import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Services.UserService;
-import Wallapick.Services.BlacklistService;
 import Wallapick.Utils.JWTUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,6 @@ public class UserController {
     @Autowired
     private JWTUser jwtUser;
 
-    @Autowired
-    private BlacklistService blacklistService;
 
     @PostMapping("")
     public Response registerUser(@RequestBody User user){
@@ -49,18 +46,7 @@ public class UserController {
         return new Response<String>(200, response);
     }
 
-    @PostMapping("/logout")
-    public Response logoutUser(@RequestHeader("Authorization") String token) {
 
-        token = token.replace("Bearer ", "");
-
-        if(userService.logoutUser(token)){
-            return new Response<String>(200, "Logout successful.");
-        }else {
-            return new Response<String>(400, "Invalid token.");
-        }
-
-    }
 
     @GetMapping("/{id}")
     public Response searchUser(@PathVariable long id, @RequestHeader("Authorization") String token) {
