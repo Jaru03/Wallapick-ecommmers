@@ -23,14 +23,14 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private BlacklistService blacklistService;
 
     public String registerUser(User user){
 
         User existUser = userRepository.findByUsername(user.getUsername());
+        User existEmail = userRepository.findByEmail(user.getEmail());
+        
 
-        if(existUser == null){
+        if(existUser == null && existEmail == null){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             return "REGISTERED";
@@ -52,23 +52,6 @@ public class UserService {
 
     }
 
-    public boolean logoutUser(String token) {
-
-        try {
-
-            long expiration = jwtUser.getExpirationDate(token).getTime() - System.currentTimeMillis();
-
-            if (expiration > 0) {
-                blacklistService.blacklistToken(token, expiration, TimeUnit.MILLISECONDS);
-                return true;
-            }
-
-            return false;
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     public UserDTO searchUser(long id) {
 
