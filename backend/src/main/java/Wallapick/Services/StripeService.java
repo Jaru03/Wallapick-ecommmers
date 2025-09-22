@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 public class StripeService {
 
-    //@Value("${stripe.secretKey}")
-    //private String secretKey;
+    @Value("${stripe.secretKey}")
+    private String secretKey;
 
     public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
-        //Stripe.apiKey = secretKey;
+        Stripe.apiKey = secretKey;
 
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 
