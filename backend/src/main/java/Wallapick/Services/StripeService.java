@@ -19,10 +19,8 @@ import java.util.Map;
 @Service
 public class StripeService {
 
-
     @Value("${stripe.secretKey}")
     private String secretKey;
-
 
     public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
@@ -51,6 +49,7 @@ public class StripeService {
                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                     .setName(productDto.getName())
                                                     .addImage(productDto.getImage())
+                                                    .addImage(productDto.getImage())
                                                     .build()
                                     ).build()
                     ).build();
@@ -71,3 +70,4 @@ public class StripeService {
         return Session.create(params);
     }
 }
+

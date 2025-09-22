@@ -19,7 +19,8 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfig {
+public class  SecurityConfig {
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,11 +33,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        // Allow without authentication these endpoints
+                        .requestMatchers("/user/**", "/product/**", "/order/**", "/ebay/**", "/stripe/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/user/**", "/product/**", "/order/**", "/ebay/**", "/stripe/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+
 
         return http.build();
     }
