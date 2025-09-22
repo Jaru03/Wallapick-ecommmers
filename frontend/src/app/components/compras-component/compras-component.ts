@@ -1,4 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
+import { OrderService } from '../../services/order-service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-compras-component',
@@ -7,5 +9,13 @@ import { Component, input } from '@angular/core';
   styleUrl: './compras-component.css'
 })
 export class ComprasComponent {
-optionSelected = input()
+  orderService = inject(OrderService);
+  optionSelected = input()
+  myOrders:any = toSignal(this.orderService.getMyOrders(), { initialValue: [] });
+
+  constructor(){
+    effect(() => {
+      this.myOrders()
+    });
+  }
 }

@@ -17,7 +17,7 @@
       <div class="flex justify-between my-4"><span class="font-semibold">Total</span> €{{totalSummaries()}}</div>
       <p-divider /> 
       <div class="grid grid-cols-2 pt-4 justify-items-center ">
-        <p-button label="Finalizar Compra" icon="pi pi-credit-card" />
+        <p-button (click)="getSessionCheckout()" label="Finalizar Compra" icon="pi pi-credit-card" />
         <p-button label="Seguir Comprando" routerLink="/products" severity="secondary" />
       </div>
     </p-card>

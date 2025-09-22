@@ -18,7 +18,7 @@ public class OrderDTO {
 
     public OrderDTO(Order c, boolean addProduct) {
         this.id = c.getId();
-        this.productName = c.getProducto().getName();
+        this.productName = c.getProduct().getName();
         this.buyerUsername = c.getBuyer().getUsername();
         this.sellerUsername = c.getSeller().getUsername();
         this.orderDate = c.getOrderDate();

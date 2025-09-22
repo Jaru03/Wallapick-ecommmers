@@ -1,5 +1,6 @@
 package Wallapick.Services;
 
+
 import Wallapick.ModelsDTO.ProductDTO;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -8,24 +9,37 @@ import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class StripeService {
 
-    //@Value("${stripe.secretKey}")
-    //private String secretKey;
+
+    @Value("${stripe.secretKey}")
+    private String secretKey;
+
 
     public Session checkoutProducts(List<ProductDTO> productsDto) throws StripeException {
 
-        //Stripe.apiKey = secretKey;
+
+        Stripe.apiKey = secretKey;
+
 
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
 
+
         for (ProductDTO productDto : productsDto) {
 
+
             long priceInCents = Math.round(productDto.getPrice() * 100);
+
+
+
 
             SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
                     .setQuantity(1L)  // If you want to allow variable quantity, you should add that attribute to ProductDTO
@@ -36,12 +50,15 @@ public class StripeService {
                                     .setProductData(
                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                     .setName(productDto.getName())
+                                                    .addImage(productDto.getImage())
                                                     .build()
                                     ).build()
                     ).build();
 
+
             lineItems.add(lineItem);
         }
+
 
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
@@ -49,6 +66,7 @@ public class StripeService {
                 .setCancelUrl("http://localhost:4200/error")
                 .addAllLineItem(lineItems)
                 .build();
+
 
         return Session.create(params);
     }

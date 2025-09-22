@@ -50,13 +50,7 @@ public class Order {
         this.id = id;
     }
 
-    public Product getProducto() {
-        return product;
-    }
 
-    public void setProducto(Product product) {
-        this.product = product;
-    }
 
     public User getSeller() {
         return seller;
@@ -88,5 +82,13 @@ public class Order {
 
     public void setFinalPrice(double finalPrice) {
         this.finalPrice = finalPrice;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

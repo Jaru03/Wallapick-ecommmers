@@ -73,6 +73,9 @@ export class RegisterPage {
     console.log(this.form.value);
 
     this.auth.register(this.form.value).subscribe((data: any) => {
+
+      console.log(data);
+      
       
       if (data.code === 200) {
         this.messageService.add({

@@ -31,12 +31,17 @@
                                 </div>
                             </div>
                             <div class="flex flex-col gap-6 mt-6">
+                              @if (product.forSale) {
+
                                 <span class="text-2xl font-semibold">€{{ product.price }}</span>
                                 <div class="grid grid-cols-2 gap-2">
                                   <button label="Eliminar" severity="danger"  pButton icon="pi pi-trash" ></button>
-                                    <button label="Editar" pButton icon="pi pi-pencil" severity="contrast" ></button>
-                                    
+                                  <button label="Editar" pButton icon="pi pi-pencil" severity="contrast" ></button>
+                                  
                                 </div>
+                              } @else {
+                                <span class="text-2xl font-semibold text-red-600">VENDIDO</span>
+                              }
                             </div>
                         </div>
                     </div>

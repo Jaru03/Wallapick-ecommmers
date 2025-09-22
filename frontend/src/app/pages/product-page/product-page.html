@@ -29,13 +29,19 @@
         <p class="text-xl font-semibold mb-4">{{product()?.data.price}}€</p>
 
         <div class="flex gap-4">
+           @if (product()?.data.seller) {
+
+          <a pButton icon="pi pi-shop" target="_blank" severity="warn" styleClass="width: 100%;" label="Ir a Ebay" href={{product()?.data.urlEbayProduct}}></a>
+        }@else {
+
           <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" (click)="addCart()"/>
           <p-button
           (click)="onBuy()"
-            icon="pi pi-shopping-bag"
-            label="Comprar"
-            severity="secondary"
+          icon="pi pi-shopping-bag"
+          label="Comprar"
+          severity="secondary"
           />
+        }
         </div>
 
         <p-divider />
@@ -54,13 +60,19 @@
       <p class="text-xl font-semibold mb-4">{{product()?.data.price}}€</p>
 
       <div class="flex gap-4">
-        <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" (click)="addCart()"/>
-        <p-button
+
+        @if (product()?.data.seller === "EBAY_SELLER") {
+          <a pButton icon="pi pi-shop" target="_blank" severity="warn" styleClass="width: 100%;" label="Ir a Ebay" href={{product()?.data.urlEbayProduct}}></a>
+        }@else {
+
+          <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" (click)="addCart()"/>
+          <p-button
           (click)="onBuy()"
           icon="pi pi-shopping-bag"
           label="Comprar"
           severity="secondary"
-        />
+          />
+        }
       </div>
 
       <p-divider />

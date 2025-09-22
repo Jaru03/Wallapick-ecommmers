@@ -24,18 +24,20 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
 
-    public String registerUser(User user){
-
+    public int registerUser(User user){
         User existUser = userRepository.findByUsername(user.getUsername());
         User existEmail = userRepository.findByEmail(user.getEmail());
-        
 
-        if(existUser == null && existEmail == null){
+
+        if(existUser != null ){
+           return -1;
+        }else if (existEmail != null) {
+            return -2;
+        }else{
+
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            return "REGISTERED";
-        }else{
-            return "EXISTED";
+            return 0;
         }
     }
 

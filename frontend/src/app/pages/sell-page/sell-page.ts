@@ -7,6 +7,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { ProductService } from '../../services/product-service';
 import { MessageService } from 'primeng/api';
+import { Toast } from "primeng/toast";
 
 type Category = {
   title: string;
@@ -24,7 +25,8 @@ type Category = {
     ButtonModule,
     FormsModule,
     ReactiveFormsModule,
-  ],
+    Toast
+],
   templateUrl: './sell-page.html',
   styleUrl: './sell-page.css',
 })
@@ -61,7 +63,9 @@ export class SellPage {
   }
     
     this.productService.createProduct(formData).subscribe((data:any) => {
+      console.log(data);
       if (data.code === 200) {
+        
         this.messageService.add({
           severity: 'success',
           summary: 'Producto Creado',

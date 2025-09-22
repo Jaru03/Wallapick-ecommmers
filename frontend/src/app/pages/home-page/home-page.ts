@@ -1,16 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal } from '@angular/core';
 import { ProductoComponent } from '../../components/producto-component/producto-component';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
+import { ProductService } from '../../services/product-service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-home-page',
-  imports: [ProductoComponent, CommonModule, CarouselModule],
+  imports: [ CommonModule, CarouselModule, RouterLink, ButtonModule],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
 export class HomePage {
+onBuy() {
+throw new Error('Method not implemented.');
+}
+addCart(_t35: any) {
+throw new Error('Method not implemented.');
+}
   activeIndex = 0;
+  productsService = inject(ProductService)
+  products:any = linkedSignal(toSignal(this.productsService.getAllProducts(), { initialValue: [] }));
+  productsCamisetas = computed(() => this.products().datas?.filter((p: any) => p.category === 'camiseta').slice(0, 7));
+  productsTech = computed(() => this.products().datas?.filter((p: any) => p.category === 'ordenador').slice(0, 7));
+  productsColeccion = computed(() => this.products().datas?.filter((p: any) => p.category === 'coleccion').slice(0, 7));
+
+  constructor() {
+    effect(() => console.log(this.products()));
+  }
 
   quotes = [
     {
@@ -31,53 +50,6 @@ export class HomePage {
   setActive(index: number) {
     this.activeIndex = index;
   }
-  products = [
-    [{
-      id: '1000',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-      image: 'bamboo-watch.jpg',
-    }],
-    [{
-      id: '1000',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-      image: 'bamboo-watch.jpg',
-    }],
-    [{
-      id: '1000',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-      image: 'bamboo-watch.jpg',
-    }],
-    [{
-      id: '1000',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5,
-      image: 'bamboo-watch.jpg',
-    }],
-    
-  ];
 
   responsiveOptions = [
     {

@@ -31,14 +31,18 @@
     <!-- Categorías -->
     <ul class="mb-6 space-y-1">
       <li
-        class="text-sm font-medium cursor-pointer"
-        (click)="selectCategory('All')"
+        class="text-sm font-medium cursor-pointer hover:text-[#ff6b1f] {{
+          categoriaSeleccionada() === 'Todas' ? 'text-[#ff6b1f]' : ''
+        }}"
+        (click)="selectCategory('Todas')"
       >
         Todas
       </li>
       @for (item of categoriesArray; track $index) {
       <li
-        class="text-sm font-medium cursor-pointer"
+        class="text-sm font-medium cursor-pointer capitalize hover:text-[#ff6b1f] {{
+          categoriaSeleccionada() === item ? 'text-[#ff6b1f]' : ''
+        }}"
         (click)="selectCategory(item)"
       >
         {{ item }}
@@ -49,13 +53,17 @@
     <p-divider />
 
     <!-- Precio -->
-    <h3 class="text-lg font-semibold mt-6 mb-2">Precio</h3>
+    <h3 class="text-lg font-semibold mt-6">Precio</h3>
     <p-slider
+      class="mb-8 mt-4"
       [(ngModel)]="rangeValues"
+      [min]="0"
       [max]="2000"
+      [step]="10"
       [range]="true"
-      class="md:w-56 mt-4 mb-8"
-    />
+      (ngModelChange)="rangeValuesSignal.set([rangeValues[0], rangeValues[1]])"
+    >
+    </p-slider>
 
     <div class="grid grid-cols-2 gap-4">
       <p-floatlabel>
@@ -80,24 +88,6 @@
         <label for="max" class="text-sm font-medium">Max</label>
       </p-floatlabel>
     </div>
-
-    <p-divider />
-
-    <!-- Estado -->
-    <h3 class="text-lg font-semibold mt-6 mb-2">Estado</h3>
-    @for (item of ["Nuevo", "Usado", "Como Nuevo"]; track $index) {
-    <div class="flex items-center mb-2">
-      <p-checkbox
-        inputId="estado_{{ $index }}"
-        name="estado"
-        [value]="item"
-        [(ngModel)]="estadoSeleccionado"
-      />
-      <label for="estado_{{ $index }}" class="ml-2 text-sm font-medium">
-        {{ item }}
-      </label>
-    </div>
-    }
   </p-card>
 
   <section
@@ -118,9 +108,24 @@
       </p>
     </div>
     <app-producto-component
-      [product]="filteredProducts()"
+      [product]="paginatedProducts()"
       class="col-span-full"
     />
+    <div class="flex justify-center items-center gap-4 mt-6 col-span-full">
+      <p-button
+        label="Anterior"
+        (click)="prevPage()"
+        [disabled]="currentPage() === 1"
+      ></p-button>
+
+      <span>Página {{ currentPage() }} de {{ totalPages() }}</span>
+
+      <p-button
+        label="Siguiente"
+        (click)="nextPage()"
+        [disabled]="currentPage() === totalPages()"
+      ></p-button>
+    </div>
 
     }@else {
     <div class="col-span-full mb-6">

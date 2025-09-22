@@ -8,6 +8,7 @@ import { LoginPage } from './pages/login-page/login-page';
 import { AccountPage } from './pages/account-page/account-page';
 import { SellPage } from './pages/sell-page/sell-page';
 import { accountGuard } from './guards/account-guard';
+import { SuccessPage } from './pages/success-page/success-page';
 
 export const routes: Routes = [
     {path: "", component: HomePage},
@@ -18,5 +19,6 @@ export const routes: Routes = [
     {path: "login", component: LoginPage},
     {path: "account", component: AccountPage, canActivate: [accountGuard]},
     {path: "sell", component: SellPage},
+    {path: "success", component: SuccessPage},
     {path: "**", redirectTo: "/"},
 ];
