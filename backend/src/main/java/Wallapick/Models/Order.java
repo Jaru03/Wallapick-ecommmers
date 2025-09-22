@@ -50,11 +50,11 @@ public class Order {
         this.id = id;
     }
 
-    public Product getProducto() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProducto(Product product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
