@@ -6,7 +6,6 @@ import Wallapick.Services.EbayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/ebay")
 @CrossOrigin // Permite llamadas desde el frontend Angular
@@ -25,8 +24,6 @@ public class EbayController {
         return new Response<>(200, "Productos importados correctamente");
     }
 
-
-
     /**
      * Obtiene detalles de un producto específico desde eBay
      */
@@ -38,9 +35,5 @@ public class EbayController {
         }
         return new Response<>(200, "Detalles del producto obtenidos", itemDetails);
     }
-
-    /**
-     * Rellena la BD con productos de varias categorías
-     */
 
 }
