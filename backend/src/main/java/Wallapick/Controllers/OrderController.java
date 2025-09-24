@@ -3,6 +3,7 @@ package Wallapick.Controllers;
 import Wallapick.Models.Response;
 import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public Response orderProducts(@RequestBody ArrayList<Long> ids, @RequestHeader("Authorization") String token) {
+    public Response orderProducts(@Valid @RequestBody ArrayList<Long> ids, @RequestHeader("Authorization") String token) {
 
         token = token.replace("Bearer ", "");
         List<ProductDTO> productsToOrder = orderService.orderProducts(ids, token);
