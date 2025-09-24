@@ -5,6 +5,7 @@ import Wallapick.Models.User;
 import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Services.UserService;
 import Wallapick.Utils.JWTUser;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,8 @@ public class UserController {
 
 
     @PostMapping("")
-    public Response registerUser(@RequestBody User user){
+    public Response registerUser(@Valid @RequestBody User user){
+
 
         int response = userService.registerUser(user);
 
@@ -35,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response loginUser(@RequestBody User user) {
+    public Response loginUser(@Valid @RequestBody User user) {
 
         String response = userService.loginUser(user);
 
@@ -60,21 +62,8 @@ public class UserController {
         return new Response<UserDTO>(200, userDTO);
     }
 
-    @GetMapping("")
-    public Response searchId(@RequestHeader("Authorization") String token) {
-
-        token = token.replace("Bearer ", "");
-        Long userId = userService.searchId(token);
-
-        if (userId != null) {
-            return new Response<Long>(200, userId);
-        } else {
-            return new Response<String>(401,"Invalid credentials.");
-        }
-    }
-
     @PatchMapping("")
-    public Response updateUser(@RequestBody User user, @RequestHeader("Authorization") String token) {
+    public Response updateUser(@Valid @RequestBody User user, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         int result = userService.updateUser(user, token);
 
