@@ -1,10 +1,16 @@
 package Wallapick.Controllers;
 
 import Wallapick.Models.ItemEbay;
+import Wallapick.Models.Product;
 import Wallapick.Models.Response;
 import Wallapick.Services.EbayService;
+import Wallapick.Repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ebay")
@@ -13,6 +19,9 @@ public class EbayController {
 
     @Autowired
     private EbayService ebayService;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     /**
      * Busca productos en varias categorías y los guarda en la BD
@@ -35,5 +44,4 @@ public class EbayController {
         }
         return new Response<>(200, "Detalles del producto obtenidos", itemDetails);
     }
-
 }
