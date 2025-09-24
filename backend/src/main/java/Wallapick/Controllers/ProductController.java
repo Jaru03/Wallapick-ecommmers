@@ -6,6 +6,7 @@ import Wallapick.ModelsDTO.ProductDTO;
 import Wallapick.Services.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,22 +41,7 @@ public class ProductController {
             return new Response(500,"Internal server error while creating the product.");
         }
     }
-    /*
-    @PostMapping("")
-    public Response createProduct(@RequestBody Product product, @RequestHeader("Authorization") String token){
 
-        token = token.replace("Bearer ", "");
-        int response = productService.createProduct(product, token);
-
-        if (response == 0) {
-            return new Response<String>(400,"Error creating the product. Please check de information.");
-        } else if (response == 1) {
-            ProductDTO productDTO = new ProductDTO(product);
-            return new Response<ProductDTO>(200, productDTO);
-        } else {
-            return new Response<String>(500,"Internal server error while creating the product.");
-        }
-    }*/
 
     @GetMapping("/searchProductsPartial")
     public Response searchProductsPartial(@RequestParam String partialName) {
@@ -85,8 +71,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public Response getProduct(@PathVariable long id){
 
-        ProductDTO productDTO = new ProductDTO();
-        productDTO = productService.getProduct(id);
+        ProductDTO productDTO = productService.getProduct(id);
 
         if (productDTO != null) {
             return new Response<ProductDTO>(200, productDTO);
@@ -109,7 +94,7 @@ public class ProductController {
     }
 
     @PatchMapping("")
-    public Response updateProduct(@RequestBody Product product, @RequestHeader("Authorization") String token) {
+    public Response updateProduct(@Valid @RequestBody Product product, @RequestHeader("Authorization") String token) {
 
         token = token.replace("Bearer ", "");
         int response = productService.updateProduct(product, token);
