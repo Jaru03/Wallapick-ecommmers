@@ -73,98 +73,58 @@ public class UserService {
         }
     }
 
-    public boolean updateUser(User user, String token){
-
+    public int updateUser(User user, String token) {
         try {
-
             User userLogged = jwtUser.getUser(token);
+            if (userLogged == null) {
+                return 401; // Token inválido
+            }
+
             User existingUser = userRepository.findById(user.getId()).orElse(null);
-
-            String username = existingUser.getUsername();
-            String name = existingUser.getName();
-            String lastname = existingUser.getLastname();
-            String email = existingUser.getEmail();
-
             if (existingUser == null) {
-                return false;
+                return 404; // Usuario no encontrado
             }
 
-            if (existingUser.getId().equals(userLogged.getId())) {
+            if (!existingUser.getId().equals(userLogged.getId())) {
+                return 403; // Intento de modificar otro usuario
+            }
 
-                List<User> users = userRepository.findAll();
-
-                // Check email is not used
-                int i = 0;
-                boolean emailFound = false;
-
-                if(user.getEmail() != null){
-
-                    while (!emailFound && i < users.size()){
-                        if (users.get(i).getEmail().equals(user.getEmail())){
-                            emailFound = true;
-                        }
-                        i++;
-                    }
-
-                    if(!emailFound){
-
-                        existingUser.setEmail(user.getEmail());
-                        user.setUsername(username);
-
-                        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-                            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-                        }
-
-                        if (user.getName() != null && !user.getName().isEmpty()){
-                            existingUser.setName(user.getName());
-                        }else {
-                            user.setName(name);
-                        }
-
-                        if (user.getLastname() != null && !user.getLastname().isEmpty()){
-                            existingUser.setLastname(user.getLastname());
-                        }else {
-                            user.setLastname(lastname);
-                        }
-
-                    }else {
-                        return false;
-                    }
-
-                }else {
-
-                    user.setUsername(username);
-
-                    if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-                        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-                    }
-
-                    if (user.getName() != null && !user.getName().isEmpty()){
-                        existingUser.setName(user.getName());
-                    }else {
-                        user.setName(name);
-                    }
-
-                    if (user.getLastname() != null && !user.getLastname().isEmpty()){
-                        existingUser.setLastname(user.getLastname());
-                    }else {
-                        user.setLastname(lastname);
-                    }
-
-                    user.setEmail(email);
-
+            // --- Comprobación de email ---
+            if (user.getEmail() != null && !user.getEmail().equals(existingUser.getEmail())) {
+                User userWithEmail = userRepository.findByEmail(user.getEmail());
+                if (userWithEmail != null && !userWithEmail.getId().equals(existingUser.getId())) {
+                    return 409; // Email en uso por otro usuario
                 }
-
-                userRepository.save(existingUser);
-                return true;
+                existingUser.setEmail(user.getEmail());
             }
 
-            return false;
+            // Mantener username
+            user.setUsername(existingUser.getUsername());
+
+            // Actualizar password si llega
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+
+            // Actualizar name
+            if (user.getName() != null && !user.getName().isEmpty()) {
+                existingUser.setName(user.getName());
+            }
+
+            // Actualizar lastname
+            if (user.getLastname() != null && !user.getLastname().isEmpty()) {
+                existingUser.setLastname(user.getLastname());
+            }
+
+            userRepository.save(existingUser);
+            return 200; // OK
 
         } catch (Exception e) {
-            return false;
+            return 500; // Error interno
         }
     }
+
+
 
     public boolean deleteUser(long id, String token){
 
