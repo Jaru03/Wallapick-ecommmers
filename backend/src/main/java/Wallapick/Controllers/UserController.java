@@ -74,17 +74,29 @@ public class UserController {
     }
 
     @PatchMapping("")
-    public Response updateUser(@RequestBody User user, @RequestHeader("Authorization") String token ){
-
+    public Response updateUser(@RequestBody User user, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
+        int result = userService.updateUser(user, token);
 
-        if(userService.updateUser(user, token)){
-            UserDTO userDTO = new UserDTO(user);
-            return new Response<UserDTO>(200, userDTO);
-        } else {
-            return new Response<String>(403,"Access denied.");
+        switch (result) {
+            case 200:
+                UserDTO userDTO = new UserDTO(user);
+                return new Response<UserDTO>(200, userDTO);
+            case 401:
+                return new Response<String>(401, "Token inválido o usuario no autenticado.");
+            case 403:
+                return new Response<String>(403, "No tienes permiso para actualizar este usuario.");
+            case 404:
+                return new Response<String>(404, "Usuario no encontrado.");
+            case 409:
+                return new Response<String>(409, "El email ya está en uso por otro usuario.");
+            case 500:
+                return new Response<String>(500, "Error interno en el servidor.");
+            default:
+                return new Response<String>(500, "Error desconocido.");
         }
     }
+
 
     @DeleteMapping("/{id}")
     public Response deleteUser(@PathVariable long id, @RequestHeader("Authorization") String token) {
