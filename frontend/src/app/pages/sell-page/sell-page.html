@@ -22,20 +22,10 @@
           <p-select
             [options]="categories"
             name="Categoría"
-            [(ngModel)]="categorySelect"
             placeholder="Selecciona una Categoría"
             class="w-full"
             formControlName="category"
 
-          />
-        </label>
-        <label>
-          Sub-Categoría
-          <p-select
-            [options]="subcategoriesSelected()"
-            name="Sub-Categoría"
-            placeholder="Selecciona una Categoría"
-            class="w-full"
           />
         </label>
         <label>

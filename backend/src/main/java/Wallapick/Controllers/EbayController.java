@@ -26,7 +26,6 @@ public class EbayController {
     }
 
 
-
     /**
      * Obtiene detalles de un producto específico desde eBay
      */

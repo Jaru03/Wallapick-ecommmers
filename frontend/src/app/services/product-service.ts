@@ -27,4 +27,13 @@ export class ProductService {
     return this.http.post(`${this.baseUrl}/product`, product);
   }
 
+  updateProduct(product:any){
+    return this.http.patch(`${this.baseUrl}/product`, product);
+  }
+
+  deleteProduct(id:number){
+    return this.http.delete(`${this.baseUrl}/product/${id}`);
+  }
+
+
 }
