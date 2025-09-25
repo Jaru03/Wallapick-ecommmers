@@ -28,12 +28,12 @@ public class UserController {
         int response = userService.registerUser(user);
 
         if(response == -1){
-            return new Response<String>(406, "Username igual");
+            return new Response<String>(406, "Same username");
         } else if (response == -2) {
-            return new Response<String>(406,"Email existe");
+            return new Response<String>(406,"Email exists");
         }
         else{
-            return new Response<String>(200,"ta joya");
+            return new Response<String>(200,"User created successfully.");
         }
     }
 
