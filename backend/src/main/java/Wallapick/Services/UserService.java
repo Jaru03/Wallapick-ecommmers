@@ -1,7 +1,9 @@
 package Wallapick.Services;
 
+import Wallapick.Models.Product;
 import Wallapick.Models.User;
 import Wallapick.ModelsDTO.UserDTO;
+import Wallapick.Repositories.ProductRepository;
 import Wallapick.Repositories.UserRepository;
 import Wallapick.Utils.JWTUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,18 +46,23 @@ public class UserService {
         }
     }
 
-    public String loginUser(User user){
+    public String loginUser(String username, String password) {
+        try {
+            User existUser = userRepository.findByUsername(username);
 
-        User existUser = userRepository.findByUsername(user.getUsername());
+            if (existUser != null && passwordEncoder.matches(password, existUser.getPassword())) {
+                // Opcional: si quieres actualizar algo en el usuario, aquí va el save.
+                userRepository.save(existUser);
+                return jwtUser.generateToken(existUser);
+            } else {
+                return "ACCESS DENIED";
+            }
 
-        if(existUser != null && passwordEncoder.matches(user.getPassword(), existUser.getPassword())){
-            userRepository.save(existUser);
-            return jwtUser.generateToken(existUser);
-        }else{
-            return "ACCESS DENIED";
+        } catch (Exception e) {
+            return "ACCESS DENIED"; // o podrías lanzar una excepción y manejarla en el controlador
         }
-
     }
+
 
 
     public UserDTO searchUser(long id) {
@@ -62,15 +72,6 @@ public class UserService {
             return null;
         }
         return new UserDTO(user);
-    }
-
-    public Long searchId(String token) {
-        try {
-            User user = jwtUser.getUser(token);
-            return user.getId();
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     public int updateUser(User user, String token) {
@@ -134,6 +135,11 @@ public class UserService {
             User existingUser = userRepository.findById(id).get();
 
             if(existingUser.getId().equals(userLogged.getId())) {
+                List<Product> products = productRepository.findBySellerId(id);
+
+                for (Product p : products){
+                    p.setForSale(false);
+                }
                 userRepository.deleteById(id);
                 return true;
             }
