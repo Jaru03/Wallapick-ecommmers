@@ -5,6 +5,7 @@ import Wallapick.Models.User;
 import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Services.UserService;
 import Wallapick.Utils.JWTUser;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,15 +38,26 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response loginUser(@Valid @RequestBody User user) {
+    public Response loginUser(@Valid @RequestBody JsonNode json) {
+        try {
+            String username = json.has("username") ? json.get("username").asText() : null;
+            String password = json.has("password") ? json.get("password").asText() : null;
 
-        String response = userService.loginUser(user);
+            if (username == null || password == null) {
+                return new Response<String>(400, "Username and password are required.");
+            }
 
-        if(response.equalsIgnoreCase("ACCESS DENIED")){
-            return new Response<String>(404,"User not found or incorrect password.");
+            String response = userService.loginUser(username, password);
+
+            if (response.equalsIgnoreCase("ACCESS DENIED")) {
+                return new Response<String>(404, "User not found or incorrect password.");
+            }
+
+            return new Response<String>(200, response);
+
+        } catch (Exception e) {
+            return new Response<String>(500, "Internal server error.");
         }
-
-        return new Response<String>(200, response);
     }
 
 
