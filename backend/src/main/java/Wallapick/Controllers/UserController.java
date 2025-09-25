@@ -5,6 +5,7 @@ import Wallapick.Models.User;
 import Wallapick.ModelsDTO.UserDTO;
 import Wallapick.Services.UserService;
 import Wallapick.Utils.JWTUser;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +28,36 @@ public class UserController {
         int response = userService.registerUser(user);
 
         if(response == -1){
-            return new Response<String>(406, "Username igual");
+            return new Response<String>(406, "Same username");
         } else if (response == -2) {
-            return new Response<String>(406,"Email existe");
+            return new Response<String>(406,"Email exists");
         }
         else{
-            return new Response<String>(200,"ta joya");
+            return new Response<String>(200,"User created successfully.");
         }
     }
 
     @PostMapping("/login")
-    public Response loginUser(@Valid @RequestBody User user) {
+    public Response loginUser(@Valid @RequestBody JsonNode json) {
+        try {
+            String username = json.has("username") ? json.get("username").asText() : null;
+            String password = json.has("password") ? json.get("password").asText() : null;
 
-        String response = userService.loginUser(user);
+            if (username == null || password == null) {
+                return new Response<String>(400, "Username and password are required.");
+            }
 
-        if(response.equalsIgnoreCase("ACCESS DENIED")){
-            return new Response<String>(404,"User not found or incorrect password.");
+            String response = userService.loginUser(username, password);
+
+            if (response.equalsIgnoreCase("ACCESS DENIED")) {
+                return new Response<String>(404, "User not found or incorrect password.");
+            }
+
+            return new Response<String>(200, response);
+
+        } catch (Exception e) {
+            return new Response<String>(500, "Internal server error.");
         }
-
-        return new Response<String>(200, response);
     }
 
 
@@ -63,7 +75,7 @@ public class UserController {
     }
 
     @PatchMapping("")
-    public Response updateUser(@Valid @RequestBody User user, @RequestHeader("Authorization") String token) {
+    public Response updateUser( @RequestBody User user, @RequestHeader("Authorization") String token) {
         token = token.replace("Bearer ", "");
         int result = userService.updateUser(user, token);
 

@@ -32,7 +32,14 @@
           }
         </ul>
 
-        <button pButton (click)="logOut()" label="Cerrar Sesión" class="w-full"></button>
+        <button pButton (click)="showDialog()" severity="danger" label="Eliminar Cuenta" class="w-full"></button>
+        <button pButton (click)="logOut()" label="Cerrar Sesión" severity="contrast" class="w-full"></button>
+        <p-dialog header="Seguro que deseas Eliminar tu cuenta?" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+          <div class="w-full grid grid-cols-2 gap-4">
+            <button pButton severity="contrast" (click)="visible = false" label="Cancelar"></button>
+            <button pButton severity="danger" (click)="deleteAccount()"  label="Confirmar"></button>
+          </div>
+        </p-dialog>
       </div>
     </p-card>
 

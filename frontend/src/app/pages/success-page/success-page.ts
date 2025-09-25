@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Button, ButtonDirective, ButtonModule } from "primeng/button";
 import { ProductService } from '../../services/product-service';
 import { OrderService } from '../../services/order-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-success-page',
-  imports: [ButtonModule, ButtonDirective],
+  imports: [ButtonModule, ButtonDirective, RouterModule],
   templateUrl: './success-page.html',
   styleUrl: './success-page.css'
 })

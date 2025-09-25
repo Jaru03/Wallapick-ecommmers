@@ -35,10 +35,7 @@ export class CartPage {
 
   constructor(){
     effect(() => {
-      console.log(this.product());
+      this.product();
     })
-
-    console.log(this.totalSummaries());
-    
   }
 }

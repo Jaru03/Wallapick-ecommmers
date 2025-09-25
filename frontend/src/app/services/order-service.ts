@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 })
 export class OrderService {
   http = inject(HttpClient);
-  url = 'http://localhost:8080/order';
+  url = 'http://wallapick.pickmyskills.com:8080/order';
 
   successOrder(ids: any[]) {
     return this.http.post(`${this.url}`, ids);

@@ -21,18 +21,29 @@
     <div class="hidden md:block">
       <p-card class="p-4 pb-12 h-fit">
         <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2 capitalize">
-          {{product()?.data.name}}
+          {{product()?.data?.name}}
         </h2>
         <h3 class="text-lg font-medium text-gray-600 dark:text-white mb-1">
-          {{product()?.data.status}}
+          {{product()?.data?.status}}
         </h3>
         <p class="text-xl font-semibold mb-4">{{product()?.data.price}}€</p>
 
         <div class="flex gap-4">
-           @if (product()?.data.seller) {
+           @if (product()?.data?.seller === "EBAY_SELLER") {
 
           <a pButton icon="pi pi-shop" target="_blank" severity="warn" styleClass="width: 100%;" label="Ir a Ebay" href={{product()?.data.urlEbayProduct}}></a>
-        }@else {
+
+        }@else if (product()?.data?.seller === dataUser.username ) {
+          <button
+                    label="Ir a Administrar"
+                    pButton
+                    icon="pi pi-pencil"
+                    severity="contrast"
+                    (click)="goToEditProduct()"
+                  ></button>
+        }
+        
+        @else {
 
           <p-button icon="pi pi-shopping-cart" label="Agregar al Carrito" (click)="addCart()"/>
           <p-button

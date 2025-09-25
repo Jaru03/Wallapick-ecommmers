@@ -39,15 +39,15 @@
 
   <label class="flex flex-col gap-2">
     Nombre
-    <input pInputText disabled value="{{ userData().name }}" />
+    <input pInputText disabled value="{{ userData()?.name }}" />
   </label>
   <label class="md:col-[2/3] flex flex-col gap-2">
     Apellido
-    <input pInputText disabled value="{{ userData().lastname }}" />
+    <input pInputText disabled value="{{ userData()?.lastname }}" />
   </label>
   <label class="flex flex-col gap-2 col-span-full">
     Correo
-    <input pInputText disabled value="{{ userData().email }}" />
+    <input pInputText disabled value="{{ userData()?.email }}" />
   </label>
   <button
     pButton

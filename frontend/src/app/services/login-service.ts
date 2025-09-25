@@ -21,7 +21,8 @@ type RegisterData = {
 export class LoginService {
   isLogged = signal(false);
   http = inject(HttpClient);
-  baseUrl = 'http://localhost:8080';
+  baseUrl = 'http://wallapick.pickmyskills.com:8080';
+  goToEditProduct = signal<boolean>(false);
 
   login(userData: LoginData) {
     return this.http.post(`${this.baseUrl}/user/login`, userData).pipe(
@@ -29,8 +30,6 @@ export class LoginService {
         if (response.code === 200) {
           localStorage.setItem('token', response.data);
         }
-        console.log(response);
-
         return response;
       })
     );
@@ -42,7 +41,6 @@ export class LoginService {
 
   logout() {
     localStorage.removeItem('token');
-    return this.http.post(`${this.baseUrl}/user/logout`, null);
   }
 
   toggle(): void {
@@ -84,5 +82,9 @@ export class LoginService {
 
   updateUser(userData: any) {
     return this.http.patch(`${this.baseUrl}/user`, userData)
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(`${this.baseUrl}/user/${id}`)
   }
 }

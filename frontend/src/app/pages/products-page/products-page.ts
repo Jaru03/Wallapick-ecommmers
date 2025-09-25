@@ -123,7 +123,7 @@ export class ProductsPage {
     // sincronizar array con signal
     effect(() => {
       this.estadoSeleccionadoSignal.set([...this.estadoSeleccionado]);
-      console.log('Estado actualizado:', this.estadoSeleccionado);
+      this.estadoSeleccionado;
     });
 
     effect(() => {
@@ -148,7 +148,7 @@ export class ProductsPage {
 
       this.rangeValuesSignal.set([this.rangeValues[0], this.rangeValues[1]]);
 
-      console.log(this.filteredProducts());
+      this.filteredProducts();
     });
   }
 }

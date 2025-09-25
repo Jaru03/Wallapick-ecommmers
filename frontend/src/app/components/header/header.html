@@ -13,11 +13,32 @@
   <ng-template #end>
     <div class="flex items-center gap-2 sm:gap-5">
       @if (loginService.userLogged() ) {
-
-        <p-iconfield>
+        <div #searchContainer>
+        <p-iconfield >
           <p-inputicon class="pi pi-search" />
-          <input type="text" class="w-full" pInputText placeholder="Search" />
+          <input type="text" class="w-full" [(ngModel)]="searchInput" (input)="handlerInput()" #input pInputText placeholder="Search" />
+          @if (searchInput) {
+          <p-card styleClass="absolute top-20 w-full z-20 gap-2 overflow-y-scroll 	line-clamp-2  max-h-40 no-scrollbar" >
+            
+            @if ( productsPartial?.code === 204) {
+              <h2 class="text-md font-semibold">{{productsPartial?.data}}</h2>
+            }@else {
+
+              
+              @for (product of productsPartial?.data; track $index) {
+
+                <div (click)="goToProduct(product?.id, input)"  class="flex cursor-pointer hover:bg-[#ffd4b8] gap-2 overflow-clip max-h-20 p-2 ">
+                  
+                  <img class=" max-h-18 aspect-square" [src]="product?.image" [alt]="product?.name">
+                <span class="font-semibold">{{product?.name}}</span>
+              </div>
+              }
+            }
+          </p-card>
+        }
         </p-iconfield>
+        </div>
+
 
 
       @for (item of itemsIcons; track $index) {
@@ -45,33 +66,3 @@
     </div>
   </ng-template>
 </p-menubar>
-
-<!-- <header class="bg-[#ff6b1f]">
-  <div class="flex justify-between items-center max-w-7xl mx-auto ">
-    <img src="wallapick.png" alt="Logo de Wallapick" width="75" height="75" />
-
-    <nav>
-      <ul class="flex gap-8 justify-center items-center">
-        @for (item of itemsText; track $index) {
-        <li class="text-white">
-          <a routerLink="{{ item.path }}">{{ item.name }}</a>
-        </li>
-        }
-      </ul>
-    </nav>
-    <nav>
-      <ul class="flex gap-5 justify-center items-center">
-        <li class="text-white">
-          <ng-icon class="text-lg" name="lucideSearch" />
-        </li>
-        @for (item of itemsIcons; track $index) {
-        <li class="text-white">
-          <a routerLink="{{ item.path }}"
-            ><ng-icon class="text-lg" name="{{ item.name }}"
-          /></a>
-        </li>
-        }
-      </ul>
-    </nav>
-  </div>
-</header> -->

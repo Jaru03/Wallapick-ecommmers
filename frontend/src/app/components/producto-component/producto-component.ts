@@ -35,7 +35,6 @@ export class ProductoComponent {
     if(data.code === 200){
       this.dataUser = data.data;
     }
-    console.log(data);
   })
 
   visible: boolean = false;
@@ -101,6 +100,11 @@ export class ProductoComponent {
         }
         this.visible = false;
       });
+  }
+
+  goToEditProduct() {
+    this.loginService.goToEditProduct.set(true);
+    this.router.navigate(['/account']);
   }
 
   editProduct(product: any) {

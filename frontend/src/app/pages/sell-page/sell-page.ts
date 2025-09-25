@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { ProductService } from '../../services/product-service';
 import { MessageService } from 'primeng/api';
 import { Toast } from "primeng/toast";
+import { Router } from '@angular/router';
 
 type Category = {
   title: string;
@@ -36,6 +37,7 @@ export class SellPage {
   productService = inject(ProductService)
   messageService = inject(MessageService)
   selectedFile: File | null = null;
+  router = inject(Router)
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -56,13 +58,8 @@ export class SellPage {
 
     formData.append('product', JSON.stringify(productData));
     formData.append('image', this.selectedFile as Blob);
-
-    for (const key of formData.keys()) {
-    console.log(`${key}: ${formData.get(key)}`);
-  }
     
     this.productService.createProduct(formData).subscribe((data:any) => {
-      console.log(data);
       if (data.code === 200) {
         
         this.messageService.add({
@@ -70,6 +67,12 @@ export class SellPage {
           summary: 'Producto Creado',
           detail: 'Creado.',
         });
+
+      setTimeout(() => {
+          this.router.navigate(['/products']);
+        }, 1000);
+
+        
       }else{
         this.messageService.add({
           severity: 'error',

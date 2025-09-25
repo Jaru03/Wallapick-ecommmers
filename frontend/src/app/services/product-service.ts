@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductService {
   http = inject(HttpClient);
-  baseUrl = 'http://localhost:8080';
+  baseUrl = 'http://wallapick.pickmyskills.com:8080';
 
   cart= signal<any[]>([]);
 
@@ -33,6 +33,10 @@ export class ProductService {
 
   deleteProduct(id:number){
     return this.http.delete(`${this.baseUrl}/product/${id}`);
+  }
+
+  getPartialName(query:string){
+    return this.http.get(`${this.baseUrl}/product/searchProductsPartial?partialName=${query}`)
   }
 
 

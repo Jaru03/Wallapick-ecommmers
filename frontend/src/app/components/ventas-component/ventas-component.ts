@@ -73,7 +73,6 @@ export class VentasComponent {
     if (!this.selectedProductId || this.form.invalid) return;
 
     this.form.addControl('id', this.formBuilder.control(id));
-    console.log(this.form.value);
 
     this.productService
       .updateProduct(this.form.value)
@@ -124,7 +123,7 @@ export class VentasComponent {
     });
 
     effect(() => {
-      console.log(this.products());
+      this.products();
     });
   }
 

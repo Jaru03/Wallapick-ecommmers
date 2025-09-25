@@ -9,10 +9,11 @@ import { VentasComponent } from "../../components/ventas-component/ventas-compon
 import { LoginService } from '../../services/login-service';
 import { Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Dialog, DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-account-page',
-  imports: [Card, Divider, ButtonModule, PerfilComponent, ComprasComponent, VentasComponent],
+  imports: [Card, Divider, ButtonModule, PerfilComponent, ComprasComponent, VentasComponent, Dialog],
   templateUrl: './account-page.html',
   styleUrl: './account-page.css'
 })
@@ -24,11 +25,16 @@ export class AccountPage {
 
   handlerOption(option: string){
     this.optionSelected = option
-    console.log(this.optionSelected)
+  }
+  constructor(){
+    if(this.loginService.goToEditProduct()){
+      this.optionSelected = "Mis Ventas"
+      this.loginService.goToEditProduct.set(false);
+   }
   }
 
   logOut(){
-    this.loginService.logout().subscribe();
+    this.loginService.logout()
     this.router.navigate(['/'])
   }
 
@@ -38,11 +44,23 @@ export class AccountPage {
     if(data.code === 200){
       this.dataUser = data.data;
     }
-    console.log(data);
   })
 
   handleUpdateUserData(updatedData: any) {
     this.dataUser = updatedData;
+  }
+
+    visible: boolean = false;
+
+  showDialog() {
+        this.visible = true;
+    }
+
+  deleteAccount(){
+    this.loginService.deleteUser(this.userId).subscribe((response:any) => {
+      this.loginService.logout()
+      this.router.navigate(['/'])
+    });
   }
 
 

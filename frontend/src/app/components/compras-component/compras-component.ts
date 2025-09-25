@@ -15,7 +15,9 @@ export class ComprasComponent {
 
   constructor(){
     effect(() => {
-      this.myOrders()
+      
+      this.myOrders();
+      
     });
   }
 }

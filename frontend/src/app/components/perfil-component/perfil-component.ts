@@ -33,8 +33,6 @@ export class PerfilComponent {
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
-
-    console.log(this.userData(), this.optionSelected());
   }
 
   updateData() {
@@ -51,7 +49,6 @@ export class PerfilComponent {
     cleanedData['id'] = this.userData().id;
 
     this.userService.updateUser(cleanedData).subscribe((response: any) => {
-      console.log(response.code, cleanedData);
       if (response.code === 200) {
         this.userDataUpdated.emit(response.data)
         this.isEditing = false;

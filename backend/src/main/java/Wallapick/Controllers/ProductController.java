@@ -94,7 +94,7 @@ public class ProductController {
     }
 
     @PatchMapping("")
-    public Response updateProduct(@Valid @RequestBody Product product, @RequestHeader("Authorization") String token) {
+    public Response updateProduct( @RequestBody Product product, @RequestHeader("Authorization") String token) {
 
         token = token.replace("Bearer ", "");
         int response = productService.updateProduct(product, token);

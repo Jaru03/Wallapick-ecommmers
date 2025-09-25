@@ -36,6 +36,7 @@ public class StripeService {
                                     .setProductData(
                                             SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                                     .setName(productDto.getName())
+                                                    .addImage(productDto.getImage())
                                                     .build()
                                     ).build()
                     ).build();
